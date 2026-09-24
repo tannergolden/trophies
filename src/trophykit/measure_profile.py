@@ -21,9 +21,8 @@ USER = """
 query($login:String!){ rateLimit{cost}
   user(login:$login){ id login createdAt bio location websiteUrl
     followers{totalCount} following{totalCount} gists(privacy:PUBLIC){totalCount}
-    organizations{totalCount} sponsoring{totalCount} sponsors{totalCount}
     starredRepositories{totalCount} pullRequests{totalCount} issues{totalCount}
-    projectsV2{totalCount} repositoryDiscussions{totalCount}
+    repositoryDiscussions{totalCount}
     answers: repositoryDiscussionComments(onlyAnswers:true){totalCount}
     discussionComments: repositoryDiscussionComments{totalCount}
     issueComments{totalCount}
@@ -32,6 +31,15 @@ query($login:String!){ rateLimit{cost}
     profileReadme: repository(name:$login){ id } } }"""
 
 PACKAGES = "query($login:String!){ user(login:$login){ packages{totalCount} } }"
+
+# Each of these needs a scope the Actions token may lack (read:project for
+# projects, read:org for memberships, and sponsorships vary by account). A
+# field that errors nulls the whole `user` it sits in, so each is asked for
+# on its own and answers None rather than taking the run down.
+ORGANIZATIONS = "query($login:String!){ user(login:$login){ organizations{totalCount} } }"
+SPONSORING = "query($login:String!){ user(login:$login){ sponsoring{totalCount} } }"
+SPONSORS = "query($login:String!){ user(login:$login){ sponsors{totalCount} } }"
+PROJECTS = "query($login:String!){ user(login:$login){ projectsV2{totalCount} } }"
 VIEWER = """
 query{ viewer{ login organizations(first:50){ nodes{ viewerCanAdminister } }
   collaborating: repositories(affiliations:[COLLABORATOR]){totalCount} } }"""
@@ -84,12 +92,26 @@ def _count(node, key="totalCount"):
     return ((node or {}).get(key)) or 0
 
 
+def _optional(gh, query: str, login: str, field: str, notes: list) -> int | None:
+    """One user field the token may not be allowed to read: its count, or None."""
+    try:
+        u = gh.gql(query, login=login)["user"]
+    except Exception as exc:
+        notes.append(f"{field} not readable with this token ({exc})")
+        return None
+    if not u:
+        notes.append(f"{field} not readable with this token")
+        return None
+    return _count(u.get(field))
+
+
 def measure(gh, login: str, ledger: dict, *, today: dt.date, private: bool = False, scan_pages: int = 30,
             run_repos: int = 30) -> dict:
     notes: list[str] = []
     u = gh.gql(USER, login=login)["user"]
     if not u:
-        raise RuntimeError(f"no such user: {login}")
+        why = "; ".join(getattr(gh, "last_errors", []) or []) or "no such user"
+        raise RuntimeError(f"cannot read user {login}: {why}")
     uid = u["id"]
     created = cal.parse_day(u["createdAt"])
 
@@ -128,6 +150,10 @@ def measure(gh, login: str, ledger: dict, *, today: dt.date, private: bool = Fal
 
     # -- things only the token's own account can answer ----------------------------------
     founder = crew = packages = None
+    organizations = _optional(gh, ORGANIZATIONS, login, "organizations", notes)
+    sponsoring = _optional(gh, SPONSORING, login, "sponsoring", notes)
+    sponsors = _optional(gh, SPONSORS, login, "sponsors", notes)
+    projects = _optional(gh, PROJECTS, login, "projectsV2", notes)
     try:
         v = gh.gql(VIEWER)["viewer"]
         if v["login"].lower() == login.lower():
@@ -207,9 +233,9 @@ def measure(gh, login: str, ledger: dict, *, today: dt.date, private: bool = Fal
         # Community
         "upstream": count("upstream"), "open-door": count("opendoor"), "second-pair-of-eyes": count("reviews"), "reporter": count("reporter"),
         "voice": count("voice"), "answer-key": u["answers"]["totalCount"], "conversation-starter": u["repositoryDiscussions"]["totalCount"],
-        "team-player": u["organizations"]["totalCount"], "founder": founder, "crew": crew, "generous": u["starredRepositories"]["totalCount"],
-        "curious": u["following"]["totalCount"], "patron": u["sponsoring"]["totalCount"], "backed": u["sponsors"]["totalCount"],
-        "gist-keeper": u["gists"]["totalCount"], "planner": u["projectsV2"]["totalCount"], "registry": packages,
+        "team-player": organizations, "founder": founder, "crew": crew, "generous": u["starredRepositories"]["totalCount"],
+        "curious": u["following"]["totalCount"], "patron": sponsoring, "backed": sponsors,
+        "gist-keeper": u["gists"]["totalCount"], "planner": projects, "registry": packages,
         "introduced": int(bool(u["bio"] and u["location"] and u["websiteUrl"] and u["profileReadme"])),
         "green-light": count("approved"), "red-pen": count("changes"), "roundtable": u["discussionComments"]["totalCount"],
         # Housekeeping

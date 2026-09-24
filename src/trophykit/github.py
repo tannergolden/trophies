@@ -35,6 +35,7 @@ class GitHub:
         self.quiet = quiet
         self.calls = 0
         self.points = 0  # GraphQL rate-limit cost, summed from each response
+        self.last_errors: list[str] = []  # per-field errors of the last GraphQL reply
 
     # -- transport -------------------------------------------------------------
     def _request(self, url: str, body: bytes | None, accept: str) -> tuple[int, dict, object]:
@@ -77,6 +78,11 @@ class GitHub:
         if not self.quiet:
             print(f"::debug::{msg}" if os.environ.get("GITHUB_ACTIONS") else f"  {msg}", file=sys.stderr)
 
+    def _warn(self, msg: str) -> None:
+        """A line the run log shows without debug logging switched on."""
+        if not self.quiet:
+            print(f"::warning::{msg}" if os.environ.get("GITHUB_ACTIONS") else f"  {msg}", file=sys.stderr)
+
     # -- the two calls -------------------------------------------------------------
     def gql(self, query: str, **variables) -> dict:
         body = json.dumps({"query": query, "variables": variables}).encode()
@@ -89,11 +95,11 @@ class GitHub:
         errors = data.get("errors")
         if errors and not data.get("data"):
             raise ApiError("GraphQL: " + "; ".join(e.get("message", "?") for e in errors))
-        if errors:
+        self.last_errors = [e.get("message", "?") for e in errors or []]
+        for msg in self.last_errors:
             # Partial data with per-field errors (a private field, a missing
-            # scope): keep what came back and say what did not.
-            for e in errors:
-                self._log("GraphQL partial: " + e.get("message", "?"))
+            # scope): keep what came back and say, visibly, what did not.
+            self._warn("GraphQL partial: " + msg)
         return data["data"]
 
     def rest(self, path: str, accept: str = "application/vnd.github+json"):
