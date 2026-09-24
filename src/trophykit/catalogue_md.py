@@ -159,10 +159,10 @@ REPOSITORY_MEASURED = """- **Repository mode: public, non-fork repositories with
   **📐 Calibrate** workflow, quarterly). Stars and forks are counted exactly:
   the search API answers how many of the {base:,} such repositories sit at or
   above each threshold. The other cores come from {n} repositories sampled
-  across five star bands ({bands}), each measured the way a case measures it
-  (contributors, commits, releases, merged pull requests, resolved issues)
-  and weighted by its band's share of the population. Active days cannot be
-  read from the API and stay estimated."""
+  across five star bands ({bands}), each measured the way a case measures
+  it (contributors, commits, releases, merged pull requests, resolved
+  issues) and weighted by its band's share of the population. Active days
+  cannot be read from the API and stay estimated."""
 
 
 def repository_population() -> str:
@@ -170,13 +170,16 @@ def repository_population() -> str:
     sample = calibration.REPOSITORY_SAMPLE
     if not sample:
         return REPOSITORY_ESTIMATED
-    bands = ", ".join(f"{b['sampled']} at {_band_label(b['band'])}" for b in sample["bands"])
+    counts = {b["sampled"] for b in sample["bands"]}
+    labels = ", ".join(_band_label(b["band"]) for b in sample["bands"])
+    bands = (f"{counts.pop()} in each of {labels} stars" if len(counts) == 1
+             else ", ".join(f"{b['sampled']} at {_band_label(b['band'])} stars" for b in sample["bands"]))
     return REPOSITORY_MEASURED.format(date=sample["date"], base=sample["base"] or 0, n=sample["n"], bands=bands)
 
 
 def _band_label(band: str) -> str:
     lo, hi = band.split("-")
-    return f"{int(lo):,}+ stars" if not hi else f"{int(lo):,}–{int(hi):,} stars"
+    return f"{int(lo):,}+" if not hi else f"{int(lo):,}\u2013{int(hi):,}"
 
 
 def page() -> str:

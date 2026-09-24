@@ -50,13 +50,6 @@ class Arithmetic(unittest.TestCase):
 
 
 class Loader(unittest.TestCase):
-    def setUp(self):
-        self.saved = dict(cal.CORE_PCT)
-
-    def tearDown(self):
-        cal.CORE_PCT.clear()
-        cal.CORE_PCT.update(self.saved)
-
     def _sample(self, cores):
         return {"date": "2026-10-01", "base": 38000000, "n": 200,
                 "bands": [{"band": "1-9", "weight": 0.9, "population": 1, "sampled": 40}],
@@ -65,7 +58,9 @@ class Loader(unittest.TestCase):
     def test_missing_file_leaves_the_estimates(self):
         with tempfile.TemporaryDirectory() as tmp:
             self.assertIsNone(cal.load_repository_sample(Path(tmp) / "none.json"))
-        self.assertEqual(cal.CORE_PCT[("repository", "stars")][1], "e")
+        table = dict(cal.ESTIMATED)
+        self.assertIs(cal.apply_repository_sample(None, table), table)
+        self.assertEqual(table[("repository", "stars")][1], "e")
 
     def test_matching_steps_become_measured_and_mismatched_are_ignored(self):
         stars = [x for x in c.RCORE if x.key == "stars"][0]
@@ -78,13 +73,21 @@ class Loader(unittest.TestCase):
                 "nonsense": {"anchors": [[1, 1.0]]},
             })))
             data = cal.load_repository_sample(path)
-        self.assertEqual(data["n"], 200)
-        pts, basis, note = cal.CORE_PCT[("repository", "stars")]
+        table = cal.apply_repository_sample(data, dict(cal.ESTIMATED))
+        pts, basis, note = table[("repository", "stars")]
         self.assertEqual(basis, "m")
         self.assertEqual(pts, tuple((int(t), float(p)) for t, p in anchors))
         self.assertIn("2026-10-01", note)
-        self.assertEqual(cal.CORE_PCT[("repository", "commits")][1], "e")
-        self.assertNotIn(("repository", "nonsense"), cal.CORE_PCT)
+        self.assertEqual(table[("repository", "commits")][1], "e")
+        self.assertNotIn(("repository", "nonsense"), table)
+        self.assertEqual(cal.ESTIMATED[("repository", "stars")][1], "e")  # the snapshot is never touched
+
+    def test_the_committed_sample_is_applied(self):
+        self.assertTrue(cal.REPOSITORY_SAMPLE_PATH.exists(), "src/calibrate.py has run and its file is committed")
+        self.assertEqual(cal.REPOSITORY_SAMPLE["n"], sum(b["sampled"] for b in cal.REPOSITORY_SAMPLE["bands"]))
+        for key in calibrate.MEASURED:
+            self.assertEqual(cal.CORE_PCT[("repository", key)][1], "m", key)
+        self.assertEqual(cal.CORE_PCT[("repository", "active")][1], "e")
 
 
 if __name__ == "__main__":

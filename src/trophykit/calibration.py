@@ -17,15 +17,17 @@ TWO REFERENCE POPULATIONS
               on one. The median has 36 followers and 18 public
               contributions a year; 26% made none.
 
-  repository  Public repositories that someone other than the owner has
-              starred: about 9% of GitHub's 428 million public repositories
-              (Innovation Graph, 2026 Q1), around 38 million. Star counts
-              follow a near-Zipf tail, anchored by the published tallies of
-              repositories over 100 and over 1,000 stars (about 128,000 and
-              13,000 circa 2019, grown roughly 2.5x since) and by the shape
-              of the 2016 thousand-stars census (7,699 repositories over
-              1,000 stars, of which 44% over 2,000, 12% over 5,000, 4% over
-              10,000). Forks run about one per seven stars at scale.
+  repository  Public, non-fork repositories with at least one star,
+              measured through GitHub's API by src/calibrate.py and read
+              from data/calibration/repositories.json at import. Stars
+              and forks are counted exactly by the search API; the other
+              cores come from a sample stratified by star band and
+              weighted by each band's population. The estimates written
+              below are what the table holds until that file exists, and
+              for active days, which the API cannot count: about 38
+              million starred repositories, a near-Zipf star tail anchored
+              by the published tallies over 100 and over 1,000 stars and
+              the 2016 thousand-stars census, and one fork per seven stars.
 
 WHAT EACH NUMBER IS
 
@@ -162,30 +164,39 @@ BASIS_NAMES = {"m": "measured", "d": "derived", "e": "estimated"}
 
 
 def load_repository_sample(path: Path = REPOSITORY_SAMPLE_PATH) -> dict | None:
-    """Replace the repository-mode estimates with what `src/calibrate.py` measured.
-
-    The sample file carries, per core key, the share at or above each of
-    that trophy's steps. A key it does not carry (active days cannot be
-    counted from the API) keeps its estimate. Applied at import so every
-    card, the catalogue page and the tests read the same table."""
+    """The file `src/calibrate.py` wrote, or None when it has not run yet."""
     if not path.exists():
         return None
-    data = json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def apply_repository_sample(data: dict | None, table: dict) -> dict:
+    """Replace the repository-mode estimates in `table` with what the sample measured.
+
+    The sample carries, per core key, the share at or above each of that
+    trophy's steps. A key it does not carry (active days cannot be counted
+    from the API) keeps its estimate, and so does a key whose steps no
+    longer match the catalogue's: the sample predates a threshold change,
+    and the estimate stands until the next run."""
+    if not data:
+        return table
     for key, spec in data.get("cores", {}).items():
-        current = CORE_PCT.get(("repository", key))
+        current = table.get(("repository", key))
         if not current:
             continue
         steps = tuple(t for t, _ in current[0])
         anchors = tuple((int(t), float(p)) for t, p in spec["anchors"])
         if tuple(t for t, _ in anchors) != steps:
-            continue  # the sample predates a threshold change; the estimate stands until it reruns
+            continue
         note = (f"{data['n']} repositories in {len(data['bands'])} star bands, weighted by band, {data['date']}"
                 if key not in ("stars", "forks") else f"every starred public repository counted by the search API, {data['date']}")
-        CORE_PCT[("repository", key)] = (anchors, "m", note)
-    return data
+        table[("repository", key)] = (anchors, "m", note)
+    return table
 
 
+ESTIMATED = dict(CORE_PCT)  # the table as written above, before the sample is applied
 REPOSITORY_SAMPLE = load_repository_sample()
+apply_repository_sample(REPOSITORY_SAMPLE, CORE_PCT)  # applied at import, so every reader sees one table
 
 
 def shares(mode: str, slug: str) -> tuple:

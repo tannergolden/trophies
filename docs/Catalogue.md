@@ -401,10 +401,10 @@ reference population, and each share says how it was got.
   **📐 Calibrate** workflow, quarterly). Stars and forks are counted exactly:
   the search API answers how many of the 32,180,494 such repositories sit at or
   above each threshold. The other cores come from 200 repositories sampled
-  across five star bands (40 at 1–9 stars, 40 at 10–99 stars, 40 at 100–999 stars, 40 at 1,000–9,999 stars, 40 at 10,000+ stars), each measured the way a case measures it
-  (contributors, commits, releases, merged pull requests, resolved issues)
-  and weighted by its band's share of the population. Active days cannot be
-  read from the API and stay estimated.
+  across five star bands (40 in each of 1–9, 10–99, 100–999, 1,000–9,999, 10,000+ stars), each measured the way a case measures
+  it (contributors, commits, releases, merged pull requests, resolved
+  issues) and weighted by its band's share of the population. Active days
+  cannot be read from the API and stay estimated.
 
 **Three kinds of number.** *Measured* is read off a dataset directly (followers,
 yearly activity, and every repository-mode core the sample carries). *Derived* is a dataset scaled by a stated factor (all-time
