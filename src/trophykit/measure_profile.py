@@ -20,7 +20,7 @@ from .scan import SEMVER, merge_stats, scan_repository, without_refreshes
 USER = """
 query($login:String!){ rateLimit{cost}
   user(login:$login){ id login createdAt bio location websiteUrl
-    followers{totalCount} following{totalCount} gists(privacy:PUBLIC){totalCount}
+    followers{totalCount} following{totalCount}
     starredRepositories{totalCount} pullRequests{totalCount} issues{totalCount}
     repositoryDiscussions{totalCount}
     answers: repositoryDiscussionComments(onlyAnswers:true){totalCount}
@@ -40,6 +40,7 @@ ORGANIZATIONS = "query($login:String!){ user(login:$login){ organizations{totalC
 SPONSORING = "query($login:String!){ user(login:$login){ sponsoring{totalCount} } }"
 SPONSORS = "query($login:String!){ user(login:$login){ sponsors{totalCount} } }"
 PROJECTS = "query($login:String!){ user(login:$login){ projectsV2{totalCount} } }"
+GISTS = "query($login:String!){ user(login:$login){ gists(privacy:PUBLIC){totalCount} } }"  # refused to an Actions token
 VIEWER = """
 query{ viewer{ login organizations(first:50){ nodes{ viewerCanAdminister } }
   collaborating: repositories(affiliations:[COLLABORATOR]){totalCount} } }"""
@@ -154,6 +155,7 @@ def measure(gh, login: str, ledger: dict, *, today: dt.date, private: bool = Fal
     sponsoring = _optional(gh, SPONSORING, login, "sponsoring", notes)
     sponsors = _optional(gh, SPONSORS, login, "sponsors", notes)
     projects = _optional(gh, PROJECTS, login, "projectsV2", notes)
+    gists = _optional(gh, GISTS, login, "gists", notes)
     try:
         v = gh.gql(VIEWER)["viewer"]
         if v["login"].lower() == login.lower():
@@ -235,7 +237,7 @@ def measure(gh, login: str, ledger: dict, *, today: dt.date, private: bool = Fal
         "voice": count("voice"), "answer-key": u["answers"]["totalCount"], "conversation-starter": u["repositoryDiscussions"]["totalCount"],
         "team-player": organizations, "founder": founder, "crew": crew, "generous": u["starredRepositories"]["totalCount"],
         "curious": u["following"]["totalCount"], "patron": sponsoring, "backed": sponsors,
-        "gist-keeper": u["gists"]["totalCount"], "planner": projects, "registry": packages,
+        "gist-keeper": gists, "planner": projects, "registry": packages,
         "introduced": int(bool(u["bio"] and u["location"] and u["websiteUrl"] and u["profileReadme"])),
         "green-light": count("approved"), "red-pen": count("changes"), "roundtable": u["discussionComments"]["totalCount"],
         # Housekeeping
