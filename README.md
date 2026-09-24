@@ -83,7 +83,7 @@ the one named after your account. That stub is the whole interface.
 name: Trophies
 on:
   schedule:
-    - cron: '17 0 * * *'
+    - cron: '0 0 * * *'
   workflow_dispatch:
 
 permissions: {}
@@ -172,9 +172,9 @@ siblings. Everyone else's total is exactly one hundred.
 
 ## 🔁 How It Runs
 
-Once a day, a few minutes after midnight, never on the hour: GitHub delays
-scheduled runs when it is busy, and `:00` is the busiest minute. Nothing on a
-trophy changes faster than daily.
+Once a day, on the hour at midnight. Nothing on a trophy changes faster
+than daily, and GitHub may delay a scheduled run when it is busy, which
+costs nothing here.
 
 **Every run recomputes everything from GitHub.** Nothing depends on the last
 run, so a delayed or skipped one loses nothing. A run costs about fifteen

@@ -6,14 +6,14 @@
 # workflow or the action is exercised by the tree that carries it, the way
 # standards' self-checks do, rather than by the last release.
 #
-# Once a day, a few minutes after midnight, never on the hour: GitHub delays
-# scheduled runs when it is busy and :00 is the busiest minute.
+# Once a day, on the hour at midnight. Every run recomputes everything, so
+# a run GitHub delays or drops loses nothing: the next one catches up.
 
 name: '🏆 Case'
 
 on:
   schedule:
-    - cron: '17 6 * * *'
+    - cron: '0 0 * * *'
   workflow_dispatch:
 
 concurrency:
