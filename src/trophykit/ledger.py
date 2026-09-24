@@ -17,7 +17,7 @@ import datetime as dt
 import json
 from pathlib import Path
 
-from .catalogue import ach_state, measure
+from .catalogue import ROMAN, TIER_NAMES, ach_state, measure
 
 HISTORY_DAYS = 400
 NEW_FOR_DAYS = 7
@@ -38,6 +38,29 @@ def save(path: Path, ledger: dict) -> bool:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
     return True
+
+
+def reached_on(ledger: dict, result: dict, cores: list, ach: list, today: dt.date) -> dict:
+    """What was first reached on `today` and is still held.
+
+    A tier's date stays in the ledger after a threshold moves up and the tier
+    is lost, so the date alone would report a Bronze the card no longer
+    shows. Only a tier or achievement the run holds right now is named."""
+    key = today.isoformat()
+    out = {"tiers": [], "achievements": []}
+    reached = ledger.get("reached", {})
+    for c in cores:
+        m = measure(c, result["values"][c.key])
+        for stamp, day in reached.get(c.key, {}).items():
+            t, stars = (int(x) for x in stamp.split("."))
+            if day == key and (m["t"] > t or (m["t"] == t and m["stars"] >= stars)):
+                out["tiers"].append((TIER_NAMES[t] + (f" star {stars}" if stars else ""), c.title))
+    for a in ach:
+        st = ach_state(a, result["curs"].get(a.slug))
+        for k, day in reached.get("ach:" + a.slug, {}).items():
+            if day == key and st["earned"] and st["k"] >= int(k):
+                out["achievements"].append(a.name + (f" {ROMAN[int(k)]}" if a.goals else ""))
+    return out
 
 
 def update(ledger: dict, result: dict, cores: list, ach: list, today: dt.date) -> dict:

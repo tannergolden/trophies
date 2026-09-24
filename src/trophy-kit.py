@@ -100,16 +100,7 @@ def finish(result: dict, cfg: dict, root: Path, led: dict, ledger_path: Path | N
         folded = ledger_mod.update(led, result, cores, ach, today)
         result.setdefault("delta", folded["delta"])
         result.setdefault("new", folded["new"])
-        key = today.isoformat()
-        for c in cores:
-            for stamp, day in folded["reached"].get(c.key, {}).items():
-                if day == key:
-                    t, stars = stamp.split(".")
-                    reached_today["tiers"].append((catalogue.TIER_NAMES[int(t)] + (f" star {stars}" if stars != "0" else ""), c.title))
-        for a in ach:
-            for k, day in folded["reached"].get("ach:" + a.slug, {}).items():
-                if day == key:
-                    reached_today["achievements"].append(a.name + (f" {catalogue.ROMAN[int(k)]}" if a.goals else ""))
+        reached_today = ledger_mod.reached_on(led, result, cores, ach, today)
     planned = render.plan(result, cfg, result.get("owners"))
     print(render.describe(planned, result))
     if not write:

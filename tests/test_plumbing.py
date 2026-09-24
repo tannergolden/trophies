@@ -112,6 +112,20 @@ class Readme(unittest.TestCase):
         self.assertNotIn("blob/v1/", block)
 
 
+class ReachedToday(unittest.TestCase):
+    def test_a_tier_lost_to_a_raised_threshold_is_not_reported(self):
+        import datetime as dt
+        cores = [next(k for k in c.CORE if k.key == "followers")]
+        today = dt.date(2026, 9, 24)
+        result = {"values": {"followers": 13}, "curs": {}}
+        led = {"reached": {"followers": {"1.0": "2026-09-24"}}}  # Bronze recorded when Bronze was 10; now it is 25
+        self.assertEqual(ledger.reached_on(led, result, cores, [], today)["tiers"], [])
+        result["values"]["followers"] = 30
+        self.assertEqual(ledger.reached_on(led, result, cores, [], today)["tiers"], [("Bronze", "Followers")])
+        led["reached"]["followers"]["1.0"] = "2026-09-20"
+        self.assertEqual(ledger.reached_on(led, result, cores, [], today)["tiers"], [])
+
+
 class Plan(unittest.TestCase):
     def test_owner_only_pins_appear_only_for_the_owner(self):
         cfg = config.load(None)
