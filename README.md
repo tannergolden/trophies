@@ -53,18 +53,18 @@ workflow you would.
 <!-- trophies:start -->
 
 <p align="center">
-  <img src="assets/trophies/level.svg#gh-dark-mode-only" alt="tannergolden/trophies: level 13, 2,966 XP, case 21% complete, no release yet"><img src="assets/trophies/level-day.svg#gh-light-mode-only" alt="tannergolden/trophies: level 13, 2,966 XP, case 21% complete, no release yet">
-  <img src="assets/trophies/next-up.svg#gh-dark-mode-only" alt="Next up: Contributors to Bronze 50%, Label Maker 48%, Green Machine I 39%"><img src="assets/trophies/next-up-day.svg#gh-light-mode-only" alt="Next up: Contributors to Bronze 50%, Label Maker 48%, Green Machine I 39%">
+  <img src="assets/trophies/level.svg#gh-dark-mode-only" alt="tannergolden/trophies: level 13, 2,978 XP, case 21% complete, no release yet"><img src="assets/trophies/level-day.svg#gh-light-mode-only" alt="tannergolden/trophies: level 13, 2,978 XP, case 21% complete, no release yet">
+  <img src="assets/trophies/next-up.svg#gh-dark-mode-only" alt="Next up: Contributors to Bronze 50%, Green Machine I 49%, Label Maker 48%"><img src="assets/trophies/next-up-day.svg#gh-light-mode-only" alt="Next up: Contributors to Bronze 50%, Green Machine I 49%, Label Maker 48%">
 </p>
 
 <p align="center">
   <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#stars"><img src="assets/trophies/stars.svg#gh-dark-mode-only" alt="Stars trophy: Unranked, 0, 0% to Bronze"><img src="assets/trophies/stars-day.svg#gh-light-mode-only" alt="Stars trophy: Unranked, 0, 0% to Bronze"></a>
   <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#forks"><img src="assets/trophies/forks.svg#gh-dark-mode-only" alt="Forks trophy: Unranked, 0, 0% to Bronze"><img src="assets/trophies/forks-day.svg#gh-light-mode-only" alt="Forks trophy: Unranked, 0, 0% to Bronze"></a>
   <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#contributors"><img src="assets/trophies/contributors.svg#gh-dark-mode-only" alt="Contributors trophy: Unranked, 1, 50% to Bronze"><img src="assets/trophies/contributors-day.svg#gh-light-mode-only" alt="Contributors trophy: Unranked, 1, 50% to Bronze"></a>
-  <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#commits"><img src="assets/trophies/commits.svg#gh-dark-mode-only" alt="Commits trophy: Unranked, 13, 13% to Bronze"><img src="assets/trophies/commits-day.svg#gh-light-mode-only" alt="Commits trophy: Unranked, 13, 13% to Bronze"></a>
+  <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#commits"><img src="assets/trophies/commits.svg#gh-dark-mode-only" alt="Commits trophy: Unranked, 15, 15% to Bronze"><img src="assets/trophies/commits-day.svg#gh-light-mode-only" alt="Commits trophy: Unranked, 15, 15% to Bronze"></a>
   <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#releases"><img src="assets/trophies/releases.svg#gh-dark-mode-only" alt="Releases trophy: Unranked, 0, 0% to Bronze"><img src="assets/trophies/releases-day.svg#gh-light-mode-only" alt="Releases trophy: Unranked, 0, 0% to Bronze"></a>
   <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#merged"><img src="assets/trophies/merged.svg#gh-dark-mode-only" alt="Merged PRs trophy: Unranked, 0, 0% to Bronze"><img src="assets/trophies/merged-day.svg#gh-light-mode-only" alt="Merged PRs trophy: Unranked, 0, 0% to Bronze"></a>
-  <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#resolved"><img src="assets/trophies/resolved.svg#gh-dark-mode-only" alt="Issues Resolved trophy: Unranked, 0, 0% to Bronze"><img src="assets/trophies/resolved-day.svg#gh-light-mode-only" alt="Issues Resolved trophy: Unranked, 0, 0% to Bronze"></a>
+  <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#resolved"><img src="assets/trophies/resolved.svg#gh-dark-mode-only" alt="Issues Resolved trophy: Unranked, 1, 10% to Bronze"><img src="assets/trophies/resolved-day.svg#gh-light-mode-only" alt="Issues Resolved trophy: Unranked, 1, 10% to Bronze"></a>
   <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#active"><img src="assets/trophies/active.svg#gh-dark-mode-only" alt="Active Days trophy: Unranked, 1 days, 3% to Bronze"><img src="assets/trophies/active-day.svg#gh-light-mode-only" alt="Active Days trophy: Unranked, 1 days, 3% to Bronze"></a>
 </p>
 
@@ -117,8 +117,8 @@ workflow you would.
   <img src="assets/trophies/achievements/ready-room.svg#gh-dark-mode-only" alt="Ready Room: earned, Uncommon"><img src="assets/trophies/achievements/ready-room-day.svg#gh-light-mode-only" alt="Ready Room: earned, Uncommon">
   <img src="assets/trophies/achievements/test-suite.svg#gh-dark-mode-only" alt="Test Suite: earned, Uncommon"><img src="assets/trophies/achievements/test-suite-day.svg#gh-light-mode-only" alt="Test Suite: earned, Uncommon">
   <img src="assets/trophies/achievements/wired.svg#gh-dark-mode-only" alt="Wired: earned, Common"><img src="assets/trophies/achievements/wired-day.svg#gh-light-mode-only" alt="Wired: earned, Common">
-  <img src="assets/trophies/achievements/green-machine.svg#gh-dark-mode-only" alt="Green Machine: 39% (39 of 100)"><img src="assets/trophies/achievements/green-machine-day.svg#gh-light-mode-only" alt="Green Machine: 39% (39 of 100)">
-  <img src="assets/trophies/achievements/by-the-book.svg#gh-dark-mode-only" alt="By the Book: 13% (13 of 100)"><img src="assets/trophies/achievements/by-the-book-day.svg#gh-light-mode-only" alt="By the Book: 13% (13 of 100)">
+  <img src="assets/trophies/achievements/green-machine.svg#gh-dark-mode-only" alt="Green Machine: 49% (49 of 100)"><img src="assets/trophies/achievements/green-machine-day.svg#gh-light-mode-only" alt="Green Machine: 49% (49 of 100)">
+  <img src="assets/trophies/achievements/by-the-book.svg#gh-dark-mode-only" alt="By the Book: 15% (15 of 100)"><img src="assets/trophies/achievements/by-the-book-day.svg#gh-light-mode-only" alt="By the Book: 15% (15 of 100)">
   <img src="assets/trophies/achievements/signed.svg#gh-dark-mode-only" alt="Signed: 12% (12 of 100)"><img src="assets/trophies/achievements/signed-day.svg#gh-light-mode-only" alt="Signed: 12% (12 of 100)">
   <img src="assets/trophies/achievements/containerized.svg#gh-dark-mode-only" alt="Containerized: 0% (0 of 1)"><img src="assets/trophies/achievements/containerized-day.svg#gh-light-mode-only" alt="Containerized: 0% (0 of 1)">
   <img src="assets/trophies/achievements/gitmoji.svg#gh-dark-mode-only" alt="Gitmoji: 0% (0 of 100)"><img src="assets/trophies/achievements/gitmoji-day.svg#gh-light-mode-only" alt="Gitmoji: 0% (0 of 100)">
@@ -135,8 +135,8 @@ workflow you would.
   <img src="assets/trophies/achievements/crew.svg#gh-dark-mode-only" alt="Crew: 20% (1 of 5)"><img src="assets/trophies/achievements/crew-day.svg#gh-light-mode-only" alt="Crew: 20% (1 of 5)">
   <img src="assets/trophies/achievements/regulars.svg#gh-dark-mode-only" alt="Regulars: 20% (1 of 5)"><img src="assets/trophies/achievements/regulars-day.svg#gh-light-mode-only" alt="Regulars: 20% (1 of 5)">
   <img src="assets/trophies/achievements/ten-strong.svg#gh-dark-mode-only" alt="Ten Strong: 10% (1 of 10)"><img src="assets/trophies/achievements/ten-strong-day.svg#gh-light-mode-only" alt="Ten Strong: 10% (1 of 10)">
-  <img src="assets/trophies/achievements/long-thread.svg#gh-dark-mode-only" alt="Long Thread: 3% (3 of 100)"><img src="assets/trophies/achievements/long-thread-day.svg#gh-light-mode-only" alt="Long Thread: 3% (3 of 100)">
-  <img src="assets/trophies/achievements/talkative.svg#gh-dark-mode-only" alt="Talkative: 0% (3 of 1,000)"><img src="assets/trophies/achievements/talkative-day.svg#gh-light-mode-only" alt="Talkative: 0% (3 of 1,000)">
+  <img src="assets/trophies/achievements/long-thread.svg#gh-dark-mode-only" alt="Long Thread: 4% (4 of 100)"><img src="assets/trophies/achievements/long-thread-day.svg#gh-light-mode-only" alt="Long Thread: 4% (4 of 100)">
+  <img src="assets/trophies/achievements/talkative.svg#gh-dark-mode-only" alt="Talkative: 0% (4 of 1,000)"><img src="assets/trophies/achievements/talkative-day.svg#gh-light-mode-only" alt="Talkative: 0% (4 of 1,000)">
   <img src="assets/trophies/achievements/answered.svg#gh-dark-mode-only" alt="Answered: 0% (0 of 10)"><img src="assets/trophies/achievements/answered-day.svg#gh-light-mode-only" alt="Answered: 0% (0 of 10)">
   <img src="assets/trophies/achievements/fast-reply.svg#gh-dark-mode-only" alt="Fast Reply: 0% (0 of 1)"><img src="assets/trophies/achievements/fast-reply-day.svg#gh-light-mode-only" alt="Fast Reply: 0% (0 of 1)">
   <img src="assets/trophies/achievements/good-first-issues.svg#gh-dark-mode-only" alt="Good First Issues: 0% (0 of 5)"><img src="assets/trophies/achievements/good-first-issues-day.svg#gh-light-mode-only" alt="Good First Issues: 0% (0 of 5)">
@@ -171,6 +171,7 @@ workflow you would.
 <p align="center">
   <img src="assets/trophies/achievements/alive.svg#gh-dark-mode-only" alt="Alive: earned, Common"><img src="assets/trophies/achievements/alive-day.svg#gh-light-mode-only" alt="Alive: earned, Common">
   <img src="assets/trophies/achievements/long-game.svg#gh-dark-mode-only" alt="Long Game: 33% (1 of 3)"><img src="assets/trophies/achievements/long-game-day.svg#gh-light-mode-only" alt="Long Game: 33% (1 of 3)">
+  <img src="assets/trophies/achievements/same-day-fix.svg#gh-dark-mode-only" alt="Same-Day Fix: 10% (1 of 10)"><img src="assets/trophies/achievements/same-day-fix-day.svg#gh-light-mode-only" alt="Same-Day Fix: 10% (1 of 10)">
   <img src="assets/trophies/achievements/streak.svg#gh-dark-mode-only" alt="Streak: 3% (1 of 30)"><img src="assets/trophies/achievements/streak-day.svg#gh-light-mode-only" alt="Streak: 3% (1 of 30)">
   <img src="assets/trophies/achievements/marathon-day.svg#gh-dark-mode-only" alt="Marathon Day: 2% (1 of 50)"><img src="assets/trophies/achievements/marathon-day-day.svg#gh-light-mode-only" alt="Marathon Day: 2% (1 of 50)">
   <img src="assets/trophies/achievements/night-shift.svg#gh-dark-mode-only" alt="Night Shift: 2% (1 of 50)"><img src="assets/trophies/achievements/night-shift-day.svg#gh-light-mode-only" alt="Night Shift: 2% (1 of 50)">
@@ -179,7 +180,6 @@ workflow you would.
   <img src="assets/trophies/achievements/comeback.svg#gh-dark-mode-only" alt="Comeback: 0% (0 of 1)"><img src="assets/trophies/achievements/comeback-day.svg#gh-light-mode-only" alt="Comeback: 0% (0 of 1)">
   <img src="assets/trophies/achievements/friday-deploy.svg#gh-dark-mode-only" alt="Friday Deploy: 0% (0 of 1)"><img src="assets/trophies/achievements/friday-deploy-day.svg#gh-light-mode-only" alt="Friday Deploy: 0% (0 of 1)">
   <img src="assets/trophies/achievements/monthly-release.svg#gh-dark-mode-only" alt="Monthly Release: 0% (0 of 12)"><img src="assets/trophies/achievements/monthly-release-day.svg#gh-light-mode-only" alt="Monthly Release: 0% (0 of 12)">
-  <img src="assets/trophies/achievements/same-day-fix.svg#gh-dark-mode-only" alt="Same-Day Fix: 0% (0 of 10)"><img src="assets/trophies/achievements/same-day-fix-day.svg#gh-light-mode-only" alt="Same-Day Fix: 0% (0 of 10)">
   <img src="assets/trophies/achievements/weekend-project.svg#gh-dark-mode-only" alt="Weekend Project: 0% (0 of 26)"><img src="assets/trophies/achievements/weekend-project-day.svg#gh-light-mode-only" alt="Weekend Project: 0% (0 of 26)">
 </p>
 
