@@ -33,9 +33,11 @@ The kit is one Python package with no dependencies, driven by one command:
 | Module              | Job                                                                        |
 | :------------------ | :------------------------------------------------------------------------- |
 | `catalogue.py`      | Every trophy and achievement as data, plus the tier arithmetic.            |
-| `measure_profile.py`, `measure_repo.py`, `scan.py`, `calendar.py` | Measurement: GraphQL, REST, the commit scanner, date maths. |
+| `calibration.py`    | Where every threshold and rarity sits against real GitHub data.            |
+| `github.py`, `measure_profile.py`, `measure_repo.py`, `scan.py`, `calendar.py` | Measurement: the API client, both modes, the commit scanner, date maths. |
 | `art.py`, `styles.py`, `text.py` | Drawing: five card styles, the pin, the level and next-up cards, outlined lettering. |
 | `render.py`, `readme.py`, `ledger.py`, `config.py` | The plan of files, the README block, the ledger, the config. |
+| `catalogue_md.py`   | The catalogue page, generated from the data and the calibration.           |
 | `trophy-kit.py`     | The command line the action runs.                                          |
 
 ---
@@ -84,8 +86,8 @@ before counting, so every other subject's total is exactly one hundred.
 ### The level card
 
 XP is the sum over trophies of a tier schedule (0, 100, 300, 700, 1,500,
-3,100, then 400 per star) and over achievements of a rarity schedule (50,
-100, 200, 400, 800 per tier earned). Level `L` needs `15·L·(L+1)` XP. The
+3,100, then 400 per star and the fraction toward the next) and over
+achievements of a rarity schedule (50, 100, 200, 400, 800 per tier earned). Level `L` needs `15·L·(L+1)` XP. The
 card also shows **case completion**, the mean of each trophy's tier fraction
 and each achievement's earned state, and a footer line: the current streak in
 profile mode, days since the last release in repository mode.
@@ -146,6 +148,38 @@ weekly change, and whether it was newly reached.
 
 ---
 
+## 📐 Calibration
+
+A tier name and a rarity are claims about how many reach a number, so every
+threshold and every rarity is pinned to a share of a reference population in
+`src/trophykit/calibration.py`, and every share says how it was got.
+
+- **Profile mode** is measured against located GitHub accounts: 122,914
+  accounts with a location set, collected by `gayanvoice/top-github-users`
+  across 138 countries and refreshed on 2026-09-24, each with its followers
+  and a year of public and private contributions. Followers are read off the
+  data directly; all-time commits are derived from yearly activity; the rest
+  is estimated from the population's shape and the medians
+  `github-readme-stats` uses for its ranks.
+- **Repository mode** is measured against public repositories someone other
+  than the owner has starred, about 38 million of GitHub's 428 million public
+  repositories, anchored on the Innovation Graph, the published tallies over
+  100 and 1,000 stars, the 2016 thousand-stars census and one fork per seven
+  stars.
+- **Rarity follows the share.** Common is 40% or more, Uncommon 15% to 40%,
+  Rare 4% to 15%, Epic 1% to 4%, Legendary under 1%. The tier ladder aims at
+  the same cuts everywhere: Bronze about the top half, Silver the top quarter
+  to third, Gold the top tenth, Platinum the top 3%, Diamond the top 1%.
+- **The Top N% chip** interpolates between a trophy's anchors on log-log
+  axes and continues the last slope past Diamond, floored at 0.001%.
+
+Each figure is labelled *measured*, *derived* or *estimated* in the
+catalogue's "How The Numbers Were Set" section. A test holds every rarity to
+its share and every anchor to its threshold, so the words cannot drift from
+the numbers.
+
+---
+
 ## 📏 Measurement
 
 Everything is recomputed on every run. The ledger adds dates and history;
@@ -153,10 +187,11 @@ deleting it loses those and nothing else.
 
 ### Profile mode
 
-One query for the account, one per year of history for the contribution
-calendar (GitHub answers at most a year at a time), pages of repositories the
-account owns, one query of ten searches, and the commit scanner. Counting
-rules:
+One query for the account, one each for the fields an Actions token may
+refuse, one per year of history for the contribution calendar (GitHub answers
+at most a year at a time), pages of repositories the account owns, one query
+of ten searches, one REST call per recently pushed repository for workflow
+runs, and the commit scanner. Counting rules:
 
 - Repositories are the account's own, not forks. Private ones count only with
   `private: true` and a token that can see them.
@@ -184,13 +219,24 @@ fully read within about a week of daily runs. Timestamps use `author.date`,
 which keeps the author's offset, so "between midnight and 5 a.m." means the
 author's midnight.
 
+### The queries
+
+Every GraphQL document the kit sends is checked before GitHub ever sees it:
+`tests/gql_check.py` confirms the braces balance and every variable is
+declared, and, when `GITHUB_GRAPHQL_SCHEMA` points at the schema published in
+the `@octokit/graphql-schema` package, that every field and argument exists
+on its parent type. It runs in `make check` and as a unit test. Fields an
+Actions token may not read (gists, projects, organizations, sponsorships) are
+asked for one query each and answer "not measured yet" when refused, rather
+than taking the run down, and a refused user fails with GitHub's own message
+naming the field.
+
 ### Budget
 
-A typical profile run makes about 15 GraphQL queries plus the scanner's pages
-plus one REST call per recently pushed repository for workflow runs, a few
-percent of `GITHUB_TOKEN`'s hourly allowance. Partial GraphQL errors (a field
-the token cannot see) keep the data that came back and are reported in the
-run notes.
+A typical profile run makes a few dozen API calls plus the scanner's pages,
+a few percent of `GITHUB_TOKEN`'s hourly allowance. Partial GraphQL errors (a
+field the token cannot see) keep the data that came back and are written to
+the run log as warnings naming the field.
 
 ---
 
@@ -239,7 +285,7 @@ is closest.
 ## 🧭 The Command Line
 
 ```bash
-python3 src/trophy-kit.py run      --root . [--mode …] [--subject …] [--save m.json]
+python3 src/trophy-kit.py run      --root . [--mode …] [--subject …] [--save m.json] [--commit-file msg.txt]
 python3 src/trophy-kit.py measure  --mode … --subject … > m.json
 python3 src/trophy-kit.py render   --root . --from m.json
 python3 src/trophy-kit.py check    --root . --from m.json
@@ -248,9 +294,12 @@ python3 src/trophy-kit.py catalogue > docs/Catalogue.md
 python3 src/trophy-kit.py self-test
 ```
 
-`--today YYYY-MM-DD` fixes the date for reproducible runs. The action calls
-`run`; `preview` renders the built-in sample with no network and is what the
-tests and `make preview` use.
+Every subcommand that touches a repository takes `--root`, `--config`,
+`--mode`, `--subject`, `--style`, `--case`, `--out` and `--today YYYY-MM-DD`,
+which fixes the date for reproducible runs. The action calls `run` with
+`--commit-file`, which writes the Conventional Commit message for the run
+when something changed; `preview` renders the built-in sample with no network
+and is what the tests and `make preview` use.
 
 ---
 
@@ -271,6 +320,31 @@ What a consumer pinned to `v1` can rely on:
 5. A kit release never breaks a scheduled run: a version stamp difference is
    tolerated and regenerated, and the self-test guards the golden render.
 6. Everyone's public total is exactly one hundred achievements per mode.
+7. Every tier and rarity is pinned to a stated share of a reference
+   population, and a change to a threshold is a change to that table.
+
+---
+
+## 🏷️ Releases
+
+Two tags, two contracts. `vX.Y.Z` is immutable: cut once, never moved, for
+anyone who wants exactness. `v1` is moving: re-pointed at each release in the
+line, the pin every stub uses and the reason a fix reaches every case without
+anyone editing a workflow. The reusable workflow fetches the kit at the same
+ref it was called at (`kit-ref`, `v1` by default), so a stub at `@v1` runs the
+released kit; this repository's own case passes its commit, so a change is
+exercised by the tree that carries it before it is released.
+
+A version is cut by dispatching **🏷️ Cut Release** with `vX.Y.Z`. That stub
+calls `tannergolden/standards/.github/workflows/release.yml@v1`, called and
+never copied: it refuses a commit that is not on the default branch and a
+version that does not move forward, proves the files a consumer resolves at
+the tag exist and that `make check` passes, tags the version, force-moves the
+major, publishes the release with generated notes, and prunes the pages the
+release superseded. Tags are lightweight and never deleted. A change that
+alters what a card looks like for unchanged input bumps `KIT_VERSION`, so
+every case redraws on its next run; a change that removes an input, a mode, a
+style or a slug is breaking and belongs in a new major line.
 
 ---
 

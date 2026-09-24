@@ -1,6 +1,7 @@
 # A starter .github/trophies.yml. Every key is optional; delete what you
 # do not need. These are the defaults.
 mode: profile # profile | repository
+subject: '' # a login (profile) or owner/name (repository); empty means this repository's owner, or this repository
 style: trophy # trophy | crest | medallion | crystal | plaque
 case: both # night | day | both: Night for GitHub's dark theme, Day for light
 theme: picture # picture uses one <picture> per card (follows the system theme); fragment uses #gh-dark-mode-only links, which GitHub no longer honours
@@ -12,5 +13,7 @@ achievements: all # all | none | [polyglot, night-owl, ...]
 card: [rank, weekly, new] # the Top % chip, the weekly change, the NEW ribbon and burst
 ledger: true # keep .github/trophies.lock.json: first-reached dates, daily history, the scanner cache
 readme: manage # write the block between <!-- trophies:start --> and <!-- trophies:end -->
+readme_path: README.md # the file that holds the markers
+out: assets/trophies # where the SVGs are written
 private: false # count private contributions too; needs a read-only personal token as TROPHIES_TOKEN
 scan_pages: 30 # commits read per run for the heavy achievements, in pages of 100

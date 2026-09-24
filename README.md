@@ -54,6 +54,8 @@ so a fix lands once and reaches every case pinned to `v1`.
 | `action.yml`             | **The action.** Runs the kit against the calling repository.              |
 | `.github/workflows/trophies.yml` | **The workflow.** Checkout, kit, commit, push. What your stub calls.      |
 | `src/trophykit/catalogue.py` | **The catalogue.** Every trophy and achievement, as data.               |
+| `src/trophykit/calibration.py` | **The calibration.** Where every tier and rarity sits against real GitHub data. |
+| `.github/workflows/cut-release.yml` | **The release.** Cuts `vX.Y.Z` and moves `v1`, by calling the standards.  |
 
 ---
 
@@ -302,6 +304,7 @@ in your repository can set:
 | Key            | Default                | Meaning                                                                                        |
 | :------------- | :--------------------- | :--------------------------------------------------------------------------------------------- |
 | `mode`         | `profile`              | `profile` or `repository`.                                                                     |
+| `subject`      | this repository        | A login in profile mode, `owner/name` in repository mode. Empty means the repository's owner, or the repository. |
 | `style`        | `trophy`               | `trophy`, `crest`, `medallion`, `crystal` or `plaque`.                                         |
 | `case`         | `both`                 | `night`, `day` or `both`.                                                                      |
 | `theme`        | `picture`              | `picture` uses one `<picture>` per card (follows the system theme); `fragment` uses `#gh-*-mode-only` links, which GitHub no longer honours. |
@@ -313,18 +316,22 @@ in your repository can set:
 | `card`         | `[rank, weekly, new]`  | The Top % chip, the weekly change, the NEW ribbon.                                             |
 | `ledger`       | `true`                 | Keep `.github/trophies.lock.json`.                                                             |
 | `readme`       | `manage`               | Manage the block between the markers, or `none`.                                               |
+| `readme_path`  | `README.md`            | The file that holds the markers.                                                               |
+| `out`          | `assets/trophies`      | Where the SVGs are written.                                                                    |
 | `private`      | `false`                | Count private contributions too. Needs a read-only personal token saved as `TROPHIES_TOKEN`.   |
 | `scan_pages`   | `30`                   | Commits read per run for the heavy achievements, in pages of 100.                              |
 
-The workflow also takes `mode`, `subject`, `style`, `commit` (`push` or `pr`)
-and `commit-branch` as inputs, for the common cases without a config file.
+The workflow also takes `mode`, `subject`, `style`, `commit` (`push` or `pr`),
+`commit-branch`, `kit-ref` (the trophies ref to run, `v1` by default) and
+`author` (who the refresh commit is by) as inputs, for the common cases
+without a config file.
 
 ---
 
 ## 🎯 What Gets Measured
 
-Every trophy counts something that only grows. Tier thresholds rise about
-five times per step, and past Diamond a trophy earns a **star** each time the
+Every trophy counts something that only grows. Tier thresholds rise by three
+to five times a step, and past Diamond a trophy earns a **star** each time the
 Diamond number doubles, up to five. Counting is honest by design: the profile
 repository's own commits, bot commits, the kit's own refresh commits, forks
 and stars you gave your own repositories are all left out.
@@ -366,14 +373,16 @@ than daily, and GitHub may delay a scheduled run when it is busy, which
 costs nothing here.
 
 **Every run recomputes everything from GitHub.** Nothing depends on the last
-run, so a delayed or skipped one loses nothing. A run costs about fifteen
-GraphQL queries plus the commit scanner's budget, a few percent of the hourly
-limit for `GITHUB_TOKEN`.
+run, so a delayed or skipped one loses nothing. A profile run costs a few
+dozen API calls (one per year of history, one per page of repositories, one
+per recently pushed repository for workflow runs) plus the commit scanner's
+budget, a few percent of the hourly limit for `GITHUB_TOKEN`.
 
-**Every commit is a Conventional Commit, and no two read alike.** The bot
-commits as `chore(trophies): 🏆 …` with a subject naming the most notable
-thing that happened (a tier reached, an achievement earned, or which values
-moved) and a body carrying the measured values, the date and the run, per the
+**Every commit is a Conventional Commit, and no two read alike.** Each
+refresh is a `chore(trophies): 🏆 …` commit, authored by the kit's author and
+committed by the bot, with a subject naming the most notable thing that
+happened (a tier reached, an achievement earned, or which values moved) and a
+body carrying the measured values, the date and the run, per the
 [commit standard](https://github.com/tannergolden/standards/blob/Development/docs/distribution/Conventional-Commits.md).
 
 **No date lives in an image.** A file only changes when its number does, so a
@@ -390,20 +399,30 @@ schedule off after sixty quiet days.
 
 ```bash
 trophies/
-├── action.yml                      the composite action
-├── .github/workflows/trophies.yml  the reusable workflow your stub calls
-├── .github/workflows/case.yml      this repository's own case, by local path
-├── .github/trophies.yml            this repository's own config
+├── action.yml                        the composite action
+├── .github/workflows/trophies.yml    the reusable workflow your stub calls
+├── .github/workflows/case.yml        this repository's own case, at its own commit
+├── .github/workflows/cut-release.yml cuts a version and moves v1, via the standards
+├── .github/trophies.yml              this repository's own config
+├── .github/trophies.lock.json        this repository's ledger
 ├── src/
-│   ├── trophy-kit.py               the command line
-│   ├── trophykit/                  catalogue, art, styles, measurement, ledger, README
-│   └── fonts/                      glyph outlines and their OFL licences
-├── assets/trophies/                this repository's committed case
-├── examples/                       stubs and a starter config to copy
-├── tests/                          the unit tests
+│   ├── trophy-kit.py                 the command line
+│   ├── trophykit/
+│   │   ├── catalogue.py              every trophy and achievement, as data
+│   │   ├── calibration.py            where every number sits against real data
+│   │   ├── art.py, styles.py         the renderer and the five styles
+│   │   ├── measure_profile.py        profile mode, over GitHub's API
+│   │   ├── measure_repo.py           repository mode
+│   │   ├── scan.py                   the commit scanner behind the heavy achievements
+│   │   ├── ledger.py, readme.py      what persists between runs, and the README block
+│   │   └── render.py                 plan, write, check, and the commit message
+│   └── fonts/                        glyph outlines and their OFL licences
+├── assets/trophies/                  this repository's committed case
+├── examples/                         stubs and a starter config to copy
+├── tests/                            the unit tests, and the GraphQL document check
 └── docs/
-    ├── Trophy-Kit.md               the full specification
-    └── Catalogue.md                every trophy and achievement, generated
+    ├── Trophy-Kit.md                 the full specification
+    └── Catalogue.md                  every trophy and achievement, generated, with the calibration
 ```
 
 ---
@@ -418,9 +437,15 @@ make help                # list every target
 make preview             # render the sample profile case into preview/ (no network)
 make preview-repository  # the sample repository case
 make catalogue           # regenerate docs/Catalogue.md from the data
-make check               # CI gate: self-test, catalogue current, sample renders clean
+make check               # CI gate: self-test, every GraphQL document well formed, catalogue current, sample renders clean
 make test                # the gate plus the unit tests
 ```
+
+The GraphQL check also validates every field and argument against GitHub's
+schema when `GITHUB_GRAPHQL_SCHEMA` points at the `schema.json` from the
+`@octokit/graphql-schema` npm package; without it, the structural checks run.
+The API is otherwise the only thing that ever parses the queries, one run at
+a time, so this is how a typo in a field name is caught before a case is.
 
 Rendering is deterministic and **prunes**: an SVG nothing names anymore is
 deleted, so the output folder always mirrors the catalogue. Every SVG carries
@@ -436,6 +461,19 @@ To measure a real account locally:
 GITHUB_TOKEN=... python3 src/trophy-kit.py measure --mode profile --subject octocat > m.json
 python3 src/trophy-kit.py render --root /tmp/case --from m.json
 ```
+
+### Releasing
+
+Every stub pins `@v1`, a moving major tag, and the reusable workflow fetches
+the kit at that same tag. A version is cut by dispatching **🏷️ Cut Release**
+with `vX.Y.Z`: the stub calls the standards' release workflow, which refuses a
+commit that is not on the default branch or a version that does not move
+forward, proves the workflow, the action, the kit and the catalogue exist at
+the commit and that `make check` passes, then tags the immutable version,
+force-moves `v1`, publishes the release with generated notes and prunes the
+pages it superseded. Version tags are never deleted, so a full-version pin
+keeps resolving. A release that changes what a card looks like bumps
+`KIT_VERSION`, and every case redraws its cards on its next run.
 
 Full specification: [`docs/Trophy-Kit.md`](docs/Trophy-Kit.md).
 
