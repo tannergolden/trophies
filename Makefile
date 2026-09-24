@@ -38,9 +38,19 @@ preview-crest:
 catalogue:
 	@$(KIT) catalogue > docs/Catalogue.md
 
-## check: CI gate - self-test, the catalogue page is current, the sample renders and re-checks clean
+## calibrate: measure the repository population through the API (needs GITHUB_TOKEN), then regenerate what reads it
+calibrate:
+	@$(PYTHON) src/calibrate.py --out data/calibration/repositories.json
+	@$(MAKE) calibrated
+
+## calibrated: regenerate the catalogue and redraw this repository's case from the calibration on disk
+calibrated: catalogue
+	@if $(PYTHON) -c "import json,sys; sys.exit(0 if json.load(open('.github/trophies.lock.json')).get('last') else 1)" 2>/dev/null; then $(KIT) render --root . ; fi
+
+## check: CI gate - self-test, queries well formed, catalogue current, the sample and this repository's own case re-check clean
 check: self-test
 	@$(PYTHON) tests/gql_check.py
+	@if $(PYTHON) -c "import json,sys; sys.exit(0 if json.load(open('.github/trophies.lock.json')).get('last') else 1)" 2>/dev/null; then $(KIT) check --root . ; fi
 	@$(KIT) catalogue | diff -q - docs/Catalogue.md >/dev/null || (echo "docs/Catalogue.md is stale: run make catalogue" && exit 1)
 	@rm -rf preview/check && mkdir -p preview/check
 	@$(KIT) preview --root preview/check --mode profile --today 2026-09-24 >/dev/null

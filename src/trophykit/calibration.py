@@ -60,7 +60,11 @@ the gap.
 """
 from __future__ import annotations
 
+import json
 import math
+from pathlib import Path
+
+REPOSITORY_SAMPLE_PATH = Path(__file__).resolve().parents[2] / "data" / "calibration" / "repositories.json"
 
 DATASETS = {
     "located-accounts": "gayanvoice/top-github-users cache, 138 countries, 122,914 accounts, 2026-09-24",
@@ -155,6 +159,33 @@ SHARE = {
 }
 
 BASIS_NAMES = {"m": "measured", "d": "derived", "e": "estimated"}
+
+
+def load_repository_sample(path: Path = REPOSITORY_SAMPLE_PATH) -> dict | None:
+    """Replace the repository-mode estimates with what `src/calibrate.py` measured.
+
+    The sample file carries, per core key, the share at or above each of
+    that trophy's steps. A key it does not carry (active days cannot be
+    counted from the API) keeps its estimate. Applied at import so every
+    card, the catalogue page and the tests read the same table."""
+    if not path.exists():
+        return None
+    data = json.loads(path.read_text(encoding="utf-8"))
+    for key, spec in data.get("cores", {}).items():
+        current = CORE_PCT.get(("repository", key))
+        if not current:
+            continue
+        steps = tuple(t for t, _ in current[0])
+        anchors = tuple((int(t), float(p)) for t, p in spec["anchors"])
+        if tuple(t for t, _ in anchors) != steps:
+            continue  # the sample predates a threshold change; the estimate stands until it reruns
+        note = (f"{data['n']} repositories in {len(data['bands'])} star bands, weighted by band, {data['date']}"
+                if key not in ("stars", "forks") else f"every starred public repository counted by the search API, {data['date']}")
+        CORE_PCT[("repository", key)] = (anchors, "m", note)
+    return data
+
+
+REPOSITORY_SAMPLE = load_repository_sample()
 
 
 def shares(mode: str, slug: str) -> tuple:

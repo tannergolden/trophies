@@ -71,6 +71,16 @@ class Ledger(unittest.TestCase):
         f = ledger.update(led, result, c.CORE, c.ACH, d0 + dt.timedelta(days=8))
         self.assertEqual(f["delta"]["commits"], 50)
 
+    def test_remember_keeps_what_check_needs(self):
+        result = json.loads(json.dumps(sample.PROFILE))
+        result["scan"] = {"huge": "cache"}
+        led = {}
+        ledger.remember(led, result)
+        self.assertEqual(set(ledger.last(led)) <= set(ledger.LAST_KEYS), True)
+        self.assertNotIn("scan", ledger.last(led))
+        self.assertEqual(ledger.last(led)["values"], result["values"])
+        self.assertIsNone(ledger.last({}))
+
     def test_save_only_when_changed(self):
         with tempfile.TemporaryDirectory() as tmp:
             p = Path(tmp) / "l.json"
@@ -162,6 +172,33 @@ class Plan(unittest.TestCase):
             self.assertEqual(render.check(root, planned), ["assets/trophies/commits.svg"])
             (root / "assets/trophies/commits.svg").write_text("<!--trophy-kit v0 night--><svg/>")
             self.assertEqual(render.check(root, planned), [])  # another version: tolerated
+
+    def test_cli_check_reads_the_ledgers_last_measurement(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            out = subprocess.run(KIT + ["preview", "--root", tmp, "--mode", "repository", "--today", "2026-09-24"], capture_output=True, text=True)
+            self.assertEqual(out.returncode, 0, out.stderr)
+            lock = root / ".github" / "trophies.lock.json"
+            self.assertEqual(set(json.loads(lock.read_text())), {"version", "last"})  # a preview remembers, nothing more
+            lock.unlink()
+            chk = subprocess.run(KIT + ["check", "--root", tmp, "--mode", "repository"], capture_output=True, text=True)
+            self.assertEqual(chk.returncode, 2, chk.stdout)  # nothing remembered
+            led = {}
+            ledger.remember(led, json.loads(json.dumps(sample.SAMPLES["repository"])))
+            ledger.save(root / ".github" / "trophies.lock.json", led)
+            chk = subprocess.run(KIT + ["check", "--root", tmp, "--mode", "repository"], capture_output=True, text=True)
+            self.assertEqual(chk.returncode, 0, chk.stdout + chk.stderr)
+            self.assertIn("README block current", chk.stdout)
+            page = root / "README.md"
+            page.write_text(page.read_text().replace(readme.END, "hand edit\n" + readme.END))
+            chk = subprocess.run(KIT + ["check", "--root", tmp, "--mode", "repository"], capture_output=True, text=True)
+            self.assertEqual(chk.returncode, 1)
+            self.assertIn("README.md (block differs)", chk.stdout)
+            page.write_text("no markers")
+            chk = subprocess.run(KIT + ["check", "--root", tmp, "--mode", "repository"], capture_output=True, text=True)
+            self.assertIn("README.md (markers missing)", chk.stdout)
+            chk = subprocess.run(KIT + ["check", "--root", tmp, "--mode", "profile"], capture_output=True, text=True)
+            self.assertEqual(chk.returncode, 2, chk.stdout)  # another mode's memory is not this case's
 
     def test_cli_preview_and_check_round_trip(self):
         with tempfile.TemporaryDirectory() as tmp:

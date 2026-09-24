@@ -16,8 +16,10 @@ branding:
 inputs:
   mode:
     description: >-
-      run     - measure over the API, render, write the README block and the ledger (default)
-      preview - render the built-in sample measurement, no network
+      run measures, renders, writes and reports; preview renders the built-in
+      sample with no network; check redraws the committed case from the
+      measurement the ledger remembers and fails if any file or the README
+      block differs, with no token and no network.
     required: false
     default: 'run'
   case-mode:
@@ -83,8 +85,8 @@ runs:
       run: |
         set -euo pipefail
         case "$KIT_MODE" in
-          run|preview) ;;
-          *) echo "::error::unknown mode '$KIT_MODE' (run|preview)"; exit 1 ;;
+          run|preview|check) ;;
+          *) echo "::error::unknown mode '$KIT_MODE' (run|preview|check)"; exit 1 ;;
         esac
         PY="$(command -v python3 || command -v python || true)"
         if [ -z "$PY" ]; then echo "::error::no python3 or python on PATH"; exit 1; fi

@@ -1,0 +1,38 @@
+# Put this beside a repository case's own workflow, at
+# .github/workflows/trophies-check.yml, to gate pull requests on the case.
+#
+# check measures nothing and commits nothing. The kit redraws the committed
+# case from the measurement the ledger remembers and fails the job if any
+# card or the README block differs from what it draws: a hand-edited SVG, a
+# stale block, a missing file. No token is used and no permission is
+# needed, so it runs on a pull request from a fork.
+name: Trophies check
+
+on:
+  pull_request:
+    paths:
+      - 'assets/trophies/**'
+      - 'README.md'
+      - '.github/trophies.yml'
+      - '.github/trophies.lock.json'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  check:
+    name: Check the case
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: tannergolden/trophies@v1 # zizmor: ignore[unpinned-uses] - first-party action on its moving major, the way every stub calls it.
+        with:
+          mode: check
+          case-mode: repository

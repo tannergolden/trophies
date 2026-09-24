@@ -403,9 +403,11 @@ reference population, and each share says how it was got.
   tallies of repositories over 100 and over 1,000 stars and by the 2016
   thousand-stars census (7,699 repositories over 1,000 stars, 44% of them over
   2,000, 12% over 5,000, 4% over 10,000). Forks run about one per seven stars.
+  The **📐 Calibrate** workflow replaces this model with a measured sample once
+  it has run.
 
 **Three kinds of number.** *Measured* is read off a dataset directly (followers,
-yearly activity). *Derived* is a dataset scaled by a stated factor (all-time
+yearly activity, and every repository-mode core the sample carries). *Derived* is a dataset scaled by a stated factor (all-time
 commits as three times one year's contributions; 2.22 repositories per developer
 from the Innovation Graph). *Estimated* applies the population's shape to a count
 no dataset holds, using the anchors above and the medians

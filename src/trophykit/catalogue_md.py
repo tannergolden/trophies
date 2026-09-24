@@ -121,16 +121,10 @@ reference population, and each share says how it was got.
   located account is a person who filled in a profile, which is the population
   that puts a trophy case on one. The median has 36 followers and 18 public
   contributions a year; 26% made none.
-- **Repository mode: public repositories someone else has starred.** About 9% of
-  GitHub's 428 million public repositories (the
-  [Innovation Graph](https://github.com/github/innovationgraph), 2026 Q1), around
-  38 million. Star counts follow a near-Zipf tail, anchored by the published
-  tallies of repositories over 100 and over 1,000 stars and by the 2016
-  thousand-stars census (7,699 repositories over 1,000 stars, 44% of them over
-  2,000, 12% over 5,000, 4% over 10,000). Forks run about one per seven stars.
+{REPOSITORY_POPULATION}
 
 **Three kinds of number.** *Measured* is read off a dataset directly (followers,
-yearly activity). *Derived* is a dataset scaled by a stated factor (all-time
+yearly activity, and every repository-mode core the sample carries). *Derived* is a dataset scaled by a stated factor (all-time
 commits as three times one year's contributions; 2.22 repositories per developer
 from the Innovation Graph). *Estimated* applies the population's shape to a count
 no dataset holds, using the anchors above and the medians
@@ -150,6 +144,40 @@ so it can be argued with. When a better dataset turns up, the numbers move and
 the words follow, in `src/trophykit/calibration.py`.
 """
 
+REPOSITORY_ESTIMATED = """- **Repository mode: public repositories someone else has starred.** About 9% of
+  GitHub's 428 million public repositories (the
+  [Innovation Graph](https://github.com/github/innovationgraph), 2026 Q1), around
+  38 million. Star counts follow a near-Zipf tail, anchored by the published
+  tallies of repositories over 100 and over 1,000 stars and by the 2016
+  thousand-stars census (7,699 repositories over 1,000 stars, 44% of them over
+  2,000, 12% over 5,000, 4% over 10,000). Forks run about one per seven stars.
+  The **📐 Calibrate** workflow replaces this model with a measured sample once
+  it has run."""
+
+REPOSITORY_MEASURED = """- **Repository mode: public, non-fork repositories with at least one star,**
+  measured through GitHub's API on {date} by `src/calibrate.py` (the
+  **📐 Calibrate** workflow, quarterly). Stars and forks are counted exactly:
+  the search API answers how many of the {base:,} such repositories sit at or
+  above each threshold. The other cores come from {n} repositories sampled
+  across five star bands ({bands}), each measured the way a case measures it
+  (contributors, commits, releases, merged pull requests, resolved issues)
+  and weighted by its band's share of the population. Active days cannot be
+  read from the API and stay estimated."""
+
+
+def repository_population() -> str:
+    """The repository bullet: the measured sample when it exists, the model until then."""
+    sample = calibration.REPOSITORY_SAMPLE
+    if not sample:
+        return REPOSITORY_ESTIMATED
+    bands = ", ".join(f"{b['sampled']} at {_band_label(b['band'])}" for b in sample["bands"])
+    return REPOSITORY_MEASURED.format(date=sample["date"], base=sample["base"] or 0, n=sample["n"], bands=bands)
+
+
+def _band_label(band: str) -> str:
+    lo, hi = band.split("-")
+    return f"{int(lo):,}+ stars" if not hi else f"{int(lo):,}–{int(hi):,} stars"
+
 
 def page() -> str:
     parts = [HEAD]
@@ -166,7 +194,7 @@ def page() -> str:
         parts.append(_ach_table(mode, m["ach"], m["groups"]))
         parts.append("---\n")
     parts.append("## 📐 How The Numbers Were Set\n")
-    parts.append(CALIBRATION)
+    parts.append(CALIBRATION.replace("{REPOSITORY_POPULATION}", repository_population()))
     parts.append("## 🏅 Tiers and Rarities\n")
     parts.append("| Tier | " + " | ".join(TIER_NAMES) + " |\n| :-- | " + " | ".join(":--" for _ in TIER_NAMES) + " |\n"
                  "| Metal | ghost | bronze | silver | gold | platinum | diamond |\n")

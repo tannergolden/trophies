@@ -50,6 +50,15 @@ on:
           never counts them toward anyone's trophies, so the name is safe.
         type: string
         default: 'Tanner Golden <24684994+tannergolden@users.noreply.github.com>'
+      check:
+        description: >-
+          true only checks: the committed case is redrawn from the
+          measurement the ledger remembers and the run fails if any card or
+          the README block differs. Nothing is measured, written or
+          committed, and no token is used. For pull-request CI on a
+          repository case.
+        type: boolean
+        default: false
     secrets:
       TROPHIES_TOKEN:
         description: 'Optional read-only personal token: counts private contributions in profile mode.'
@@ -95,7 +104,7 @@ jobs:
       - id: kit
         uses: ./.trophies-kit
         with:
-          mode: run
+          mode: ${{ inputs.check && 'check' || 'run' }}
           case-mode: ${{ inputs.mode }}
           subject: ${{ inputs.subject }}
           style: ${{ inputs.style }}

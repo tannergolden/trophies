@@ -34,6 +34,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from trophykit import KIT_VERSION, art, catalogue, config, ledger as ledger_mod, render, sample, styles  # noqa: E402,F401
+from trophykit import readme as readme_mod  # noqa: E402
 from trophykit.readme import apply as apply_readme  # noqa: E402
 
 # sha256 of one canonical render. The self-test fails when output changes while
@@ -101,6 +102,7 @@ def finish(result: dict, cfg: dict, root: Path, led: dict, ledger_path: Path | N
         result.setdefault("delta", folded["delta"])
         result.setdefault("new", folded["new"])
         reached_today = ledger_mod.reached_on(led, result, cores, ach, today)
+        ledger_mod.remember(led, result)
     planned = render.plan(result, cfg, result.get("owners"))
     print(render.describe(planned, result))
     if not write:
@@ -147,29 +149,54 @@ def cmd_measure_only(args) -> int:
     return 0
 
 
-def _load_result(args, cfg: dict) -> dict:
+def _load_result(args, cfg: dict, root: Path, fallback: str):
+    """A measurement: the file named, else the ledger's last, else the sample or nothing."""
     if args.source:
         return json.loads(Path(args.source).read_text(encoding="utf-8"))
-    return json.loads(json.dumps(sample.SAMPLES[cfg["mode"]]))
+    ledger_path = root / ".github" / "trophies.lock.json"
+    if cfg["ledger"] and ledger_path.exists():
+        remembered = ledger_mod.last(ledger_mod.load(ledger_path))
+        if remembered and remembered.get("mode") == cfg["mode"]:
+            return json.loads(json.dumps(remembered))
+    if fallback == "sample":
+        return json.loads(json.dumps(sample.SAMPLES[cfg["mode"]]))
+    return None
 
 
 def cmd_render(args) -> int:
     root = Path(args.root)
     cfg = _cfg(args)
-    result = _load_result(args, cfg)
+    result = _load_result(args, cfg, root, "sample")
     return finish(result, cfg, root, None, None, _today(args), write=True)
 
 
 def cmd_check(args) -> int:
+    """Is the committed case what the kit draws from the measurement it was drawn from?
+
+    Reads the ledger's remembered measurement (or --from), replans, and
+    compares with the files on disk. No token, no network, and the numbers
+    cannot move underneath it: a stale result means a hand-edited card, a
+    missing file, a README block that drifted, or a kit whose version stamp
+    matches but whose output does not."""
     root = Path(args.root)
     cfg = _cfg(args)
-    result = _load_result(args, cfg)
+    result = _load_result(args, cfg, root, "none")
+    if result is None:
+        print("check needs a measurement: run the case once with the ledger on, or pass --from m.json")
+        return 2
     planned = render.plan(result, cfg, result.get("owners"))
     stale = render.check(root, planned)
+    if cfg["readme"] == "manage":
+        path = root / cfg["readme_path"]
+        text = path.read_text(encoding="utf-8") if path.exists() else ""
+        if readme_mod.START not in text or readme_mod.END not in text:
+            stale.append(f"{cfg['readme_path']} (markers missing)")
+        elif text[text.index(readme_mod.START):text.index(readme_mod.END) + len(readme_mod.END)] != planned["readme"]:
+            stale.append(f"{cfg['readme_path']} (block differs)")
     if stale:
         print("stale: " + ", ".join(stale))
         return 1
-    print(f"{len(planned['files'])} files current")
+    print(f"{len(planned['files'])} files and the README block current")
     return 0
 
 
@@ -182,7 +209,13 @@ def cmd_preview(args) -> int:
     result = json.loads(json.dumps(sample.SAMPLES[cfg["mode"]]))
     if args.owner:
         result["owners"] = {a.only: result["subject"].split("/")[0] for a in catalogue.ACH if a.only}
-    return finish(result, cfg, root, None, None, _today(args), write=True)
+    code = finish(result, cfg, root, None, None, _today(args), write=True)
+    # No dates or history for a sample, but the measurement it was drawn from
+    # is remembered, so a preview root checks the way a real case does.
+    led = {"version": 1}
+    ledger_mod.remember(led, result)
+    ledger_mod.save(root / ".github" / "trophies.lock.json", led)
+    return code
 
 
 def cmd_catalogue(args) -> int:

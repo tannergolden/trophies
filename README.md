@@ -47,14 +47,14 @@ metal, the lettering and the geometry are yours.
 
 It is one stub in your repository and one kit here:
 
-| Part                     | Job                                                                       |
-| :----------------------- | :------------------------------------------------------------------------ |
-| `.github/workflows/trophies.yml` | **The workflow.** Checkout, kit, commit, push. What your stub calls.      |
-| `action.yml`             | **The action.** Runs the kit against the calling repository.              |
-| `src/trophy-kit.py`      | **The kit.** Measures over GitHub's API and renders the SVGs. Stdlib only. |
-| `src/trophykit/catalogue.py` | **The catalogue.** Every trophy and achievement, as data.               |
-| `src/trophykit/calibration.py` | **The calibration.** Where every tier and rarity sits against real GitHub data. |
-| `.github/workflows/cut-release.yml` | **The release.** Cuts `vX.Y.Z` and moves `v1`, by calling the standards.  |
+| Part                                | Job                                                                             |
+| :---------------------------------- | :------------------------------------------------------------------------------ |
+| `.github/workflows/trophies.yml`    | **The workflow.** Checkout, kit, commit, push. What your stub calls.            |
+| `action.yml`                        | **The action.** Runs the kit against the calling repository.                    |
+| `src/trophy-kit.py`                 | **The kit.** Measures over GitHub's API and renders the SVGs. Stdlib only.      |
+| `src/trophykit/catalogue.py`        | **The catalogue.** Every trophy and achievement, as data.                       |
+| `src/trophykit/calibration.py`      | **The calibration.** Where every tier and rarity sits against real GitHub data. |
+| `.github/workflows/cut-release.yml` | **The release.** Cuts `vX.Y.Z` and moves `v1`, by calling the standards.        |
 
 **Called, never copied.** Your repository holds a stub that names the
 schedule. The measuring, drawing and committing happen here, so a fix lands
@@ -86,13 +86,13 @@ refresh that is delayed or skipped changes nothing you can see: yesterday's
 trophies stay on the page until the next one lands. That is not an uptime
 promise to take on trust; it is a property of a committed file.
 
-|                  | Hosted trophy service                   | Trophies drawn here                       |
-| :--------------- | :-------------------------------------- | :---------------------------------------- |
-| **A trophy is**  | An HTTP response, answered at view time | A file in your repository                 |
-| **Down when**    | Their service is                        | Never on its own, only with the page      |
-| **Slow when**    | Their service is busy                   | Never, it is a static file                |
-| **Rate limits**  | Yes, and not yours to raise             | None at view time; one scheduled run a day |
-| **Changes when** | Their side deploys                      | The nightly run commits                   |
+|                  | Hosted trophy service                   | Trophies drawn here                                         |
+| :--------------- | :-------------------------------------- | :---------------------------------------------------------- |
+| **A trophy is**  | An HTTP response, answered at view time | A file in your repository                                   |
+| **Down when**    | Their service is                        | Never on its own, only with the page                        |
+| **Slow when**    | Their service is busy                   | Never, it is a static file                                  |
+| **Rate limits**  | Yes, and not yours to raise             | None at view time; one scheduled run a day                  |
+| **Changes when** | Their side deploys                      | The nightly run commits                                     |
 | **The numbers**  | Thresholds nobody explains              | Every tier and rarity pinned to a stated share of real data |
 
 ---
@@ -334,35 +334,46 @@ its own repository, so private repositories need nothing extra.
 [`examples/stub-repository.yml`](examples/stub-repository.yml) shows it with
 `commit: pr`, which opens one evolving pull request instead of pushing.
 
+### Or gate on it
+
+A case is committed files, so it can be checked like any other. With
+`check: true` the same workflow measures nothing and commits nothing: it
+redraws the case from the measurement the ledger remembers and fails if any
+card or the README block differs from what the kit draws. No token is used,
+so it runs on a pull request from a fork. Put it in a repository case's CI
+so a hand-edited card, a stale README block or a missing file is caught
+before it lands: [`examples/stub-check.yml`](examples/stub-check.yml).
+
 ### Options
 
 Everything is optional. A [`.github/trophies.yml`](examples/trophies.yml)
 in your repository can set:
 
-| Key            | Default                | Meaning                                                                                        |
-| :------------- | :--------------------- | :--------------------------------------------------------------------------------------------- |
-| `mode`         | `profile`              | `profile` or `repository`.                                                                     |
-| `subject`      | this repository        | A login in profile mode, `owner/name` in repository mode. Empty means the repository's owner, or the repository. |
-| `style`        | `trophy`               | `trophy`, `crest`, `medallion`, `crystal` or `plaque`.                                         |
-| `case`         | `both`                 | `night`, `day` or `both`.                                                                      |
-| `theme`        | `picture`              | `picture` uses one `<picture>` per card (follows the system theme); `fragment` uses `#gh-*-mode-only` links, which GitHub no longer honours. |
-| `banner`       | `true`                 | The level card and the next-up card.                                                           |
-| `streak`       | `current`              | `current` or `longest`. The current streak changes daily while you are active.                 |
-| `core`         | all eight              | Which trophies, in order.                                                                      |
-| `enamel`       | `{}`                   | Recolor a trophy with any [emblems](https://github.com/tannergolden/emblems) color token.       |
-| `achievements` | `all`                  | `all`, `none`, or a list of slugs.                                                             |
-| `card`         | `[rank, weekly, new]`  | The Top % chip, the weekly change, the NEW ribbon.                                             |
-| `ledger`       | `true`                 | Keep `.github/trophies.lock.json`.                                                             |
-| `readme`       | `manage`               | Manage the block between the markers, or `none`.                                               |
-| `readme_path`  | `README.md`            | The file that holds the markers.                                                               |
-| `out`          | `assets/trophies`      | Where the SVGs are written.                                                                    |
-| `private`      | `false`                | Count private contributions too. Needs a read-only personal token saved as `TROPHIES_TOKEN`.   |
-| `scan_pages`   | `30`                   | Commits read per run for the heavy achievements, in pages of 100.                              |
+| Key            | Default               | Meaning                                                                                                                                      |
+| :------------- | :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mode`         | `profile`             | `profile` or `repository`.                                                                                                                   |
+| `subject`      | this repository       | A login in profile mode, `owner/name` in repository mode. Empty means the repository's owner, or the repository.                             |
+| `style`        | `trophy`              | `trophy`, `crest`, `medallion`, `crystal` or `plaque`.                                                                                       |
+| `case`         | `both`                | `night`, `day` or `both`.                                                                                                                    |
+| `theme`        | `picture`             | `picture` uses one `<picture>` per card (follows the system theme); `fragment` uses `#gh-*-mode-only` links, which GitHub no longer honours. |
+| `banner`       | `true`                | The level card and the next-up card.                                                                                                         |
+| `streak`       | `current`             | `current` or `longest`. The current streak changes daily while you are active.                                                               |
+| `core`         | all eight             | Which trophies, in order.                                                                                                                    |
+| `enamel`       | `{}`                  | Recolor a trophy with any [emblems](https://github.com/tannergolden/emblems) color token.                                                    |
+| `achievements` | `all`                 | `all`, `none`, or a list of slugs.                                                                                                           |
+| `card`         | `[rank, weekly, new]` | The Top % chip, the weekly change, the NEW ribbon.                                                                                           |
+| `ledger`       | `true`                | Keep `.github/trophies.lock.json`.                                                                                                           |
+| `readme`       | `manage`              | Manage the block between the markers, or `none`.                                                                                             |
+| `readme_path`  | `README.md`           | The file that holds the markers.                                                                                                             |
+| `out`          | `assets/trophies`     | Where the SVGs are written.                                                                                                                  |
+| `private`      | `false`               | Count private contributions too. Needs a read-only personal token saved as `TROPHIES_TOKEN`.                                                 |
+| `scan_pages`   | `30`                  | Commits read per run for the heavy achievements, in pages of 100.                                                                            |
 
 The workflow also takes `mode`, `subject`, `style`, `commit` (`push` or `pr`),
-`commit-branch`, `kit-ref` (the trophies ref to run, `v1` by default) and
-`author` (who the refresh commit is by) as inputs, for the common cases
-without a config file.
+`commit-branch`, `kit-ref` (the trophies ref to run, `v1` by default),
+`author` (who the refresh commit is by) and `check` (verify the committed
+case instead of refreshing it) as inputs, for the common cases without a
+config file.
 
 ---
 
@@ -379,10 +390,14 @@ about how many people or projects reach a number, so each threshold carries
 the share of a reference population at or above it, and each achievement the
 share expected to earn it. Profile mode is calibrated against 122,914 located
 GitHub accounts refreshed on 2026-09-24 (followers and yearly activity
-measured; the rest derived or estimated and labelled as such), repository mode
-against public repositories someone else has starred, anchored on published
-star tallies and GitHub's Innovation Graph. Rarity follows the share: Common
-is 40% or more, Legendary under 1%. The **Top N%** chip reads the same table.
+measured; the rest derived or estimated and labelled as such). Repository
+mode is measured against starred public repositories through GitHub's own
+API: the **📐 Calibrate** workflow counts stars and forks exactly, samples
+repositories from five star bands for the rest, weights the bands by their
+population, and commits the shares to `data/calibration/repositories.json`
+once a quarter, with the catalogue and this repository's own case
+regenerated from the same table. Rarity follows the share: Common is 40% or
+more, Legendary under 1%. The **Top N%** chip reads the same table.
 The catalogue's [calibration section](docs/Catalogue.md#-how-the-numbers-were-set)
 lays it all out, and `src/trophykit/calibration.py` holds it.
 
@@ -442,11 +457,13 @@ trophies/
 ├── .github/workflows/case.yml        this repository's own case, at its own commit
 ├── .github/workflows/cut-release.yml cuts a version and moves v1, via the standards
 ├── .github/workflows/badges.yml      redraws the README's badges through emblems
+├── .github/workflows/calibrate.yml   measures the repository population, quarterly
 ├── .github/trophies.yml              this repository's own config
 ├── .github/trophies.lock.json        this repository's ledger
 ├── .github/badges.yml                the README's badges, as data
 ├── src/
 │   ├── trophy-kit.py                 the command line
+│   ├── calibrate.py                  the repository sampler behind the numbers
 │   ├── trophykit/
 │   │   ├── catalogue.py              every trophy and achievement, as data
 │   │   ├── calibration.py            where every number sits against real data
@@ -459,6 +476,7 @@ trophies/
 │   └── fonts/                        glyph outlines and their OFL licences
 ├── assets/trophies/                  this repository's committed case
 ├── assets/badges/                    the README's badges, drawn by emblems
+├── data/calibration/                 the measured repository sample the kit reads
 ├── examples/                         stubs and a starter config to copy
 ├── tests/                            the unit tests, and the GraphQL document check
 └── docs/
@@ -478,7 +496,8 @@ make help                # list every target
 make preview             # render the sample profile case into preview/ (no network)
 make preview-repository  # the sample repository case
 make catalogue           # regenerate docs/Catalogue.md from the data
-make check               # CI gate: self-test, every GraphQL document well formed, catalogue current, sample renders clean
+make check               # CI gate: self-test, every GraphQL document well formed, catalogue current, this case and the sample check clean
+make calibrate           # measure the repository population through the API (GITHUB_TOKEN), then regenerate what reads it
 make test                # the gate plus the unit tests
 make badges              # redraw the README's badges from .github/badges.yml (emblems kit at .emblems/)
 ```

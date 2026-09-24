@@ -30,15 +30,15 @@ lettering and the geometry under one generator.
 
 The kit is one Python package with no dependencies, driven by one command:
 
-| Module              | Job                                                                        |
-| :------------------ | :------------------------------------------------------------------------- |
-| `catalogue.py`      | Every trophy and achievement as data, plus the tier arithmetic.            |
-| `calibration.py`    | Where every threshold and rarity sits against real GitHub data.            |
-| `github.py`, `measure_profile.py`, `measure_repo.py`, `scan.py`, `calendar.py` | Measurement: the API client, both modes, the commit scanner, date maths. |
-| `art.py`, `styles.py`, `text.py` | Drawing: five card styles, the pin, the level and next-up cards, outlined lettering. |
-| `render.py`, `readme.py`, `ledger.py`, `config.py` | The plan of files, the README block, the ledger, the config. |
-| `catalogue_md.py`   | The catalogue page, generated from the data and the calibration.           |
-| `trophy-kit.py`     | The command line the action runs.                                          |
+| Module                                                                         | Job                                                                                  |
+| :----------------------------------------------------------------------------- | :----------------------------------------------------------------------------------- |
+| `catalogue.py`                                                                 | Every trophy and achievement as data, plus the tier arithmetic.                      |
+| `calibration.py`                                                               | Where every threshold and rarity sits against real GitHub data.                      |
+| `github.py`, `measure_profile.py`, `measure_repo.py`, `scan.py`, `calendar.py` | Measurement: the API client, both modes, the commit scanner, date maths.             |
+| `art.py`, `styles.py`, `text.py`                                               | Drawing: five card styles, the pin, the level and next-up cards, outlined lettering. |
+| `render.py`, `readme.py`, `ledger.py`, `config.py`                             | The plan of files, the README block, the ledger, the config.                         |
+| `catalogue_md.py`                                                              | The catalogue page, generated from the data and the calibration.                     |
+| `trophy-kit.py`                                                                | The command line the action runs.                                                    |
 
 ---
 
@@ -47,12 +47,12 @@ The kit is one Python package with no dependencies, driven by one command:
 A case is what one run produces for one **subject**: a person in profile mode,
 a repository in repository mode.
 
-| Piece         | Files                                              | Size            |
-| :------------ | :------------------------------------------------- | :-------------- |
-| Core trophies | `<key>.svg`, `<key>-day.svg`, eight of each        | 164x222 (drawn at 180x244) |
-| Level card    | `level.svg`, `level-day.svg`                       | 420x152         |
-| Next-up card  | `next-up.svg`, `next-up-day.svg`                   | 328x152         |
-| Achievements  | `achievements/<slug>.svg`, `achievements/<slug>-day.svg` | 104x124   |
+| Piece         | Files                                                    | Size                       |
+| :------------ | :------------------------------------------------------- | :------------------------- |
+| Core trophies | `<key>.svg`, `<key>-day.svg`, eight of each              | 164x222 (drawn at 180x244) |
+| Level card    | `level.svg`, `level-day.svg`                             | 420x152                    |
+| Next-up card  | `next-up.svg`, `next-up-day.svg`                         | 328x152                    |
+| Achievements  | `achievements/<slug>.svg`, `achievements/<slug>-day.svg` | 104x124                    |
 
 Everything lands under `assets/trophies/` (configurable as `out`). Night files
 carry no suffix; Day files carry `-day`. Rendering **prunes**: a file nothing
@@ -161,11 +161,21 @@ threshold and every rarity is pinned to a share of a reference population in
   data directly; all-time commits are derived from yearly activity; the rest
   is estimated from the population's shape and the medians
   `github-readme-stats` uses for its ranks.
-- **Repository mode** is measured against public repositories someone other
-  than the owner has starred, about 38 million of GitHub's 428 million public
-  repositories, anchored on the Innovation Graph, the published tallies over
-  100 and 1,000 stars, the 2016 thousand-stars census and one fork per seven
-  stars.
+- **Repository mode** is measured against public, non-fork repositories with
+  at least one star, through GitHub's API, by `src/calibrate.py`. Stars and
+  forks are counted exactly (the search API answers how many repositories sit
+  at or above each threshold); contributors, commits, releases, merged pull
+  requests and resolved issues come from a sample stratified by star band
+  (1 to 9, 10 to 99, 100 to 999, 1,000 to 9,999, 10,000 and up), each band
+  weighted by its share of the population, so the tail where Diamond lives
+  is seen rather than extrapolated. The result is
+  `data/calibration/repositories.json`, which `calibration.py` reads at
+  import and applies over its own estimates wherever the sample's thresholds
+  match the catalogue's. The **📐 Calibrate** workflow refreshes it quarterly,
+  regenerates the catalogue and redraws this repository's own case in the
+  same commit. Active days cannot be read from the API and stay estimated;
+  until the sample exists, so does everything else, anchored on the
+  Innovation Graph, the published star tallies and one fork per seven stars.
 - **Rarity follows the share.** Common is 40% or more, Uncommon 15% to 40%,
   Rare 4% to 15%, Epic 1% to 4%, Legendary under 1%. The tier ladder aims at
   the same cuts everywhere: Bronze about the top half, Silver the top quarter
@@ -173,7 +183,7 @@ threshold and every rarity is pinned to a share of a reference population in
 - **The Top N% chip** interpolates between a trophy's anchors on log-log
   axes and continues the last slope past Diamond, floored at 0.001%.
 
-Each figure is labelled *measured*, *derived* or *estimated* in the
+Each figure is labelled _measured_, _derived_ or _estimated_ in the
 catalogue's "How The Numbers Were Set" section. A test holds every rarity to
 its share and every anchor to its threshold, so the words cannot drift from
 the numbers.
@@ -247,9 +257,14 @@ the run log as warnings naming the field.
 ```json
 {
   "version": 1,
-  "reached": { "commits": { "4.0": "2026-03-14" }, "ach:polyglot": { "2": "2026-05-02" } },
+  "reached": {
+    "commits": { "4.0": "2026-03-14" },
+    "ach:polyglot": { "2": "2026-05-02" }
+  },
   "history": { "commits": { "2026-09-01": 5606, "2026-09-18": 5730 } },
-  "scan": { "octo/toolkit": { "head": "…", "complete": true, "stats": { "…": 0 } } },
+  "scan": {
+    "octo/toolkit": { "head": "…", "complete": true, "stats": { "…": 0 } }
+  },
   "snapshot": "2026-09-22"
 }
 ```
@@ -261,6 +276,9 @@ the run log as warnings naming the field.
   point at or before seven days ago.
 - `scan` is the commit scanner's cache.
 - `snapshot` is the last weekly write.
+- `last` is the measurement the last run drew from (mode, subject, values,
+  achievement cursors, owners and the day's deltas), which is what `check`
+  replans against and what `render` redraws from without a token.
 
 The ledger is written when a card changed, when a tier was reached, or when
 seven days have passed since the last snapshot. That weekly write is a real
@@ -288,10 +306,11 @@ is closest.
 python3 src/trophy-kit.py run      --root . [--mode …] [--subject …] [--save m.json] [--commit-file msg.txt]
 python3 src/trophy-kit.py measure  --mode … --subject … > m.json
 python3 src/trophy-kit.py render   --root . --from m.json
-python3 src/trophy-kit.py check    --root . --from m.json
+python3 src/trophy-kit.py check    --root . [--from m.json]
 python3 src/trophy-kit.py preview  --root out/ [--mode …] [--style …] [--owner]
 python3 src/trophy-kit.py catalogue > docs/Catalogue.md
 python3 src/trophy-kit.py self-test
+python3 src/calibrate.py --out data/calibration/repositories.json
 ```
 
 Every subcommand that touches a repository takes `--root`, `--config`,
@@ -300,6 +319,18 @@ which fixes the date for reproducible runs. The action calls `run` with
 `--commit-file`, which writes the Conventional Commit message for the run
 when something changed; `preview` renders the built-in sample with no network
 and is what the tests and `make preview` use.
+
+`check` is the consumer's gate. It reads the measurement the ledger
+remembered from the last run (or `--from`), replans, and compares with the
+files on disk and the README block: no token, no network, and nothing can
+move underneath it. It exits 0 when the case is exactly what the kit draws
+from that measurement, 1 naming what is stale (a hand-edited card, a missing
+file, a drifted README block), and 2 when there is no measurement to check
+against. The workflow exposes it as `check: true` and the action as
+`mode: check`, for pull-request CI on a repository case.
+
+`calibrate.py` is the measurer behind repository mode's numbers, run
+quarterly by the **📐 Calibrate** workflow; see Calibration.
 
 ---
 
@@ -322,6 +353,8 @@ What a consumer pinned to `v1` can rely on:
 6. Everyone's public total is exactly one hundred achievements per mode.
 7. Every tier and rarity is pinned to a stated share of a reference
    population, and a change to a threshold is a change to that table.
+8. `check` never needs a token: a committed case can be verified against the
+   measurement its ledger remembers, in pull-request CI, by anyone.
 
 ---
 

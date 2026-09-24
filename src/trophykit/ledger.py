@@ -10,6 +10,11 @@ scanner's cache. Deleting it loses history, never correctness.
 
 Its weekly snapshot is also a real commit, which keeps GitHub from switching
 off the schedule after sixty quiet days.
+
+It also keeps `last`: the measurement the committed case was drawn from,
+with the weekly deltas and NEW flags that went into the cards. That is what
+lets `check` redraw the case offline and compare, byte for byte, without a
+token and without the numbers moving underneath it.
 """
 from __future__ import annotations
 
@@ -98,6 +103,19 @@ def update(ledger: dict, result: dict, cores: list, ach: list, today: dt.date) -
             rec = reached.setdefault("ach:" + a.slug, {})
             rec.setdefault(str(st["k"]), key)
     return {"new": new, "delta": delta, "reached": reached}
+
+
+LAST_KEYS = ("mode", "subject", "today", "values", "curs", "extra", "owners", "delta", "new", "unmeasured")
+
+
+def remember(ledger: dict, result: dict) -> None:
+    """Keep what `render.plan` needs to draw this case again, and nothing else."""
+    ledger["last"] = {k: result[k] for k in LAST_KEYS if k in result}
+
+
+def last(ledger: dict):
+    """The measurement the committed case was drawn from, or None."""
+    return ledger.get("last")
 
 
 def value_at(ledger: dict, key: str, day: dt.date):
