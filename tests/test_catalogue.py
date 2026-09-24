@@ -50,6 +50,21 @@ class CatalogueShape(unittest.TestCase):
                 self.assertEqual(list(core.steps), sorted(core.steps))
 
 
+class Measured(unittest.TestCase):
+    """Every achievement has a line in its mode's measurer.
+
+    The measurers need GitHub to run, so this reads their source: a slug
+    that never appears as a key there is one a live run would refuse."""
+
+    def test_every_profile_achievement_is_measured(self):
+        src = (Path(__file__).resolve().parents[1] / "src/trophykit/measure_profile.py").read_text(encoding="utf-8")
+        self.assertEqual([a.slug for a in c.ACH if f'"{a.slug}"' not in src], [])
+
+    def test_every_repository_achievement_is_measured(self):
+        src = (Path(__file__).resolve().parents[1] / "src/trophykit/measure_repo.py").read_text(encoding="utf-8")
+        self.assertEqual([a.slug for a in c.RACH if f'"{a.slug}"' not in src], [])
+
+
 class TierMaths(unittest.TestCase):
     def test_measure_walks_the_tiers(self):
         core = c.CORE[0]  # commits: 100, 500, 2000, 5000, 10000

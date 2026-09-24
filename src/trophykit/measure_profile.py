@@ -58,7 +58,7 @@ query($login:String!,$id:ID!,$first:Int!,$after:String){ rateLimit{cost}
     nodes{ name nameWithOwner isFork isPrivate isArchived isTemplate createdAt pushedAt description homepageUrl
       stargazerCount forkCount viewerHasStarred watchers{totalCount} isSecurityPolicyEnabled hasDiscussionsEnabled
       licenseInfo{key} codeOfConduct{key} fundingLinks{url} repositoryTopics{totalCount} labels{totalCount} milestones{totalCount}
-      closedIssues: issues(states:CLOSED){totalCount}
+      closedIssues: issues(states:CLOSED){totalCount} openIssues: issues(states:OPEN){totalCount}
       languages(first:30){ nodes{name} }
       branches: refs(refPrefix:"refs/heads/"){totalCount}
       releases(first:50,orderBy:{field:CREATED_AT,direction:DESC}){ totalCount nodes{ tagName createdAt isPrerelease releaseAssets{totalCount} } }
@@ -220,6 +220,8 @@ def measure(gh, login: str, ledger: dict, *, today: dt.date, private: bool = Fal
         "stargazer": max([r["stargazerCount"] - (1 if r.get("viewerHasStarred") else 0) for r in own], default=0),
         "forked": sum(r["forkCount"] for r in own), "watched": max([r["watchers"]["totalCount"] for r in own], default=0),
         "bug-hunter": count("bugs"), "closer": sum(r["closedIssues"]["totalCount"] for r in own),
+        "inbox-zero": int(sum(r["closedIssues"]["totalCount"] for r in own) >= 25
+                          and not any(r["openIssues"]["totalCount"] for r in own)),
         "fan-club": sum(r["watchers"]["totalCount"] for r in own), "branching-out": max([r["branches"]["totalCount"] for r in own], default=0),
         # Craft
         "by-the-book": st["conventional"], "gitmoji": st["emoji"], "signed": st["signed"], "duet": st["coauthored"], "undo": st["revert"],
