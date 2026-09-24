@@ -51,6 +51,157 @@ every day by [`🏆 Case`](.github/workflows/case.yml), which calls the same
 workflow you would.
 
 <!-- trophies:start -->
+
+<p align="center">
+  <img src="assets/trophies/level.svg#gh-dark-mode-only" alt="tannergolden/trophies: level 13, 2,966 XP, case 21% complete, no release yet"><img src="assets/trophies/level-day.svg#gh-light-mode-only" alt="tannergolden/trophies: level 13, 2,966 XP, case 21% complete, no release yet">
+  <img src="assets/trophies/next-up.svg#gh-dark-mode-only" alt="Next up: Contributors to Bronze 50%, Label Maker 48%, Green Machine I 39%"><img src="assets/trophies/next-up-day.svg#gh-light-mode-only" alt="Next up: Contributors to Bronze 50%, Label Maker 48%, Green Machine I 39%">
+</p>
+
+<p align="center">
+  <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#stars"><img src="assets/trophies/stars.svg#gh-dark-mode-only" alt="Stars trophy: Unranked, 0, 0% to Bronze"><img src="assets/trophies/stars-day.svg#gh-light-mode-only" alt="Stars trophy: Unranked, 0, 0% to Bronze"></a>
+  <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#forks"><img src="assets/trophies/forks.svg#gh-dark-mode-only" alt="Forks trophy: Unranked, 0, 0% to Bronze"><img src="assets/trophies/forks-day.svg#gh-light-mode-only" alt="Forks trophy: Unranked, 0, 0% to Bronze"></a>
+  <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#contributors"><img src="assets/trophies/contributors.svg#gh-dark-mode-only" alt="Contributors trophy: Unranked, 1, 50% to Bronze"><img src="assets/trophies/contributors-day.svg#gh-light-mode-only" alt="Contributors trophy: Unranked, 1, 50% to Bronze"></a>
+  <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#commits"><img src="assets/trophies/commits.svg#gh-dark-mode-only" alt="Commits trophy: Unranked, 13, 13% to Bronze"><img src="assets/trophies/commits-day.svg#gh-light-mode-only" alt="Commits trophy: Unranked, 13, 13% to Bronze"></a>
+  <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#releases"><img src="assets/trophies/releases.svg#gh-dark-mode-only" alt="Releases trophy: Unranked, 0, 0% to Bronze"><img src="assets/trophies/releases-day.svg#gh-light-mode-only" alt="Releases trophy: Unranked, 0, 0% to Bronze"></a>
+  <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#merged"><img src="assets/trophies/merged.svg#gh-dark-mode-only" alt="Merged PRs trophy: Unranked, 0, 0% to Bronze"><img src="assets/trophies/merged-day.svg#gh-light-mode-only" alt="Merged PRs trophy: Unranked, 0, 0% to Bronze"></a>
+  <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#resolved"><img src="assets/trophies/resolved.svg#gh-dark-mode-only" alt="Issues Resolved trophy: Unranked, 0, 0% to Bronze"><img src="assets/trophies/resolved-day.svg#gh-light-mode-only" alt="Issues Resolved trophy: Unranked, 0, 0% to Bronze"></a>
+  <a href="https://github.com/tannergolden/trophies/blob/v1/docs/Catalogue.md#active"><img src="assets/trophies/active.svg#gh-dark-mode-only" alt="Active Days trophy: Unranked, 1 days, 3% to Bronze"><img src="assets/trophies/active-day.svg#gh-light-mode-only" alt="Active Days trophy: Unranked, 1 days, 3% to Bronze"></a>
+</p>
+
+<details>
+<summary><b>Achievements</b> · 23 of 100 earned · next: Contributors to Bronze, 50%</summary>
+
+<p align="center"><b>Launch</b></p>
+<p align="center">
+  <img src="assets/trophies/achievements/stranger-report.svg#gh-dark-mode-only" alt="Stranger Report: earned, Uncommon"><img src="assets/trophies/achievements/stranger-report-day.svg#gh-light-mode-only" alt="Stranger Report: earned, Uncommon">
+  <img src="assets/trophies/achievements/named.svg#gh-dark-mode-only" alt="Named: earned, Common"><img src="assets/trophies/achievements/named-day.svg#gh-light-mode-only" alt="Named: earned, Common">
+  <img src="assets/trophies/achievements/filed.svg#gh-dark-mode-only" alt="Filed: 0% (0 of 3)"><img src="assets/trophies/achievements/filed-day.svg#gh-light-mode-only" alt="Filed: 0% (0 of 3)">
+  <img src="assets/trophies/achievements/first-fork.svg#gh-dark-mode-only" alt="First Fork: 0% (0 of 1)"><img src="assets/trophies/achievements/first-fork-day.svg#gh-light-mode-only" alt="First Fork: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/first-merge.svg#gh-dark-mode-only" alt="First Merge: 0% (0 of 1)"><img src="assets/trophies/achievements/first-merge-day.svg#gh-light-mode-only" alt="First Merge: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/first-release.svg#gh-dark-mode-only" alt="First Release: 0% (0 of 1)"><img src="assets/trophies/achievements/first-release-day.svg#gh-light-mode-only" alt="First Release: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/first-star.svg#gh-dark-mode-only" alt="First Star: 0% (0 of 1)"><img src="assets/trophies/achievements/first-star-day.svg#gh-light-mode-only" alt="First Star: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/first-tag.svg#gh-dark-mode-only" alt="First Tag: 0% (0 of 1)"><img src="assets/trophies/achievements/first-tag-day.svg#gh-light-mode-only" alt="First Tag: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/first-watcher.svg#gh-dark-mode-only" alt="First Watcher: 0% (0 of 1)"><img src="assets/trophies/achievements/first-watcher-day.svg#gh-light-mode-only" alt="First Watcher: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/front-door.svg#gh-dark-mode-only" alt="Front Door: 0% (0 of 1)"><img src="assets/trophies/achievements/front-door-day.svg#gh-light-mode-only" alt="Front Door: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/outside-help.svg#gh-dark-mode-only" alt="Outside Help: 0% (0 of 1)"><img src="assets/trophies/achievements/outside-help-day.svg#gh-light-mode-only" alt="Outside Help: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/poster.svg#gh-dark-mode-only" alt="Poster: 0% (0 of 1)"><img src="assets/trophies/achievements/poster-day.svg#gh-light-mode-only" alt="Poster: 0% (0 of 1)">
+</p>
+
+<p align="center"><b>Health</b></p>
+<p align="center">
+  <img src="assets/trophies/achievements/clean-bill.svg#gh-dark-mode-only" alt="Clean Bill: earned, Rare"><img src="assets/trophies/achievements/clean-bill-day.svg#gh-light-mode-only" alt="Clean Bill: earned, Rare">
+  <img src="assets/trophies/achievements/auto-pilot.svg#gh-dark-mode-only" alt="Auto-pilot: earned, Uncommon"><img src="assets/trophies/achievements/auto-pilot-day.svg#gh-light-mode-only" alt="Auto-pilot: earned, Uncommon">
+  <img src="assets/trophies/achievements/form-filler.svg#gh-dark-mode-only" alt="Form Filler: earned, Uncommon"><img src="assets/trophies/achievements/form-filler-day.svg#gh-light-mode-only" alt="Form Filler: earned, Uncommon">
+  <img src="assets/trophies/achievements/gatekeeper.svg#gh-dark-mode-only" alt="Gatekeeper: earned, Uncommon"><img src="assets/trophies/achievements/gatekeeper-day.svg#gh-light-mode-only" alt="Gatekeeper: earned, Uncommon">
+  <img src="assets/trophies/achievements/house-rules.svg#gh-dark-mode-only" alt="House Rules: earned, Uncommon"><img src="assets/trophies/achievements/house-rules-day.svg#gh-light-mode-only" alt="House Rules: earned, Uncommon">
+  <img src="assets/trophies/achievements/locksmith.svg#gh-dark-mode-only" alt="Locksmith: earned, Uncommon"><img src="assets/trophies/achievements/locksmith-day.svg#gh-light-mode-only" alt="Locksmith: earned, Uncommon">
+  <img src="assets/trophies/achievements/paperwork.svg#gh-dark-mode-only" alt="Paperwork: earned, Uncommon"><img src="assets/trophies/achievements/paperwork-day.svg#gh-light-mode-only" alt="Paperwork: earned, Uncommon">
+  <img src="assets/trophies/achievements/support-line.svg#gh-dark-mode-only" alt="Support Line: earned, Uncommon"><img src="assets/trophies/achievements/support-line-day.svg#gh-light-mode-only" alt="Support Line: earned, Uncommon">
+  <img src="assets/trophies/achievements/town-hall.svg#gh-dark-mode-only" alt="Town Hall: earned, Uncommon"><img src="assets/trophies/achievements/town-hall-day.svg#gh-light-mode-only" alt="Town Hall: earned, Uncommon">
+  <img src="assets/trophies/achievements/welcome-mat.svg#gh-dark-mode-only" alt="Welcome Mat: earned, Uncommon"><img src="assets/trophies/achievements/welcome-mat-day.svg#gh-light-mode-only" alt="Welcome Mat: earned, Uncommon">
+  <img src="assets/trophies/achievements/documented.svg#gh-dark-mode-only" alt="Documented: earned, Common"><img src="assets/trophies/achievements/documented-day.svg#gh-light-mode-only" alt="Documented: earned, Common">
+  <img src="assets/trophies/achievements/licensed.svg#gh-dark-mode-only" alt="Licensed: earned, Common"><img src="assets/trophies/achievements/licensed-day.svg#gh-light-mode-only" alt="Licensed: earned, Common">
+  <img src="assets/trophies/achievements/well-formed.svg#gh-dark-mode-only" alt="Well-Formed: earned, Common"><img src="assets/trophies/achievements/well-formed-day.svg#gh-light-mode-only" alt="Well-Formed: earned, Common">
+  <img src="assets/trophies/achievements/label-maker.svg#gh-dark-mode-only" alt="Label Maker: 48% (12 of 25)"><img src="assets/trophies/achievements/label-maker-day.svg#gh-light-mode-only" alt="Label Maker: 48% (12 of 25)">
+  <img src="assets/trophies/achievements/changelog.svg#gh-dark-mode-only" alt="Changelog: 0% (0 of 1)"><img src="assets/trophies/achievements/changelog-day.svg#gh-light-mode-only" alt="Changelog: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/open-hand.svg#gh-dark-mode-only" alt="Open Hand: 0% (0 of 1)"><img src="assets/trophies/achievements/open-hand-day.svg#gh-light-mode-only" alt="Open Hand: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/protected.svg#gh-dark-mode-only" alt="Protected: 0% (0 of 1)"><img src="assets/trophies/achievements/protected-day.svg#gh-light-mode-only" alt="Protected: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/roadmap.svg#gh-dark-mode-only" alt="Roadmap: 0% (0 of 5)"><img src="assets/trophies/achievements/roadmap-day.svg#gh-light-mode-only" alt="Roadmap: 0% (0 of 5)">
+</p>
+
+<p align="center"><b>Craft</b></p>
+<p align="center">
+  <img src="assets/trophies/achievements/follows-the-standards.svg#gh-dark-mode-only" alt="Follows the Standards: earned, Epic"><img src="assets/trophies/achievements/follows-the-standards-day.svg#gh-light-mode-only" alt="Follows the Standards: earned, Epic">
+  <img src="assets/trophies/achievements/golden-path.svg#gh-dark-mode-only" alt="Golden Path: earned, Epic"><img src="assets/trophies/achievements/golden-path-day.svg#gh-light-mode-only" alt="Golden Path: earned, Epic">
+  <img src="assets/trophies/achievements/squeaky.svg#gh-dark-mode-only" alt="Squeaky: earned, Rare"><img src="assets/trophies/achievements/squeaky-day.svg#gh-light-mode-only" alt="Squeaky: earned, Rare">
+  <img src="assets/trophies/achievements/ready-room.svg#gh-dark-mode-only" alt="Ready Room: earned, Uncommon"><img src="assets/trophies/achievements/ready-room-day.svg#gh-light-mode-only" alt="Ready Room: earned, Uncommon">
+  <img src="assets/trophies/achievements/test-suite.svg#gh-dark-mode-only" alt="Test Suite: earned, Uncommon"><img src="assets/trophies/achievements/test-suite-day.svg#gh-light-mode-only" alt="Test Suite: earned, Uncommon">
+  <img src="assets/trophies/achievements/wired.svg#gh-dark-mode-only" alt="Wired: earned, Common"><img src="assets/trophies/achievements/wired-day.svg#gh-light-mode-only" alt="Wired: earned, Common">
+  <img src="assets/trophies/achievements/green-machine.svg#gh-dark-mode-only" alt="Green Machine: 39% (39 of 100)"><img src="assets/trophies/achievements/green-machine-day.svg#gh-light-mode-only" alt="Green Machine: 39% (39 of 100)">
+  <img src="assets/trophies/achievements/by-the-book.svg#gh-dark-mode-only" alt="By the Book: 13% (13 of 100)"><img src="assets/trophies/achievements/by-the-book-day.svg#gh-light-mode-only" alt="By the Book: 13% (13 of 100)">
+  <img src="assets/trophies/achievements/signed.svg#gh-dark-mode-only" alt="Signed: 12% (12 of 100)"><img src="assets/trophies/achievements/signed-day.svg#gh-light-mode-only" alt="Signed: 12% (12 of 100)">
+  <img src="assets/trophies/achievements/containerized.svg#gh-dark-mode-only" alt="Containerized: 0% (0 of 1)"><img src="assets/trophies/achievements/containerized-day.svg#gh-light-mode-only" alt="Containerized: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/gitmoji.svg#gh-dark-mode-only" alt="Gitmoji: 0% (0 of 100)"><img src="assets/trophies/achievements/gitmoji-day.svg#gh-light-mode-only" alt="Gitmoji: 0% (0 of 100)">
+  <img src="assets/trophies/achievements/packager.svg#gh-dark-mode-only" alt="Packager: 0% (0 of 1)"><img src="assets/trophies/achievements/packager-day.svg#gh-light-mode-only" alt="Packager: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/prerelease.svg#gh-dark-mode-only" alt="Prerelease: 0% (0 of 1)"><img src="assets/trophies/achievements/prerelease-day.svg#gh-light-mode-only" alt="Prerelease: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/release-notes.svg#gh-dark-mode-only" alt="Release Notes: 0% (0 of 10)"><img src="assets/trophies/achievements/release-notes-day.svg#gh-light-mode-only" alt="Release Notes: 0% (0 of 10)">
+  <img src="assets/trophies/achievements/semver.svg#gh-dark-mode-only" alt="Semver: 0% (0 of 10)"><img src="assets/trophies/achievements/semver-day.svg#gh-light-mode-only" alt="Semver: 0% (0 of 10)">
+  <img src="assets/trophies/achievements/small-steps.svg#gh-dark-mode-only" alt="Small Steps: 0% (0 of 1)"><img src="assets/trophies/achievements/small-steps-day.svg#gh-light-mode-only" alt="Small Steps: 0% (0 of 1)">
+</p>
+
+<p align="center"><b>Community</b></p>
+<p align="center">
+  <img src="assets/trophies/achievements/triage.svg#gh-dark-mode-only" alt="Triage: earned, Rare"><img src="assets/trophies/achievements/triage-day.svg#gh-light-mode-only" alt="Triage: earned, Rare">
+  <img src="assets/trophies/achievements/crew.svg#gh-dark-mode-only" alt="Crew: 20% (1 of 5)"><img src="assets/trophies/achievements/crew-day.svg#gh-light-mode-only" alt="Crew: 20% (1 of 5)">
+  <img src="assets/trophies/achievements/regulars.svg#gh-dark-mode-only" alt="Regulars: 20% (1 of 5)"><img src="assets/trophies/achievements/regulars-day.svg#gh-light-mode-only" alt="Regulars: 20% (1 of 5)">
+  <img src="assets/trophies/achievements/ten-strong.svg#gh-dark-mode-only" alt="Ten Strong: 10% (1 of 10)"><img src="assets/trophies/achievements/ten-strong-day.svg#gh-light-mode-only" alt="Ten Strong: 10% (1 of 10)">
+  <img src="assets/trophies/achievements/long-thread.svg#gh-dark-mode-only" alt="Long Thread: 3% (3 of 100)"><img src="assets/trophies/achievements/long-thread-day.svg#gh-light-mode-only" alt="Long Thread: 3% (3 of 100)">
+  <img src="assets/trophies/achievements/talkative.svg#gh-dark-mode-only" alt="Talkative: 0% (3 of 1,000)"><img src="assets/trophies/achievements/talkative-day.svg#gh-light-mode-only" alt="Talkative: 0% (3 of 1,000)">
+  <img src="assets/trophies/achievements/answered.svg#gh-dark-mode-only" alt="Answered: 0% (0 of 10)"><img src="assets/trophies/achievements/answered-day.svg#gh-light-mode-only" alt="Answered: 0% (0 of 10)">
+  <img src="assets/trophies/achievements/fast-reply.svg#gh-dark-mode-only" alt="Fast Reply: 0% (0 of 1)"><img src="assets/trophies/achievements/fast-reply-day.svg#gh-light-mode-only" alt="Fast Reply: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/good-first-issues.svg#gh-dark-mode-only" alt="Good First Issues: 0% (0 of 5)"><img src="assets/trophies/achievements/good-first-issues-day.svg#gh-light-mode-only" alt="Good First Issues: 0% (0 of 5)">
+  <img src="assets/trophies/achievements/help-wanted.svg#gh-dark-mode-only" alt="Help Wanted: 0% (0 of 5)"><img src="assets/trophies/achievements/help-wanted-day.svg#gh-light-mode-only" alt="Help Wanted: 0% (0 of 5)">
+  <img src="assets/trophies/achievements/mentor.svg#gh-dark-mode-only" alt="Mentor: 0% (0 of 1)"><img src="assets/trophies/achievements/mentor-day.svg#gh-light-mode-only" alt="Mentor: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/org-backed.svg#gh-dark-mode-only" alt="Org Backed: 0% (0 of 1)"><img src="assets/trophies/achievements/org-backed-day.svg#gh-light-mode-only" alt="Org Backed: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/outside-merges.svg#gh-dark-mode-only" alt="Outside Merges: 0% (0 of 10)"><img src="assets/trophies/achievements/outside-merges-day.svg#gh-light-mode-only" alt="Outside Merges: 0% (0 of 10)">
+  <img src="assets/trophies/achievements/popular-opinion.svg#gh-dark-mode-only" alt="Popular Opinion: 0% (0 of 50)"><img src="assets/trophies/achievements/popular-opinion-day.svg#gh-light-mode-only" alt="Popular Opinion: 0% (0 of 50)">
+  <img src="assets/trophies/achievements/reviewed.svg#gh-dark-mode-only" alt="Reviewed: 0% (0 of 1)"><img src="assets/trophies/achievements/reviewed-day.svg#gh-light-mode-only" alt="Reviewed: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/well-maintained.svg#gh-dark-mode-only" alt="Well Maintained: 0% (0 of 25)"><img src="assets/trophies/achievements/well-maintained-day.svg#gh-light-mode-only" alt="Well Maintained: 0% (0 of 25)">
+</p>
+
+<p align="center"><b>Reach</b></p>
+<p align="center">
+  <img src="assets/trophies/achievements/big-name.svg#gh-dark-mode-only" alt="Big Name: 0% (0 of 1)"><img src="assets/trophies/achievements/big-name-day.svg#gh-light-mode-only" alt="Big Name: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/cloned.svg#gh-dark-mode-only" alt="Cloned: not measured yet"><img src="assets/trophies/achievements/cloned-day.svg#gh-light-mode-only" alt="Cloned: not measured yet">
+  <img src="assets/trophies/achievements/downloaded.svg#gh-dark-mode-only" alt="Downloaded: 0% (0 of 1,000)"><img src="assets/trophies/achievements/downloaded-day.svg#gh-light-mode-only" alt="Downloaded: 0% (0 of 1,000)">
+  <img src="assets/trophies/achievements/fork-magnet.svg#gh-dark-mode-only" alt="Fork Magnet: not measured yet"><img src="assets/trophies/achievements/fork-magnet-day.svg#gh-light-mode-only" alt="Fork Magnet: not measured yet">
+  <img src="assets/trophies/achievements/forked-far.svg#gh-dark-mode-only" alt="Forked Far: 0% (0 of 100)"><img src="assets/trophies/achievements/forked-far-day.svg#gh-light-mode-only" alt="Forked Far: 0% (0 of 100)">
+  <img src="assets/trophies/achievements/living-forks.svg#gh-dark-mode-only" alt="Living Forks: 0% (0 of 10)"><img src="assets/trophies/achievements/living-forks-day.svg#gh-light-mode-only" alt="Living Forks: 0% (0 of 10)">
+  <img src="assets/trophies/achievements/referred.svg#gh-dark-mode-only" alt="Referred: not measured yet"><img src="assets/trophies/achievements/referred-day.svg#gh-light-mode-only" alt="Referred: not measured yet">
+  <img src="assets/trophies/achievements/registry.svg#gh-dark-mode-only" alt="Registry: not measured yet"><img src="assets/trophies/achievements/registry-day.svg#gh-light-mode-only" alt="Registry: not measured yet">
+  <img src="assets/trophies/achievements/star-of-the-week.svg#gh-dark-mode-only" alt="Star of the Week: not measured yet"><img src="assets/trophies/achievements/star-of-the-week-day.svg#gh-light-mode-only" alt="Star of the Week: not measured yet">
+  <img src="assets/trophies/achievements/stargazer-streak.svg#gh-dark-mode-only" alt="Stargazer Streak: 0% (0 of 12)"><img src="assets/trophies/achievements/stargazer-streak-day.svg#gh-light-mode-only" alt="Stargazer Streak: 0% (0 of 12)">
+  <img src="assets/trophies/achievements/trending.svg#gh-dark-mode-only" alt="Trending: not measured yet"><img src="assets/trophies/achievements/trending-day.svg#gh-light-mode-only" alt="Trending: not measured yet">
+  <img src="assets/trophies/achievements/used-by.svg#gh-dark-mode-only" alt="Used By: not measured yet"><img src="assets/trophies/achievements/used-by-day.svg#gh-light-mode-only" alt="Used By: not measured yet">
+  <img src="assets/trophies/achievements/visited.svg#gh-dark-mode-only" alt="Visited: not measured yet"><img src="assets/trophies/achievements/visited-day.svg#gh-light-mode-only" alt="Visited: not measured yet">
+  <img src="assets/trophies/achievements/watched.svg#gh-dark-mode-only" alt="Watched: 0% (0 of 25)"><img src="assets/trophies/achievements/watched-day.svg#gh-light-mode-only" alt="Watched: 0% (0 of 25)">
+</p>
+
+<p align="center"><b>Rhythm</b></p>
+<p align="center">
+  <img src="assets/trophies/achievements/alive.svg#gh-dark-mode-only" alt="Alive: earned, Common"><img src="assets/trophies/achievements/alive-day.svg#gh-light-mode-only" alt="Alive: earned, Common">
+  <img src="assets/trophies/achievements/long-game.svg#gh-dark-mode-only" alt="Long Game: 33% (1 of 3)"><img src="assets/trophies/achievements/long-game-day.svg#gh-light-mode-only" alt="Long Game: 33% (1 of 3)">
+  <img src="assets/trophies/achievements/streak.svg#gh-dark-mode-only" alt="Streak: 3% (1 of 30)"><img src="assets/trophies/achievements/streak-day.svg#gh-light-mode-only" alt="Streak: 3% (1 of 30)">
+  <img src="assets/trophies/achievements/marathon-day.svg#gh-dark-mode-only" alt="Marathon Day: 2% (1 of 50)"><img src="assets/trophies/achievements/marathon-day-day.svg#gh-light-mode-only" alt="Marathon Day: 2% (1 of 50)">
+  <img src="assets/trophies/achievements/night-shift.svg#gh-dark-mode-only" alt="Night Shift: 2% (1 of 50)"><img src="assets/trophies/achievements/night-shift-day.svg#gh-light-mode-only" alt="Night Shift: 2% (1 of 50)">
+  <img src="assets/trophies/achievements/weekly-beat.svg#gh-dark-mode-only" alt="Weekly Beat: 1% (1 of 52)"><img src="assets/trophies/achievements/weekly-beat-day.svg#gh-light-mode-only" alt="Weekly Beat: 1% (1 of 52)">
+  <img src="assets/trophies/achievements/big-week.svg#gh-dark-mode-only" alt="Big Week: 1% (1 of 100)"><img src="assets/trophies/achievements/big-week-day.svg#gh-light-mode-only" alt="Big Week: 1% (1 of 100)">
+  <img src="assets/trophies/achievements/comeback.svg#gh-dark-mode-only" alt="Comeback: 0% (0 of 1)"><img src="assets/trophies/achievements/comeback-day.svg#gh-light-mode-only" alt="Comeback: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/friday-deploy.svg#gh-dark-mode-only" alt="Friday Deploy: 0% (0 of 1)"><img src="assets/trophies/achievements/friday-deploy-day.svg#gh-light-mode-only" alt="Friday Deploy: 0% (0 of 1)">
+  <img src="assets/trophies/achievements/monthly-release.svg#gh-dark-mode-only" alt="Monthly Release: 0% (0 of 12)"><img src="assets/trophies/achievements/monthly-release-day.svg#gh-light-mode-only" alt="Monthly Release: 0% (0 of 12)">
+  <img src="assets/trophies/achievements/same-day-fix.svg#gh-dark-mode-only" alt="Same-Day Fix: 0% (0 of 10)"><img src="assets/trophies/achievements/same-day-fix-day.svg#gh-light-mode-only" alt="Same-Day Fix: 0% (0 of 10)">
+  <img src="assets/trophies/achievements/weekend-project.svg#gh-dark-mode-only" alt="Weekend Project: 0% (0 of 26)"><img src="assets/trophies/achievements/weekend-project-day.svg#gh-light-mode-only" alt="Weekend Project: 0% (0 of 26)">
+</p>
+
+<p align="center"><b>Secret</b></p>
+<p align="center">
+  <img src="assets/trophies/achievements/birthday.svg#gh-dark-mode-only" alt="Secret achievement"><img src="assets/trophies/achievements/birthday-day.svg#gh-light-mode-only" alt="Secret achievement">
+  <img src="assets/trophies/achievements/constellation.svg#gh-dark-mode-only" alt="Secret achievement"><img src="assets/trophies/achievements/constellation-day.svg#gh-light-mode-only" alt="Secret achievement">
+  <img src="assets/trophies/achievements/friday-the-13th.svg#gh-dark-mode-only" alt="Secret achievement"><img src="assets/trophies/achievements/friday-the-13th-day.svg#gh-light-mode-only" alt="Secret achievement">
+  <img src="assets/trophies/achievements/full-house.svg#gh-dark-mode-only" alt="Secret achievement"><img src="assets/trophies/achievements/full-house-day.svg#gh-light-mode-only" alt="Secret achievement">
+  <img src="assets/trophies/achievements/ghost.svg#gh-dark-mode-only" alt="Secret achievement"><img src="assets/trophies/achievements/ghost-day.svg#gh-light-mode-only" alt="Secret achievement">
+  <img src="assets/trophies/achievements/green-wall.svg#gh-dark-mode-only" alt="Secret achievement"><img src="assets/trophies/achievements/green-wall-day.svg#gh-light-mode-only" alt="Secret achievement">
+  <img src="assets/trophies/achievements/leap-day.svg#gh-dark-mode-only" alt="Secret achievement"><img src="assets/trophies/achievements/leap-day-day.svg#gh-light-mode-only" alt="Secret achievement">
+  <img src="assets/trophies/achievements/midnight-oil.svg#gh-dark-mode-only" alt="Secret achievement"><img src="assets/trophies/achievements/midnight-oil-day.svg#gh-light-mode-only" alt="Secret achievement">
+  <img src="assets/trophies/achievements/new-year.svg#gh-dark-mode-only" alt="Secret achievement"><img src="assets/trophies/achievements/new-year-day.svg#gh-light-mode-only" alt="Secret achievement">
+  <img src="assets/trophies/achievements/palindrome.svg#gh-dark-mode-only" alt="Secret achievement"><img src="assets/trophies/achievements/palindrome-day.svg#gh-light-mode-only" alt="Secret achievement">
+  <img src="assets/trophies/achievements/round-number.svg#gh-dark-mode-only" alt="Secret achievement"><img src="assets/trophies/achievements/round-number-day.svg#gh-light-mode-only" alt="Secret achievement">
+  <img src="assets/trophies/achievements/the-answer.svg#gh-dark-mode-only" alt="Secret achievement"><img src="assets/trophies/achievements/the-answer-day.svg#gh-light-mode-only" alt="Secret achievement">
+</p>
+
+</details>
+
+<p align="center"><sub>Refreshed daily by <a href="https://github.com/tannergolden/trophies">tannergolden/trophies</a></sub></p>
 <!-- trophies:end -->
 
 Two things to notice. Every card exists twice, a **Night** file for GitHub's
