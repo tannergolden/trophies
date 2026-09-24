@@ -260,10 +260,12 @@ What a consumer pinned to `v1` can rely on:
    has none: a schedule and a `uses:`.
 2. The output tree mirrors the catalogue; nothing else under `out` is touched.
 3. The README is edited only between the markers.
-4. Commits are authored by `github-actions[bot]`, as Conventional Commits with
-   the required scope and body, and each one is unique to the run: the
-   subject names what happened and the body carries the values, the date and
-   the run id.
+4. Commits are authored by the kit's author (the workflow's `author` input)
+   and committed by `github-actions[bot]`, as Conventional Commits with the
+   required scope and body, and each one is unique to the run: the subject
+   names what happened and the body carries the values, the date and the run
+   id. The scanner recognises that scope and sets those commits aside, so a
+   refresh never counts toward the author's own trophies, or anyone's.
 5. A kit release never breaks a scheduled run: a version stamp difference is
    tolerated and regenerated, and the self-test guards the golden render.
 6. Everyone's public total is exactly one hundred achievements per mode.

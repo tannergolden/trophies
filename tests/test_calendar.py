@@ -103,6 +103,22 @@ class Scanner(unittest.TestCase):
         self.assertEqual(st["days"], ["2026-03-01"])
         self.assertEqual(st["authors"], {"octo": 1, "bot": 1})
 
+    def test_refresh_commits_are_set_aside(self):
+        from trophykit.scan import merge_stats, without_refreshes
+        st = empty_stats()
+        classify({"message": "chore(trophies): \U0001F3C6 reach Gold in Commits", "author": {"date": "2026-03-02T00:00:00Z", "user": {"login": "tannergolden"}},
+                  "changedFilesIfAvailable": 220, "additions": 5000, "deletions": 5000}, st)
+        classify({"message": "feat: real work", "author": {"date": "2026-03-02T09:00:00Z", "user": {"login": "tannergolden"}},
+                  "changedFilesIfAvailable": 1, "additions": 1, "deletions": 0}, st)
+        self.assertEqual((st["refresh"], st["total"], st["midnight"], st["sweeping"], st["heavy"]), (1, 1, 0, 0, 0))
+        self.assertEqual(st["refresh_days"], {"2026-03-02": 1})
+        self.assertEqual(st["authors"], {"tannergolden": 1})
+        merged = merge_stats([{"stats": st}, {"stats": st}])
+        self.assertEqual((merged["refresh"], merged["refresh_days"]), (2, {"2026-03-02": 2}))
+        days = {D(2026, 3, 2): 3, D(2026, 3, 3): 1}
+        self.assertEqual(without_refreshes(days, merged), {D(2026, 3, 2): 1, D(2026, 3, 3): 1})
+        self.assertEqual(without_refreshes({D(2026, 3, 2): 2}, merged), {})
+
 
 if __name__ == "__main__":
     unittest.main()

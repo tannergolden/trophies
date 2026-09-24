@@ -185,7 +185,9 @@ def measure(gh, owner: str, name: str, ledger: dict, *, today: dt.date, scan_pag
 
     values = {
         "stars": stars_now, "forks": forks_others, "contributors": len(contributors),
-        "commits": _count(((r.get("defaultBranchRef") or {}).get("target") or {}).get("history")),
+        # The branch total less the refresh commits the scanner has seen, so
+        # the case does not earn a commit for every day it is redrawn.
+        "commits": max(0, _count(((r.get("defaultBranchRef") or {}).get("target") or {}).get("history")) - st["refresh"]),
         "releases": r["releases"]["totalCount"], "merged": r["merged"]["totalCount"], "resolved": r["closedIssues"]["totalCount"],
         "active": len(days_set),
     }

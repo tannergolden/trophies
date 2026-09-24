@@ -52,7 +52,7 @@ so a fix lands once and reaches every case pinned to `v1`.
 | :----------------------- | :------------------------------------------------------------------------ |
 | `src/trophy-kit.py`      | **The kit.** Measures over GitHub's API and renders the SVGs. Stdlib only. |
 | `action.yml`             | **The action.** Runs the kit against the calling repository.              |
-| `.github/workflows/trophies.yml` | **The workflow.** Checkout, kit, commit as the bot. What your stub calls. |
+| `.github/workflows/trophies.yml` | **The workflow.** Checkout, kit, commit, push. What your stub calls.      |
 | `src/trophykit/catalogue.py` | **The catalogue.** Every trophy and achievement, as data.               |
 
 ---
@@ -272,11 +272,17 @@ jobs:
 Run it once from the Actions tab. The first run writes a block between
 `<!-- trophies:start -->` and `<!-- trophies:end -->` at the end of your README
 (move the markers wherever you like; later runs rewrite only what is between
-them), renders into `assets/trophies/`, and commits as `github-actions[bot]`.
-Nothing is copied into your repository except that stub.
+them), renders into `assets/trophies/`, and commits. Nothing is copied into
+your repository except that stub.
 
-The bot commits, never you, because a commit authored by you would count
-toward your own Commits and Streak trophies every day.
+**Who the commit is by.** Each refresh is authored by
+[@tannergolden](https://github.com/tannergolden), the author of every trophy
+on the page, and committed by `github-actions[bot]`, which is what pushed
+it. Neither is you, so nothing here can count toward your own Commits or
+Streak. The kit also recognises its own commits by their `chore(trophies)`
+scope and sets them aside when it measures, so they count toward nobody's
+trophies, its author's included. The `author` input on the workflow
+changes the name if you want a different one.
 
 ### Or a repository
 
@@ -320,8 +326,8 @@ and `commit-branch` as inputs, for the common cases without a config file.
 Every trophy counts something that only grows. Tier thresholds rise about
 five times per step, and past Diamond a trophy earns a **star** each time the
 Diamond number doubles, up to five. Counting is honest by design: the profile
-repository's own commits, bot commits, forks and stars you gave your own
-repositories are all left out.
+repository's own commits, bot commits, the kit's own refresh commits, forks
+and stars you gave your own repositories are all left out.
 
 **[`docs/Catalogue.md`](docs/Catalogue.md)** lists every trophy and every
 achievement in both modes, with its threshold and the exact GitHub data it is

@@ -15,7 +15,7 @@ from collections import Counter
 
 from . import calendar as cal
 from .catalogue import ACH, CORE, measure as tier_of
-from .scan import SEMVER, merge_stats, scan_repository
+from .scan import SEMVER, merge_stats, scan_repository, without_refreshes
 
 USER = """
 query($login:String!){ rateLimit{cost}
@@ -152,6 +152,12 @@ def measure(gh, login: str, ledger: dict, *, today: dt.date, private: bool = Fal
     entries = [scans[r["nameWithOwner"]] for r in own if r["nameWithOwner"] in scans]
     incomplete = sum(1 for e in entries if not e.get("complete"))
     st = merge_stats(entries)
+    # A refresh commit authored by the subject counts in GitHub's calendar
+    # and totals like any other; the scanner knows which they were.
+    commits = max(0, commits - st["refresh"])
+    days = without_refreshes(days, st)
+    refreshed_in = {r["nameWithOwner"]: (scans[r["nameWithOwner"]].get("stats") or {}).get("refresh", 0)
+                    for r in own if r["nameWithOwner"] in scans}
     if incomplete:
         notes.append(f"{incomplete} repositories still being scanned; heavy achievements catch up on later runs")
 
@@ -173,7 +179,7 @@ def measure(gh, login: str, ledger: dict, *, today: dt.date, private: bool = Fal
     # -- achievements, by slug ---------------------------------------------------------------
     has = lambda r, *keys: any(r.get(k) for k in keys)  # noqa: E731
     per_repo = lambda pred: sum(1 for r in own if pred(r))  # noqa: E731
-    mine = lambda r: _count(((r.get("defaultBranchRef") or {}).get("target") or {}).get("mine"))  # noqa: E731
+    mine = lambda r: max(0, _count(((r.get("defaultBranchRef") or {}).get("target") or {}).get("mine")) - refreshed_in.get(r["nameWithOwner"], 0))  # noqa: E731
     years_on = (today - created).days // 365
     friday_release = any(cal.parse_time(rel["createdAt"]).weekday() == 4 for rel in releases)
     curs = {

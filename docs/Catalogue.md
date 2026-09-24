@@ -39,7 +39,7 @@ than a single count, so it runs under a budget and catches up over a week.
 
 ## 👤 Profile Mode
 
-The subject is a person. Counts run across every repository the account owns, with the profile repository, bot commits, forks and self-stars left out.
+The subject is a person. Counts run across every repository the account owns, with the profile repository, bot commits, the kit's own refresh commits, forks and self-stars left out.
 
 ### The 8 core trophies
 

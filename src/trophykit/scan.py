@@ -11,6 +11,12 @@ is fully scanned within about a week of daily runs and cheap thereafter.
 
 Timestamps use `author.date`, which GitHub keeps in the author's own offset,
 so "between midnight and 5 a.m." means the author's midnight, not UTC's.
+
+A refresh commit, the one this kit writes, is recognised by its scope,
+`chore(trophies):`, and counted only as a refresh: it adds nothing to the
+commit total, the active days, the streak or any craft statistic. That is
+what lets the commit carry a person's name as its author without that
+person earning a trophy for it.
 """
 from __future__ import annotations
 
@@ -22,9 +28,10 @@ from .calendar import parse_time
 CONVENTIONAL = re.compile(r"^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([^)]*\))?!?:\s", re.I)
 EMOJI = re.compile(r"^(?:[\U0001F300-\U0001FAFF☀-➿⭐✅❌]|:[a-z0-9_+-]+:)")
 SEMVER = re.compile(r"^v?\d+\.\d+\.\d+(?:[-+].*)?$")
+REFRESH = re.compile(r"^chore\(trophies\):")
 
 STATS = ("total", "conventional", "emoji", "signed", "coauthored", "revert", "onefile", "fix", "test", "docs",
-         "night", "early", "lunch", "midnight", "heavy", "sweeping")
+         "night", "early", "lunch", "midnight", "heavy", "sweeping", "refresh")
 
 HISTORY = """
 query($owner:String!,$name:String!,$first:Int!,$after:String,$author:CommitAuthor){ rateLimit{cost}
@@ -35,13 +42,21 @@ query($owner:String!,$name:String!,$first:Int!,$after:String,$author:CommitAutho
 
 
 def empty_stats() -> dict:
-    return {k: 0 for k in STATS} | {"days": [], "authors": {}, "max_lines": 0, "max_files": 0}
+    return {k: 0 for k in STATS} | {"days": [], "authors": {}, "max_lines": 0, "max_files": 0, "refresh_days": {}}
 
 
 def classify(node: dict, stats: dict) -> None:
     """Fold one commit into `stats`."""
     msg = (node.get("message") or "").strip()
     first = msg.split("\n", 1)[0]
+    if REFRESH.match(first):
+        stats["refresh"] += 1
+        when = (node.get("author") or {}).get("date") or node.get("committedDate")
+        if when:
+            day = parse_time(when).date().isoformat()
+            rd = stats.setdefault("refresh_days", {})
+            rd[day] = rd.get(day, 0) + 1
+        return
     stats["total"] += 1
     if CONVENTIONAL.match(first):
         stats["conventional"] += 1
@@ -137,6 +152,7 @@ def merge_stats(entries: list) -> dict:
     out = empty_stats()
     days: set = set()
     authors: Counter = Counter()
+    refresh_days: Counter = Counter()
     for e in entries:
         st = (e or {}).get("stats") or {}
         for k in STATS:
@@ -145,6 +161,26 @@ def merge_stats(entries: list) -> dict:
         out["max_files"] = max(out["max_files"], st.get("max_files", 0))
         days.update(st.get("days", []))
         authors.update(st.get("authors", {}))
+        refresh_days.update(st.get("refresh_days", {}))
     out["days"] = sorted(days)
     out["authors"] = dict(authors)
+    out["refresh_days"] = dict(refresh_days)
+    return out
+
+
+def without_refreshes(days: dict, stats: dict):
+    """The contribution calendar with this kit's own refresh commits taken back out.
+
+    GitHub counts a refresh commit authored by the subject in the subject's
+    own repository like any other. The scanner knows which days those fell
+    on, so each day gives them back; a day left at zero disappears, which is
+    what keeps a streak honest.
+    """
+    out = dict(days)
+    for day, n in (stats.get("refresh_days") or {}).items():
+        d = parse_time(day + "T00:00:00Z").date()
+        if d in out:
+            out[d] = max(0, out[d] - n)
+            if out[d] == 0:
+                del out[d]
     return out

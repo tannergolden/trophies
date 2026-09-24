@@ -96,7 +96,7 @@ def _ach_table(mode: str, ach, groups) -> str:
 def page() -> str:
     parts = [HEAD]
     for mode, label, intro in (
-        ("profile", "Profile Mode", "The subject is a person. Counts run across every repository the account owns, with the profile repository, bot commits, forks and self-stars left out."),
+        ("profile", "Profile Mode", "The subject is a person. Counts run across every repository the account owns, with the profile repository, bot commits, the kit's own refresh commits, forks and self-stars left out."),
         ("repository", "Repository Mode", "The subject is one repository: the one the stub runs in. Health is binary here, Reach draws on the ledger and the traffic API, and stars exclude the owner and, for an organization, its members."),
     ):
         m = MODES[mode]

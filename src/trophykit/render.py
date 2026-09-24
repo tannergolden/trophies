@@ -229,6 +229,6 @@ def commit_message(planned: dict, result: dict, changed: list, today, reached_to
     if other:
         what += " and " + ", ".join(other)
     what += (". Nothing is fetched when the README is viewed, so every value the case shows has to be "
-             "committed; the bot commits so the refresh never counts toward the subject's own trophies.")
+             "committed. The kit recognises this commit by its scope and never counts it toward anyone's trophies.")
     lines += textwrap.wrap(what, 72)
     return subject + "\n\n" + "\n".join(lines) + "\n"
