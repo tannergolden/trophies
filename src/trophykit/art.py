@@ -511,7 +511,12 @@ def level_card(theme: dict, cores: list, values: dict, ach: list, curs: dict, su
            + cv.txt(str(st["L"]), face="num", size=36, x=78, y=94, anchor="middle", fill="#FFFFFF")
            + f'<rect x="154" y="22" width="1" height="108" fill="{th["edge"][0]}" fill-opacity="{th["edge"][1]}"/>')
     x0, w = 170, 234
-    ttl = f"{subject.upper()}’S TROPHY CASE"
+    # A repository is named by its own name: the owner is in the README and
+    # the alt text, and the title face has no slash. A name that already
+    # ends in an S takes the bare apostrophe, so "trophies" reads as
+    # TROPHIES’ TROPHY CASE rather than TROPHIES’S.
+    name = subject.rsplit("/", 1)[-1].upper()
+    ttl = f"{name}{'’' if name.endswith('S') else '’S'} TROPHY CASE"
     tsz, tls = 12.5, 2.0
     while width(ttl, "serif", tsz, tls) > w and tsz > 8:
         tsz -= .5
