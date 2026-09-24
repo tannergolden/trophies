@@ -95,7 +95,9 @@ class GitHub:
         errors = data.get("errors")
         if errors and not data.get("data"):
             raise ApiError("GraphQL: " + "; ".join(e.get("message", "?") for e in errors))
-        self.last_errors = [e.get("message", "?") for e in errors or []]
+        # The path names the field, which is what a scope error hides.
+        self.last_errors = [e.get("message", "?") + (f" (at {'.'.join(str(x) for x in e['path'])})" if e.get("path") else "")
+                            for e in errors or []]
         for msg in self.last_errors:
             # Partial data with per-field errors (a private field, a missing
             # scope): keep what came back and say, visibly, what did not.
