@@ -26,9 +26,10 @@ jobs:
   trophies:
     if: ${{ !github.event.repository.is_template }}
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # the SVGs, the README block and the ledger
+      pull-requests: write # only used with commit: pr
     uses: ./.github/workflows/trophies.yml
     with:
       mode: repository
+      kit-ref: ${{ github.sha }} # the tree that carries this change, not the last release
     secrets: inherit # zizmor: ignore[secrets-inherit] - first-party callee at a local path.

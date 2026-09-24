@@ -93,6 +93,12 @@ runs:
         # --untracked-files=all: the default collapses a new directory to one
         # "?? dir/" line, so a second SVG rendered into it would read as
         # "nothing changed".
+        # The reusable workflow fetches this action beside the consumer's
+        # checkout; keep that folder out of git's view so it never counts as
+        # a change and never lands in a commit.
+        if [ -d "$root/.trophies-kit" ] && [ -d "$root/.git" ]; then
+          grep -qx '.trophies-kit/' "$root/.git/info/exclude" 2>/dev/null || echo '.trophies-kit/' >> "$root/.git/info/exclude"
+        fi
         before="$(git -C "$root" status --porcelain --untracked-files=all 2>/dev/null || true)"
 
         args=( --root "$root" --config "$KIT_CONFIG" )

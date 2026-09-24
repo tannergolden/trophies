@@ -34,6 +34,13 @@ on:
         description: 'The fixed branch the pull request rides on when commit is pr.'
         type: string
         default: 'chore/trophies'
+      kit-ref:
+        description: >-
+          The tannergolden/trophies ref to run: the v1 tag by default. This
+          repository's own case passes its commit, so a change is exercised by
+          the tree that carries it.
+        type: string
+        default: 'v1'
     secrets:
       TROPHIES_TOKEN:
         description: 'Optional read-only personal token: counts private contributions in profile mode.'
@@ -59,14 +66,25 @@ jobs:
       changed: ${{ steps.kit.outputs.changed }}
       summary: ${{ steps.kit.outputs.summary }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5.0.1
         with:
           # The bot commits as itself and the ledger's weekly snapshot must
           # land, so the checkout keeps credentials for the push below.
           persist-credentials: true # zizmor: ignore[artipacked] - the push step below needs them, and nothing else runs after it.
 
+      # A reusable workflow runs against the CALLER's checkout, so the kit is
+      # fetched beside it and run by local path. The folder is kept out of
+      # the commit below; nothing of it reaches the consumer's tree.
+      - name: Fetch the kit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5.0.1
+        with:
+          repository: tannergolden/trophies
+          ref: ${{ inputs.kit-ref }}
+          path: .trophies-kit
+          persist-credentials: false
+
       - id: kit
-        uses: tannergolden/trophies@v1
+        uses: ./.trophies-kit
         with:
           mode: run
           case-mode: ${{ inputs.mode }}
@@ -88,13 +106,19 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          rm -rf .trophies-kit
           git add -A
           git commit -F "$MESSAGE_FILE"
           git push
 
+      - name: Drop the kit before the pull request is cut
+        if: ${{ steps.kit.outputs.changed == 'true' && inputs.commit == 'pr' }}
+        shell: bash
+        run: rm -rf .trophies-kit
+
       - name: Open or update the pull request
         if: ${{ steps.kit.outputs.changed == 'true' && inputs.commit == 'pr' }}
-        uses: tannergolden/standards/actions/open-pr@v1
+        uses: tannergolden/standards/actions/open-pr@v1 # zizmor: ignore[unpinned-uses] - first-party action on its moving major, the way every stub calls standards.
         with:
           token: ${{ github.token }}
           branch: ${{ inputs.commit-branch }}

@@ -466,7 +466,7 @@ def xp_ach(a: Achievement, cur) -> int:
     return sum(RAR_XP[r] for r in a.rarities[: st["k"]])
 
 
-def lv_thr(L: int) -> int:
+def level_xp(L: int) -> int:
     return 15 * L * (L + 1)
 
 
@@ -474,12 +474,12 @@ def level_stats(cores: list, values: dict, ach: list, curs: dict) -> dict:
     """XP, level, and case completion for a whole case."""
     xp = round(sum(xp_core(c, values[c.key]) for c in cores) + sum(xp_ach(a, curs.get(a.slug)) for a in ach))
     L = 0
-    while lv_thr(L + 1) <= xp:
+    while level_xp(L + 1) <= xp:
         L += 1
     ms = [measure(c, values[c.key]) for c in cores]
     earned = sum(1 for a in ach if ach_state(a, curs.get(a.slug))["earned"])
     completion = (sum(min(1, (m["t"] + (m["pct"] if m["t"] < 5 else 1)) / 5) for m in ms) + earned) / (len(cores) + len(ach))
-    return {"xp": xp, "L": L, "lp": (xp - lv_thr(L)) / (lv_thr(L + 1) - lv_thr(L)), "bt": min(5, L // 10 + 1),
+    return {"xp": xp, "L": L, "lp": (xp - level_xp(L)) / (level_xp(L + 1) - level_xp(L)), "bt": min(5, L // 10 + 1),
             "ms": ms, "earned": earned, "completion": completion}
 
 
@@ -517,7 +517,7 @@ def level_card(theme: dict, cores: list, values: dict, ach: list, curs: dict, su
         tsz -= .5
         tls = max(.8, tls - .2)
     cv.add(cv.txt(ttl, face="serif", size=tsz, x=x0, y=42, ls=tls, fill=th["value"])
-           + cv.txt(f"LEVEL {st['L']}  ·  {fmt(st['xp'])} XP  ·  {fmt(lv_thr(st['L'] + 1) - st['xp'])} TO LEVEL {st['L'] + 1}", face="meta", size=9.5, x=x0, y=59, ls=.5, fill=th["muted"])
+           + cv.txt(f"LEVEL {st['L']}  ·  {fmt(st['xp'])} XP  ·  {fmt(level_xp(st['L'] + 1) - st['xp'])} TO LEVEL {st['L'] + 1}", face="meta", size=9.5, x=x0, y=59, ls=.5, fill=th["muted"])
            + f'<rect x="{x0}" y="65" width="{w}" height="5" rx="2.5" fill="{th["track"][0]}" fill-opacity="{th["track"][1]}"/><rect x="{x0}" y="65" width="{f1(max(5, w * st["lp"]))}" height="5" rx="2.5" fill="url(#xp)"/>'
            + cv.txt(f"CASE {round(st['completion'] * 100)}% COMPLETE  ·  {st['earned']} OF {len(ach)} ACHIEVEMENTS", face="meta", size=9.5, x=x0, y=90, ls=.5, fill=th["muted"])
            + f'<rect x="{x0}" y="96" width="{w}" height="5" rx="2.5" fill="{th["track"][0]}" fill-opacity="{th["track"][1]}"/><rect x="{x0}" y="96" width="{f1(max(5, w * st["completion"]))}" height="5" rx="2.5" fill="url(#cp)"/>'
