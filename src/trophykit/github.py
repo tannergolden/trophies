@@ -1,0 +1,126 @@
+# SPDX-FileCopyrightText: 2026 Tanner Golden
+# SPDX-License-Identifier: MIT
+"""A small GitHub client on urllib: GraphQL, REST, retries and a cost meter.
+
+Nothing here knows about trophies. It exists so the measurement modules can
+say what they want in one line and so a test can substitute a fake with the
+same two methods.
+"""
+from __future__ import annotations
+
+import json
+import os
+import sys
+import time
+import urllib.error
+import urllib.request
+
+GRAPHQL = "https://api.github.com/graphql"
+REST = "https://api.github.com"
+UA = "tannergolden-trophies"
+
+
+class ApiError(RuntimeError):
+    pass
+
+
+class GitHub:
+    """`gql(query, **variables)` and `rest(path)`, with retries on 5xx and secondary limits."""
+
+    def __init__(self, token: str | None = None, retries: int = 4, quiet: bool = False):
+        self.token = token or os.environ.get("TROPHIES_TOKEN") or os.environ.get("GITHUB_TOKEN") or ""
+        if not self.token:
+            raise ApiError("no token: set GITHUB_TOKEN (the workflow does) or TROPHIES_TOKEN")
+        self.retries = retries
+        self.quiet = quiet
+        self.calls = 0
+        self.points = 0  # GraphQL rate-limit cost, summed from each response
+
+    # -- transport -------------------------------------------------------------
+    def _request(self, url: str, body: bytes | None, accept: str) -> tuple[int, dict, object]:
+        req = urllib.request.Request(url, data=body, method="POST" if body is not None else "GET")
+        req.add_header("Authorization", f"Bearer {self.token}")
+        req.add_header("Accept", accept)
+        req.add_header("User-Agent", UA)
+        if body is not None:
+            req.add_header("Content-Type", "application/json")
+        delay = 2.0
+        for attempt in range(self.retries + 1):
+            try:
+                with urllib.request.urlopen(req, timeout=60) as resp:
+                    self.calls += 1
+                    raw = resp.read()
+                    return resp.status, dict(resp.headers), (json.loads(raw) if raw else None)
+            except urllib.error.HTTPError as exc:
+                self.calls += 1
+                retry_after = exc.headers.get("Retry-After")
+                transient = exc.code >= 500 or exc.code in (403, 429) and (retry_after or "rate limit" in (exc.reason or "").lower())
+                if exc.code == 404:
+                    return 404, dict(exc.headers), None
+                if exc.code in (401,):
+                    raise ApiError(f"GitHub refused the token ({exc.code}) for {url}")
+                if not transient or attempt == self.retries:
+                    detail = exc.read().decode("utf-8", "replace")[:300]
+                    raise ApiError(f"GitHub answered {exc.code} for {url}: {detail}")
+                wait = float(retry_after) if retry_after else delay
+                self._log(f"retrying after {exc.code} in {wait:.0f}s")
+                time.sleep(wait)
+                delay *= 2
+            except (urllib.error.URLError, TimeoutError) as exc:
+                if attempt == self.retries:
+                    raise ApiError(f"network failure for {url}: {exc}")
+                time.sleep(delay)
+                delay *= 2
+        raise ApiError("unreachable")
+
+    def _log(self, msg: str) -> None:
+        if not self.quiet:
+            print(f"::debug::{msg}" if os.environ.get("GITHUB_ACTIONS") else f"  {msg}", file=sys.stderr)
+
+    # -- the two calls -------------------------------------------------------------
+    def gql(self, query: str, **variables) -> dict:
+        body = json.dumps({"query": query, "variables": variables}).encode()
+        _, _, data = self._request(GRAPHQL, body, "application/vnd.github+json")
+        if not isinstance(data, dict):
+            raise ApiError("GraphQL returned no body")
+        cost = (data.get("data") or {}).get("rateLimit", {}).get("cost")
+        if cost:
+            self.points += cost
+        errors = data.get("errors")
+        if errors and not data.get("data"):
+            raise ApiError("GraphQL: " + "; ".join(e.get("message", "?") for e in errors))
+        if errors:
+            # Partial data with per-field errors (a private field, a missing
+            # scope): keep what came back and say what did not.
+            for e in errors:
+                self._log("GraphQL partial: " + e.get("message", "?"))
+        return data["data"]
+
+    def rest(self, path: str, accept: str = "application/vnd.github+json"):
+        """GET a REST path. Returns the parsed body, or None on 404 / 403 (no permission)."""
+        url = path if path.startswith("http") else REST + path
+        try:
+            status, _, data = self._request(url, None, accept)
+        except ApiError as exc:
+            if " 403 " in str(exc) or "403 for" in str(exc):
+                return None
+            raise
+        return None if status == 404 else data
+
+    def paged(self, query: str, path: tuple, page_size: int = 100, limit: int = 10, **variables) -> list:
+        """Walk a GraphQL connection at `path` (keys into the response) until it ends or `limit` pages."""
+        nodes: list = []
+        after = None
+        for _ in range(limit):
+            data = self.gql(query, first=page_size, after=after, **variables)
+            conn = data
+            for key in path:
+                conn = (conn or {}).get(key)
+            if not conn:
+                break
+            nodes.extend(n for n in conn.get("nodes", []) if n)
+            info = conn.get("pageInfo") or {}
+            if not info.get("hasNextPage"):
+                break
+            after = info.get("endCursor")
+        return nodes
