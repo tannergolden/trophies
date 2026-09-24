@@ -233,13 +233,13 @@ Where each tier sits, as the share of starred public repositories at or above it
 
 | Trophy | Bronze | Silver | Gold | Platinum | Diamond | Basis |
 | :-- | --: | --: | --: | --: | --: | :-- |
-| **Stars** | top 10% | top 1% | top 0.2% | top 0.05% | top 0.01% | estimated: star tallies, Zipf tail from 1 star |
-| **Forks** | top 8% | top 1.5% | top 0.35% | top 0.07% | top 0.015% | estimated: one fork per seven stars |
-| **Contributors** | top 25% | top 8% | top 2.5% | top 0.6% | top 0.12% | estimated: most starred repositories have one author |
-| **Commits** | top 15% | top 4% | top 1% | top 0.4% | top 0.08% | estimated: popular-project quartiles 102 / 393 / 1,230 commits, general median near 10 |
-| **Releases** | top 12% | top 4% | top 1% | top 0.35% | top 0.06% | estimated: most repositories never publish a release |
-| **Merged PRs** | top 10% | top 3% | top 0.6% | top 0.15% | top 0.03% | estimated: 43 million merges a month across 630 million repositories |
-| **Issues Resolved** | top 8% | top 2.5% | top 0.5% | top 0.12% | top 0.025% | estimated: issues close less often than pull requests merge |
+| **Stars** | top 8.9% | top 1.5% | top 0.38% | top 0.1% | top 0.017% | measured: every starred public repository counted by the search API, 2026-09-24 |
+| **Forks** | top 7.1% | top 1.8% | top 0.47% | top 0.087% | top 0.017% | measured: every starred public repository counted by the search API, 2026-09-24 |
+| **Contributors** | top 43% | top 9.8% | top 0.98% | top 0.42% | top 0.032% | measured: 200 repositories in 5 star bands, weighted by band, 2026-09-24 |
+| **Commits** | top 8% | top 0.83% | top 0.2% | top 0.073% | top 0.01% | measured: 200 repositories in 5 star bands, weighted by band, 2026-09-24 |
+| **Releases** | top 10% | top 4.2% | top 0.9% | top 0.53% | top 0.19% | measured: 200 repositories in 5 star bands, weighted by band, 2026-09-24 |
+| **Merged PRs** | top 6.7% | top 0.67% | top 0.21% | top 0.068% | top 0.015% | measured: 200 repositories in 5 star bands, weighted by band, 2026-09-24 |
+| **Issues Resolved** | top 9.6% | top 0.94% | top 0.22% | top 0.041% | top 0.0055% | measured: 200 repositories in 5 star bands, weighted by band, 2026-09-24 |
 | **Active Days** | top 15% | top 5% | top 1% | top 0.2% | top 0.04% | estimated: 1.66 pushes a quarter per developer on average |
 
 ### The 100 achievements
@@ -396,15 +396,15 @@ reference population, and each share says how it was got.
   located account is a person who filled in a profile, which is the population
   that puts a trophy case on one. The median has 36 followers and 18 public
   contributions a year; 26% made none.
-- **Repository mode: public repositories someone else has starred.** About 9% of
-  GitHub's 428 million public repositories (the
-  [Innovation Graph](https://github.com/github/innovationgraph), 2026 Q1), around
-  38 million. Star counts follow a near-Zipf tail, anchored by the published
-  tallies of repositories over 100 and over 1,000 stars and by the 2016
-  thousand-stars census (7,699 repositories over 1,000 stars, 44% of them over
-  2,000, 12% over 5,000, 4% over 10,000). Forks run about one per seven stars.
-  The **📐 Calibrate** workflow replaces this model with a measured sample once
-  it has run.
+- **Repository mode: public, non-fork repositories with at least one star,**
+  measured through GitHub's API on 2026-09-24 by `src/calibrate.py` (the
+  **📐 Calibrate** workflow, quarterly). Stars and forks are counted exactly:
+  the search API answers how many of the 32,180,494 such repositories sit at or
+  above each threshold. The other cores come from 200 repositories sampled
+  across five star bands (40 at 1–9 stars, 40 at 10–99 stars, 40 at 100–999 stars, 40 at 1,000–9,999 stars, 40 at 10,000+ stars), each measured the way a case measures it
+  (contributors, commits, releases, merged pull requests, resolved issues)
+  and weighted by its band's share of the population. Active days cannot be
+  read from the API and stay estimated.
 
 **Three kinds of number.** *Measured* is read off a dataset directly (followers,
 yearly activity, and every repository-mode core the sample carries). *Derived* is a dataset scaled by a stated factor (all-time
