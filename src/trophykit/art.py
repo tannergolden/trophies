@@ -19,7 +19,8 @@ import math
 from html import escape
 
 from . import KIT_VERSION
-from .catalogue import ICONS, PAL, RARITY_NAMES, TIER_NAMES, TIERS, Achievement, Core, ach_state, measure
+from . import calibration
+from .catalogue import ICONS, PAL, RARITY_NAMES, RCORE, TIER_NAMES, TIERS, Achievement, Core, ach_state, measure
 from .text import Lettering, f1, width
 
 CARD_W, CARD_H, CARD_K = 180, 244, 164 / 180
@@ -111,21 +112,25 @@ def status_text(m: dict) -> str:
 
 
 def top_pct(core: Core, v: int) -> float:
-    """Illustrative percentile from the tier thresholds, until a real sample sets them."""
-    s = core.steps
-    anchors = [(0, 100), (s[0], 50), (s[1], 25), (s[2], 10), (s[3], 3), (s[4], 1), (s[4] * 2, .3), (s[4] * 4, .1)]
-    lg = lambda x: math.log(x + 1)  # noqa: E731
-    if v >= anchors[7][0]:
-        return .1
-    for i in range(7):
-        if v < anchors[i + 1][0]:
-            f = (lg(v) - lg(anchors[i][0])) / (lg(anchors[i + 1][0]) - lg(anchors[i][0]))
-            return math.exp(math.log(anchors[i][1]) + (math.log(anchors[i + 1][1]) - math.log(anchors[i][1])) * f)
-    return .1
+    """Share of the reference population at or above `v`, from the calibration.
+
+    The two modes share some keys (commits, stars), so the mode is read from
+    which core list the trophy belongs to."""
+    mode = "repository" if any(c is core for c in RCORE) else "profile"
+    return calibration.top_pct(mode, core.key, v)
 
 
 def pct_label(p: float) -> str:
-    return "TOP " + (str(round(p)) if p >= 10 else str(round(p * 10) / 10).rstrip("0").rstrip(".")) + "%"
+    """TOP 17%, TOP 2.8%, TOP 0.05%: whole numbers from ten, one decimal to one, two figures below."""
+    if p >= 10:
+        s = str(round(p))
+    elif p >= 1:
+        s = f"{p:.1f}".rstrip("0").rstrip(".")
+    else:
+        s = f"{p:.2g}"
+        if "e" in s:
+            s = f"{p:.3f}".rstrip("0")
+    return f"TOP {s}%"
 
 
 def alt_text(core: Core, m: dict, o: dict) -> str:

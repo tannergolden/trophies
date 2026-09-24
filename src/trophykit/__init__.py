@@ -11,4 +11,4 @@ when a README is viewed.
 # stamped with it; --check hard-fails only same-version drift and treats a
 # version difference as "regenerate on the next run", so a kit release can
 # never wedge a consumer's schedule.
-KIT_VERSION = "1"
+KIT_VERSION = "2"

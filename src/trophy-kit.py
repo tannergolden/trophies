@@ -38,7 +38,7 @@ from trophykit.readme import apply as apply_readme  # noqa: E402
 
 # sha256 of one canonical render. The self-test fails when output changes while
 # KIT_VERSION did not: bump both together, knowingly.
-GOLDEN_SHA = "07eaad9137edec066598d9a4c3cc409a891a36ca906e3a5881a6eae9370cda7c"
+GOLDEN_SHA = "b1bb4e89fc92342f6ff7aee03f10442b9c317738d5010cb8fd58eafae543c7c5"
 
 
 def _today(args) -> dt.date:

@@ -3,6 +3,7 @@
 """docs/Catalogue.md, generated from the catalogue so it cannot drift."""
 from __future__ import annotations
 
+from . import calibration
 from .catalogue import MODES, RARITY_NAMES, TIER_NAMES
 
 HEAD = """<!--
@@ -58,12 +59,25 @@ def _fmt(n) -> str:
     return f"{n:,}"
 
 
+def _pct(p: float) -> str:
+    if p >= 10:
+        return f"{p:.0f}%"
+    if p >= 1:
+        return f"{p:.1f}".rstrip("0").rstrip(".") + "%"
+    return f"{p:.2g}%"
+
+
 def _core_table(mode: str, cores) -> str:
     rows = ["| Trophy | Counts | Enamel | Bronze | Silver | Gold | Platinum | Diamond | Source |", "| :-- | :-- | :-- | --: | --: | --: | --: | --: | :-- |"]
     for c in cores:
         unit = f" {c.unit}" if c.unit else ""
         rows.append(f'| <a name="{mode}-{c.key}"></a>**{c.title}** | {c.counts} | `{c.tok}` | '
                     + " | ".join(_fmt(s) + unit for s in c.steps) + f" | `{c.src}` |")
+    rows += ["", f"Where each tier sits, as the share of {'located accounts' if mode == 'profile' else 'starred public repositories'} at or above it:", "",
+             "| Trophy | Bronze | Silver | Gold | Platinum | Diamond | Basis |", "| :-- | --: | --: | --: | --: | --: | :-- |"]
+    for c in cores:
+        pts, b, note = calibration.CORE_PCT[(mode, c.key)]
+        rows.append(f"| **{c.title}** | " + " | ".join("top " + _pct(p) for _, p in pts) + f" | {calibration.BASIS_NAMES[b]}: {note} |")
     return "\n".join(rows)
 
 
@@ -74,8 +88,8 @@ def _ach_table(mode: str, ach, groups) -> str:
         if not mine:
             continue
         out.append(f"### {g}\n")
-        out.append("| Achievement | Earned by | Rarity | Source |")
-        out.append("| :-- | :-- | :-- | :-- |")
+        out.append("| Achievement | Earned by | Rarity | Who earns it | Source |")
+        out.append("| :-- | :-- | :-- | :-- | :-- |")
         for a in mine:
             flags = []
             if a.goals:
@@ -88,9 +102,53 @@ def _ach_table(mode: str, ach, groups) -> str:
                 flags.append(f"owner of `{a.only}` only")
             name = f'<a name="{mode}-{a.slug}"></a>**{a.name}**' + (f" <sub>{', '.join(flags)}</sub>" if flags else "")
             rarity = " → ".join(RARITY_NAMES[r] for r in a.rarities)
-            out.append(f"| {name} | {a.how} | {rarity} | `{a.src}` |")
+            share = " → ".join(_pct(x) for x in calibration.shares(mode, a.slug)) + f" <sub>{calibration.BASIS_NAMES[calibration.basis(mode, a.slug)]}</sub>"
+            out.append(f"| {name} | {a.how} | {rarity} | {share} | `{a.src}` |")
         out.append("")
     return "\n".join(out)
+
+
+CALIBRATION = """A tier name and a rarity are claims about how many reach a number. Every
+threshold and every rarity in this catalogue is pinned to a share of a
+reference population, and each share says how it was got.
+
+**Two reference populations.**
+
+- **Profile mode: located GitHub accounts.** Every account with a location set,
+  as collected by [`gayanvoice/top-github-users`](https://github.com/gayanvoice/top-github-users)
+  across 138 countries: 122,914 accounts refreshed on 2026-09-24, each with its
+  followers and its public and private contributions over the last year. A
+  located account is a person who filled in a profile, which is the population
+  that puts a trophy case on one. The median has 36 followers and 18 public
+  contributions a year; 26% made none.
+- **Repository mode: public repositories someone else has starred.** About 9% of
+  GitHub's 428 million public repositories (the
+  [Innovation Graph](https://github.com/github/innovationgraph), 2026 Q1), around
+  38 million. Star counts follow a near-Zipf tail, anchored by the published
+  tallies of repositories over 100 and over 1,000 stars and by the 2016
+  thousand-stars census (7,699 repositories over 1,000 stars, 44% of them over
+  2,000, 12% over 5,000, 4% over 10,000). Forks run about one per seven stars.
+
+**Three kinds of number.** *Measured* is read off a dataset directly (followers,
+yearly activity). *Derived* is a dataset scaled by a stated factor (all-time
+commits as three times one year's contributions; 2.22 repositories per developer
+from the Innovation Graph). *Estimated* applies the population's shape to a count
+no dataset holds, using the anchors above and the medians
+[`github-readme-stats`](https://github.com/anuraghazra/github-readme-stats) uses
+for its ranks (250 commits a year, 50 pull requests, 25 issues, 2 reviews, 50
+stars, 10 followers).
+
+**Rarity follows the share.** Common is 40% or more of the population, Uncommon
+15% to 40%, Rare 4% to 15%, Epic 1% to 4%, Legendary under 1%. The tier ladder
+aims at the same cuts for every trophy: Bronze about the top half, Silver the
+top quarter to third, Gold the top tenth, Platinum the top 3%, Diamond the top
+1%. The **Top N%** chip on a card interpolates between a trophy's anchors, so a
+value between two tiers reads a share between their two shares.
+
+The measured column is the honest one; the estimated column is a model, stated
+so it can be argued with. When a better dataset turns up, the numbers move and
+the words follow, in `src/trophykit/calibration.py`.
+"""
 
 
 def page() -> str:
@@ -107,6 +165,8 @@ def page() -> str:
         parts.append(f"### The {len(public)} achievements\n")
         parts.append(_ach_table(mode, m["ach"], m["groups"]))
         parts.append("---\n")
+    parts.append("## 📐 How The Numbers Were Set\n")
+    parts.append(CALIBRATION)
     parts.append("## 🏅 Tiers and Rarities\n")
     parts.append("| Tier | " + " | ".join(TIER_NAMES) + " |\n| :-- | " + " | ".join(":--" for _ in TIER_NAMES) + " |\n"
                  "| Metal | ghost | bronze | silver | gold | platinum | diamond |\n")

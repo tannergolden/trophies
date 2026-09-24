@@ -94,9 +94,11 @@ profile mode, days since the last release in repository mode.
 
 Three optional details, all on by default (`card: [rank, weekly, new]`):
 
-- **rank**: a TOP N% chip. Until a real sample of accounts sets the
-  percentiles, the figure is interpolated from the tier thresholds and is
-  illustrative.
+- **rank**: a TOP N% chip, the share of the reference population at or above
+  the value, read from `calibration.py`: 122,914 located GitHub accounts for a
+  profile, starred public repositories for a repository. Measured where a
+  dataset holds the count, derived or estimated and labelled so where it does
+  not; the catalogue's calibration section says which is which.
 - **weekly**: a green `+N` beside the value when the ledger shows growth over
   the last seven days.
 - **new**: a NEW corner ribbon and a one-time light burst for seven days after

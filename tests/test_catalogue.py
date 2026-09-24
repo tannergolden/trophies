@@ -87,7 +87,7 @@ class TierMaths(unittest.TestCase):
         st = c.ach_state(poly, 12)
         self.assertTrue(st["earned"])
         self.assertEqual((st["k"], st["tier"], st["next_tier"], st["next"]), (2, "II", "III", 20))
-        self.assertEqual(st["rarity"], 3)
+        self.assertEqual(st["rarity"], poly.rarities[1])  # the share decides the metal
         self.assertFalse(st["done"])
         self.assertTrue(c.ach_state(poly, 20)["done"])
         self.assertFalse(c.ach_state(poly, 4)["earned"])

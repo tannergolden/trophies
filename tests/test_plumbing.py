@@ -14,6 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+from trophykit import KIT_VERSION  # noqa: E402
 from trophykit import catalogue as c, config, ledger, readme, render, sample  # noqa: E402
 
 KIT = [sys.executable, str(ROOT / "src" / "trophy-kit.py")]
@@ -143,7 +144,7 @@ class Plan(unittest.TestCase):
             self.assertFalse(orphan.exists())
             self.assertIn("assets/trophies/orphan.svg", changed)
             self.assertEqual(render.check(root, planned), [])
-            (root / "assets/trophies/commits.svg").write_text("<!--trophy-kit v1 night--><svg/>")
+            (root / "assets/trophies/commits.svg").write_text(f"<!--trophy-kit v{KIT_VERSION} night--><svg/>")
             self.assertEqual(render.check(root, planned), ["assets/trophies/commits.svg"])
             (root / "assets/trophies/commits.svg").write_text("<!--trophy-kit v0 night--><svg/>")
             self.assertEqual(render.check(root, planned), [])  # another version: tolerated

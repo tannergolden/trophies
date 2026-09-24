@@ -329,6 +329,18 @@ Diamond number doubles, up to five. Counting is honest by design: the profile
 repository's own commits, bot commits, the kit's own refresh commits, forks
 and stars you gave your own repositories are all left out.
 
+**Every number is pinned to real data.** A tier name and a rarity are claims
+about how many people or projects reach a number, so each threshold carries
+the share of a reference population at or above it, and each achievement the
+share expected to earn it. Profile mode is calibrated against 122,914 located
+GitHub accounts refreshed on 2026-09-24 (followers and yearly activity
+measured; the rest derived or estimated and labelled as such), repository mode
+against public repositories someone else has starred, anchored on published
+star tallies and GitHub's Innovation Graph. Rarity follows the share: Common
+is 40% or more, Legendary under 1%. The **Top N%** chip reads the same table.
+The catalogue's [calibration section](docs/Catalogue.md#-how-the-numbers-were-set)
+lays it all out, and `src/trophykit/calibration.py` holds it.
+
 **[`docs/Catalogue.md`](docs/Catalogue.md)** lists every trophy and every
 achievement in both modes, with its threshold and the exact GitHub data it is
 read from. It is generated from the catalogue by `make catalogue` and checked
