@@ -34,39 +34,66 @@ _Earned, never claimed._
 
 ## 💡 What This Is
 
-A scheduled action measures a GitHub profile, or a single repository, and
-draws the result as **committed SVGs**: eight tiered trophies, Bronze to
-Diamond, a level card, and one hundred achievements in a dropdown. Nothing is
-fetched when someone views the README, so nothing can be slow, rate-limited or
-down.
+A trophy card fetched from someone's server is a request on every page view,
+and a dependency on their uptime for your README to render. This draws them
+instead.
 
-**Up 24/7/365.** Most trophy services are a web server that draws your card
-on every page view, and when that server is rate-limited, cold, or gone, your
-README shows a broken image. Here there is no server. The images are files in
-your repository, served by GitHub itself, so your case is up for exactly as
-long as GitHub is. The only thing that runs on a schedule is the refresh, and
-a refresh that is delayed or skipped changes nothing you can see: yesterday's
-trophies stay on the page until the next one lands.
+A trophy here is a **committed SVG**, rendered by a scheduled action from a
+measurement it took over GitHub's API: eight tiered trophies, Bronze to
+Diamond with stars beyond, a level card, a next-up card, and **one hundred
+achievements** in a dropdown, each pinned to real data about how many people
+or projects reach it. No request at view time, nothing to rate-limit, and the
+metal, the lettering and the geometry are yours.
 
-Every trophy and achievement is explained in the
-[**catalogue**](docs/Catalogue.md): what it counts, how it is earned, and how
-rare it is. Every card in a rendered case links to its own entry, so the
-question "what is that one for?" is one click away.
-
-It is built the way [`tannergolden/emblems`](https://github.com/tannergolden/emblems)
-builds badges and the way [`tannergolden/standards`](https://github.com/tannergolden/standards)
-delivers automation: **called, never copied**. Your repository holds a stub
-that names the schedule. The measuring, drawing and committing happen here,
-so a fix lands once and reaches every case pinned to `v1`.
+It is one stub in your repository and one kit here:
 
 | Part                     | Job                                                                       |
 | :----------------------- | :------------------------------------------------------------------------ |
-| `src/trophy-kit.py`      | **The kit.** Measures over GitHub's API and renders the SVGs. Stdlib only. |
-| `action.yml`             | **The action.** Runs the kit against the calling repository.              |
 | `.github/workflows/trophies.yml` | **The workflow.** Checkout, kit, commit, push. What your stub calls.      |
+| `action.yml`             | **The action.** Runs the kit against the calling repository.              |
+| `src/trophy-kit.py`      | **The kit.** Measures over GitHub's API and renders the SVGs. Stdlib only. |
 | `src/trophykit/catalogue.py` | **The catalogue.** Every trophy and achievement, as data.               |
 | `src/trophykit/calibration.py` | **The calibration.** Where every tier and rarity sits against real GitHub data. |
 | `.github/workflows/cut-release.yml` | **The release.** Cuts `vX.Y.Z` and moves `v1`, by calling the standards.  |
+
+**Called, never copied.** Your repository holds a stub that names the
+schedule. The measuring, drawing and committing happen here, so a fix lands
+once and reaches every case pinned to `v1`. That is how
+[`tannergolden/emblems`](https://github.com/tannergolden/emblems) draws
+badges and how [`tannergolden/standards`](https://github.com/tannergolden/standards)
+delivers automation; this is the trophy half of the pair, in the same palette,
+under the same rule.
+
+Every trophy and achievement is explained in the
+[**catalogue**](docs/Catalogue.md): what it counts, how it is earned, how rare
+it is, and against what data. Every card in a rendered case links to its own
+entry, so the question "what is that one for?" is one click away.
+
+---
+
+## 🟢 Up 24/7/365
+
+Most trophy services are a **live request on every page view**. Your README
+renders only while their server answers, so their outages, cold starts and
+rate limits land on your page as broken images, and nothing on your side can
+fix it. It is a dependency you cannot see until the moment it fails.
+
+A trophy here has **no server to be down**. It is a committed SVG, served by
+GitHub with the rest of your repository, so it is up exactly as long as your
+repository is: every hour of every day, all year round, with no third party
+in the path. The only thing that runs on a schedule is the refresh, and a
+refresh that is delayed or skipped changes nothing you can see: yesterday's
+trophies stay on the page until the next one lands. That is not an uptime
+promise to take on trust; it is a property of a committed file.
+
+|                  | Hosted trophy service                   | Trophies drawn here                       |
+| :--------------- | :-------------------------------------- | :---------------------------------------- |
+| **A trophy is**  | An HTTP response, answered at view time | A file in your repository                 |
+| **Down when**    | Their service is                        | Never on its own, only with the page      |
+| **Slow when**    | Their service is busy                   | Never, it is a static file                |
+| **Rate limits**  | Yes, and not yours to raise             | None at view time; one scheduled run a day |
+| **Changes when** | Their side deploys                      | The nightly run commits                   |
+| **The numbers**  | Thresholds nobody explains              | Every tier and rarity pinned to a stated share of real data |
 
 ---
 
@@ -515,9 +542,11 @@ the attribution; the licences travel in `src/fonts/`.
 ## 🔗 See also
 
 > [!TIP]
-> [`tannergolden/emblems`](https://github.com/tannergolden/emblems) draws the
-> badges; this draws the trophies, in the same palette. The engineering
-> standards this repository follows are published in
+> The full specification is [`docs/Trophy-Kit.md`](docs/Trophy-Kit.md).
+> [`tannergolden/emblems`](https://github.com/tannergolden/emblems) is the
+> other half of the pair: it draws the badges in this header the way this
+> draws the trophies, in the same palette, under the same rule. The
+> engineering standards this repository follows are published in
 > [`tannergolden/standards`](https://github.com/tannergolden/standards), and it
 > was generated from [`tannergolden/path`](https://github.com/tannergolden/path),
 > which is why it earns **Follows the Standards** and **Golden Path** itself.
