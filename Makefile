@@ -37,6 +37,7 @@ catalogue:
 
 ## check: CI gate - self-test, the catalogue page is current, the sample renders and re-checks clean
 check: self-test
+	@$(PYTHON) tests/gql_check.py
 	@$(KIT) catalogue | diff -q - docs/Catalogue.md >/dev/null || (echo "docs/Catalogue.md is stale: run make catalogue" && exit 1)
 	@rm -rf preview/check && mkdir -p preview/check
 	@$(KIT) preview --root preview/check --mode profile --today 2026-09-24 >/dev/null

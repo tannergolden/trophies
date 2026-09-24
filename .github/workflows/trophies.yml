@@ -66,7 +66,7 @@ jobs:
       changed: ${{ steps.kit.outputs.changed }}
       summary: ${{ steps.kit.outputs.summary }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # The bot commits as itself and the ledger's weekly snapshot must
           # land, so the checkout keeps credentials for the push below.
@@ -76,7 +76,7 @@ jobs:
       # fetched beside it and run by local path. The folder is kept out of
       # the commit below; nothing of it reaches the consumer's tree.
       - name: Fetch the kit
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: tannergolden/trophies
           ref: ${{ inputs.kit-ref }}
