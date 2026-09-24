@@ -1,7 +1,7 @@
 <!--
 title: '🏆 TROPHIES'
 description: 'Trophies and achievements a GitHub profile or repository earns for itself: measured on a schedule, drawn as committed SVGs, never fetched.'
-tags: [trophies, achievements, svg, github-actions, profile-readme]
+tags: [github-trophies, github-profile-trophies, github-achievements, profile-readme, github-profile, readme-stats, github-actions, reusable-workflow, svg, badges, gamification]
 category: docs
 -->
 
