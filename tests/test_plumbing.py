@@ -93,14 +93,22 @@ class Readme(unittest.TestCase):
             self.assertEqual(text.count(readme.START), 1)
             self.assertFalse(readme.apply(p, f"{readme.START}\nB\n{readme.END}"))
 
-    def test_fragment_and_picture_themes(self):
+    def test_picture_is_the_default_and_fragment_still_exists(self):
         cfg = config.load(None)
-        planned = render.plan(json.loads(json.dumps(sample.PROFILE)), cfg)
-        self.assertIn("#gh-dark-mode-only", planned["readme"])
-        cfg["theme"] = "picture"
         planned = render.plan(json.loads(json.dumps(sample.PROFILE)), cfg)
         self.assertIn("<picture>", planned["readme"])
         self.assertNotIn("#gh-dark-mode-only", planned["readme"])
+        cfg["theme"] = "fragment"
+        planned = render.plan(json.loads(json.dumps(sample.PROFILE)), cfg)
+        self.assertIn("#gh-dark-mode-only", planned["readme"])
+
+    def test_every_card_links_to_its_catalogue_entry(self):
+        planned = render.plan(json.loads(json.dumps(sample.PROFILE)), config.load(None))
+        block = planned["readme"]
+        self.assertIn(f'href="{readme.CATALOGUE}#profile-commits"', block)
+        self.assertIn(f'href="{readme.CATALOGUE}#profile-polyglot"', block)
+        self.assertIn(f'href="{readme.CATALOGUE}#profile">the catalogue</a>', block)
+        self.assertNotIn("blob/v1/", block)
 
 
 class Plan(unittest.TestCase):

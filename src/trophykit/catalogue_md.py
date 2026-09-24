@@ -58,16 +58,16 @@ def _fmt(n) -> str:
     return f"{n:,}"
 
 
-def _core_table(cores) -> str:
+def _core_table(mode: str, cores) -> str:
     rows = ["| Trophy | Counts | Enamel | Bronze | Silver | Gold | Platinum | Diamond | Source |", "| :-- | :-- | :-- | --: | --: | --: | --: | --: | :-- |"]
     for c in cores:
         unit = f" {c.unit}" if c.unit else ""
-        rows.append(f'| <a name="{c.key}"></a>**{c.title}** | {c.counts} | `{c.tok}` | '
+        rows.append(f'| <a name="{mode}-{c.key}"></a>**{c.title}** | {c.counts} | `{c.tok}` | '
                     + " | ".join(_fmt(s) + unit for s in c.steps) + f" | `{c.src}` |")
     return "\n".join(rows)
 
 
-def _ach_table(ach, groups) -> str:
+def _ach_table(mode: str, ach, groups) -> str:
     out = []
     for gi, g in enumerate(groups):
         mine = [a for a in ach if a.g == gi]
@@ -86,7 +86,7 @@ def _ach_table(ach, groups) -> str:
                 flags.append("heavy")
             if a.only:
                 flags.append(f"owner of `{a.only}` only")
-            name = f'<a name="{a.slug}"></a>**{a.name}**' + (f" <sub>{', '.join(flags)}</sub>" if flags else "")
+            name = f'<a name="{mode}-{a.slug}"></a>**{a.name}**' + (f" <sub>{', '.join(flags)}</sub>" if flags else "")
             rarity = " → ".join(RARITY_NAMES[r] for r in a.rarities)
             out.append(f"| {name} | {a.how} | {rarity} | `{a.src}` |")
         out.append("")
@@ -101,11 +101,11 @@ def page() -> str:
     ):
         m = MODES[mode]
         public = [a for a in m["ach"] if not a.only]
-        parts.append(f"## {'👤' if mode == 'profile' else '📦'} {label}\n\n{intro}\n")
+        parts.append(f'<a name="{mode}"></a>\n\n## {"👤" if mode == "profile" else "📦"} {label}\n\n{intro}\n')
         parts.append(f"### The {len(m['core'])} core trophies\n")
-        parts.append(_core_table(m["core"]) + "\n")
+        parts.append(_core_table(mode, m["core"]) + "\n")
         parts.append(f"### The {len(public)} achievements\n")
-        parts.append(_ach_table(m["ach"], m["groups"]))
+        parts.append(_ach_table(mode, m["ach"], m["groups"]))
         parts.append("---\n")
     parts.append("## 🏅 Tiers and Rarities\n")
     parts.append("| Tier | " + " | ".join(TIER_NAMES) + " |\n| :-- | " + " | ".join(":--" for _ in TIER_NAMES) + " |\n"

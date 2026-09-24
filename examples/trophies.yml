@@ -3,7 +3,7 @@
 mode: profile # profile | repository
 style: trophy # trophy | crest | medallion | crystal | plaque
 case: both # night | day | both: Night for GitHub's dark theme, Day for light
-theme: fragment # fragment uses #gh-dark-mode-only links (follows the GitHub theme); picture uses <picture> (follows the OS)
+theme: picture # picture uses one <picture> per card (follows the system theme); fragment uses #gh-dark-mode-only links, which GitHub no longer honours
 banner: true # the level card and the next-up card above the trophies
 streak: current # current | longest. Current changes daily while you are active, which means a bot commit on those days
 core: [commits, pulls, reviews, issues, stars, followers, streak, repos] # which trophies, in this order

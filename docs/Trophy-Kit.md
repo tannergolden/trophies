@@ -115,11 +115,18 @@ embedded once per file in `<defs>`. Titles and tier names use Cinzel Bold;
 numbers and captions use Barlow Condensed. Both are under the SIL Open Font
 License, which permits embedding outlines in a document.
 
-**Two cases.** Night for GitHub's dark theme, Day for its light theme. The
-README embeds both with `#gh-dark-mode-only` and `#gh-light-mode-only`
-fragments (`theme: fragment`), which follow the viewer's GitHub setting, or
-with a `<picture>` element (`theme: picture`), which follows the operating
-system but is the method GitHub documents today.
+**Two cases.** Night for a dark theme, Day for a light one. The README shows
+one of them through a `<picture>` element (`theme: picture`, the default)
+whose `prefers-color-scheme` source follows the viewer's system theme, the
+method GitHub documents. `theme: fragment` writes the older
+`#gh-dark-mode-only` and `#gh-light-mode-only` pair instead; GitHub's CSS no
+longer hides the other file on a repository page, so both cards show, and the
+option stays only for a README rendered somewhere that still honours it.
+
+**Every card is a link.** Each trophy and achievement links to its entry in
+`docs/Catalogue.md` on the default branch, under a mode-specific anchor
+(`#profile-commits`, `#repository-first-star`), and the footer links to the
+mode's section, so how to earn a thing is one click from the card.
 
 **Motion, gently.** Gold and above shine every few seconds; Platinum and above
 sparkle. All of it is CSS inside the SVG, and all of it stops under

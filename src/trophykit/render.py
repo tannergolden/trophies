@@ -87,7 +87,9 @@ def plan(result: dict, cfg: dict, owners: dict | None = None) -> dict:
         for case in cases:
             theme = art.CASES[case]
             svg = render(theme)
-            files[f"{out}/{base}{'-day' if case == 'day' else ''}.svg"] = svg
+            # A committed text file ends with a newline; the repository's own
+            # validator, and most editors' diffs, insist on it.
+            files[f"{out}/{base}{'-day' if case == 'day' else ''}.svg"] = svg.rstrip("\n") + "\n"
             if base not in alts:
                 a = svg.split('aria-label="', 1)[1].split('"', 1)[0]
                 alts[base] = a.replace("&quot;", '"').replace("&amp;", "&")

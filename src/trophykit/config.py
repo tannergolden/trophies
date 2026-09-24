@@ -18,7 +18,7 @@ DEFAULTS = {
     "subject": "",           # login or owner/name; empty means the repository's owner, or the repository
     "style": "trophy",       # trophy | crest | medallion | crystal | plaque
     "case": "both",          # night | day | both
-    "theme": "fragment",     # fragment (#gh-*-mode-only links) | picture
+    "theme": "picture",      # picture (<picture>, follows the system theme) | fragment (#gh-*-mode-only links, no longer honoured by GitHub)
     "banner": True,
     "streak": "current",     # current | longest (profile mode)
     "core": [],              # a subset of the mode's core keys, in order; empty means all

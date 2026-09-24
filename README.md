@@ -29,6 +29,19 @@ Diamond, a level card, and one hundred achievements in a dropdown. Nothing is
 fetched when someone views the README, so nothing can be slow, rate-limited or
 down.
 
+**Up 24/7/365.** Most trophy services are a web server that draws your card
+on every page view, and when that server is rate-limited, cold, or gone, your
+README shows a broken image. Here there is no server. The images are files in
+your repository, served by GitHub itself, so your case is up for exactly as
+long as GitHub is. The only thing that runs on a schedule is the refresh, and
+a refresh that is delayed or skipped changes nothing you can see: yesterday's
+trophies stay on the page until the next one lands.
+
+Every trophy and achievement is explained in the
+[**catalogue**](docs/Catalogue.md): what it counts, how it is earned, and how
+rare it is. Every card in a rendered case links to its own entry, so the
+question "what is that one for?" is one click away.
+
 It is built the way [`tannergolden/emblems`](https://github.com/tannergolden/emblems)
 builds badges and the way [`tannergolden/standards`](https://github.com/tannergolden/standards)
 delivers automation: **called, never copied**. Your repository holds a stub
@@ -46,9 +59,15 @@ so a fix lands once and reaches every case pinned to `v1`.
 
 ## 🖼️ What It Looks Like
 
-This repository's own case is below, in **repository mode**. It is refreshed
-every day by [`🏆 Case`](.github/workflows/case.yml), which calls the same
-workflow you would.
+There is one live example of each mode.
+
+- **Profile mode** is on [**@tannergolden's profile**](https://github.com/tannergolden):
+  the case a person earns across every repository they own, with the
+  profile's own hundred achievements. It is refreshed daily by the same stub
+  shown [below](#-use-it-on-your-profile).
+- **Repository mode** is this repository's own case, right here. It is
+  refreshed every day by [`🏆 Case`](.github/workflows/case.yml), which calls
+  the same workflow you would.
 
 <!-- trophies:start -->
 
@@ -204,11 +223,12 @@ workflow you would.
 <p align="center"><sub>Refreshed daily by <a href="https://github.com/tannergolden/trophies">tannergolden/trophies</a></sub></p>
 <!-- trophies:end -->
 
-Two things to notice. Every card exists twice, a **Night** file for GitHub's
-dark theme and a **Day** file for its light theme, and the README picks one
-with `#gh-dark-mode-only` links that follow the viewer's GitHub setting. And the
-lettering is drawn as paths from two open-licensed typefaces, Cinzel and
-Barlow Condensed, so a trophy looks the same on every device.
+Two things to notice. Every card exists twice, a **Night** file for a dark
+theme and a **Day** file for a light one, and the README shows one of them
+through a `<picture>` element that follows the viewer's system theme, the
+method GitHub documents. And the lettering is drawn as paths from two
+open-licensed typefaces, Cinzel and Barlow Condensed, so a trophy looks the
+same on every device.
 
 Cards are 164 px wide so two fit across a phone; pins are 104 px so three do.
 The level card and the next-up card sit side by side on a desktop and stack on
@@ -278,7 +298,7 @@ in your repository can set:
 | `mode`         | `profile`              | `profile` or `repository`.                                                                     |
 | `style`        | `trophy`               | `trophy`, `crest`, `medallion`, `crystal` or `plaque`.                                         |
 | `case`         | `both`                 | `night`, `day` or `both`.                                                                      |
-| `theme`        | `fragment`             | `fragment` uses `#gh-*-mode-only` links (follows the GitHub theme); `picture` uses `<picture>`. |
+| `theme`        | `picture`              | `picture` uses one `<picture>` per card (follows the system theme); `fragment` uses `#gh-*-mode-only` links, which GitHub no longer honours. |
 | `banner`       | `true`                 | The level card and the next-up card.                                                           |
 | `streak`       | `current`              | `current` or `longest`. The current streak changes daily while you are active.                 |
 | `core`         | all eight              | Which trophies, in order.                                                                      |

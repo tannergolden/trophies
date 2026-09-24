@@ -8,7 +8,7 @@ against a fresh render. There is no date anywhere in an image, so a quiet
 day produces no diff.
 
 Two cases are drawn for every image: Night for GitHub's dark theme and Day
-for its light one. The README picks one with `#gh-dark-mode-only` links.
+for its light one. The README picks one with a `<picture>` element.
 
 Cards are drawn on a 180x244 design and declared 164x222, so two fit across
 the 343 px a phone gives a README. Pins are 104x124; three fit across.

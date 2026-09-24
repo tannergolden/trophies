@@ -5,7 +5,7 @@
 mode: repository # profile | repository
 style: trophy # trophy | crest | medallion | crystal | plaque
 case: both # night | day | both
-theme: fragment # fragment (#gh-*-mode-only links) | picture
+theme: picture # picture (<picture>, follows the system theme) | fragment (#gh-*-mode-only links; GitHub no longer hides the other case)
 banner: true # the level card and the next-up card
 streak: current # profile mode: current | longest (longest never changes daily)
 core: [] # a subset of the mode's trophies, in order; empty means all eight
