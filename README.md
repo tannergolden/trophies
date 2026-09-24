@@ -17,6 +17,17 @@ category: docs
 
 _Earned, never claimed._
 
+[![Status: Active](assets/badges/static/status.svg)](./)
+[![Role: Workflow](assets/badges/static/role.svg)](./)
+[![Context: Trophies](assets/badges/static/context.svg)](./)
+[![License: MIT](assets/badges/static/license.svg)](./LICENSE)
+
+[![Achievements: 100 per mode](assets/badges/static/achievements.svg)](./docs/Catalogue.md)
+[![Styles: 5](assets/badges/static/styles.svg)](#five-styles)
+[![Uptime: 24/7/365](assets/badges/static/uptime.svg)](#-what-this-is)
+[![Dependencies: None](assets/badges/static/dependencies.svg)](./)
+[![Use this workflow](assets/badges/static/use-workflow.svg)](#-use-it-on-your-profile)
+
 </div>
 
 ---
@@ -403,8 +414,10 @@ trophies/
 ├── .github/workflows/trophies.yml    the reusable workflow your stub calls
 ├── .github/workflows/case.yml        this repository's own case, at its own commit
 ├── .github/workflows/cut-release.yml cuts a version and moves v1, via the standards
+├── .github/workflows/badges.yml      redraws the README's badges through emblems
 ├── .github/trophies.yml              this repository's own config
 ├── .github/trophies.lock.json        this repository's ledger
+├── .github/badges.yml                the README's badges, as data
 ├── src/
 │   ├── trophy-kit.py                 the command line
 │   ├── trophykit/
@@ -418,6 +431,7 @@ trophies/
 │   │   └── render.py                 plan, write, check, and the commit message
 │   └── fonts/                        glyph outlines and their OFL licences
 ├── assets/trophies/                  this repository's committed case
+├── assets/badges/                    the README's badges, drawn by emblems
 ├── examples/                         stubs and a starter config to copy
 ├── tests/                            the unit tests, and the GraphQL document check
 └── docs/
@@ -439,7 +453,14 @@ make preview-repository  # the sample repository case
 make catalogue           # regenerate docs/Catalogue.md from the data
 make check               # CI gate: self-test, every GraphQL document well formed, catalogue current, sample renders clean
 make test                # the gate plus the unit tests
+make badges              # redraw the README's badges from .github/badges.yml (emblems kit at .emblems/)
 ```
+
+The badges in the header are drawn by [`tannergolden/emblems`](https://github.com/tannergolden/emblems)
+from `.github/badges.yml`, the same way the trophies are drawn here: committed
+SVGs, no request at view time. Pushing a change to that file re-renders them
+through the **🏷️ Badges** workflow; locally, check the emblems kit out at
+`.emblems/` (or point `EMBLEMS_KIT` at it) and run `make badges`.
 
 The GraphQL check also validates every field and argument against GitHub's
 schema when `GITHUB_GRAPHQL_SCHEMA` points at the `schema.json` from the

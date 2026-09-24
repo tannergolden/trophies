@@ -5,6 +5,9 @@
 # `python3` with nothing installed.
 
 PYTHON ?= python3
+# The emblems kit, for `make badges`: checked out beside this repository by the
+# 🏷️ Badges workflow and never part of this tree.
+EMBLEMS_KIT ?= .emblems/src/badge-kit.py
 KIT    := $(PYTHON) src/trophy-kit.py
 
 .DEFAULT_GOAL := help
@@ -54,6 +57,10 @@ test: check
 	@$(PYTHON) -m unittest discover -s tests -p 'test_*.py'
 	@echo "Running repository script tests..."
 	@$(PYTHON) -m unittest discover -s .github/scripts -p 'test_*.py'
+
+## badges: Redraw the README's badges from .github/badges.yml via the emblems kit
+badges:
+	@$(PYTHON) $(EMBLEMS_KIT) --root . --data .github/badges.yml --out assets/badges
 
 ## clean-preview: Remove rendered previews
 clean-preview:
