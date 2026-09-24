@@ -1,0 +1,16 @@
+# A starter .github/trophies.yml. Every key is optional; delete what you
+# do not need. These are the defaults.
+mode: profile # profile | repository
+style: trophy # trophy | crest | medallion | crystal | plaque
+case: both # night | day | both: Night for GitHub's dark theme, Day for light
+theme: fragment # fragment uses #gh-dark-mode-only links (follows the GitHub theme); picture uses <picture> (follows the OS)
+banner: true # the level card and the next-up card above the trophies
+streak: current # current | longest. Current changes daily while you are active, which means a bot commit on those days
+core: [commits, pulls, reviews, issues, stars, followers, streak, repos] # which trophies, in this order
+enamel: { commits: emerald } # recolor a trophy with any emblems color token
+achievements: all # all | none | [polyglot, night-owl, ...]
+card: [rank, weekly, new] # the Top % chip, the weekly change, the NEW ribbon and burst
+ledger: true # keep .github/trophies.lock.json: first-reached dates, daily history, the scanner cache
+readme: manage # write the block between <!-- trophies:start --> and <!-- trophies:end -->
+private: false # count private contributions too; needs a read-only personal token as TROPHIES_TOKEN
+scan_pages: 30 # commits read per run for the heavy achievements, in pages of 100

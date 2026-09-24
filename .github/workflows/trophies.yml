@@ -1,0 +1,102 @@
+# SPDX-FileCopyrightText: 2026 Tanner Golden
+# SPDX-License-Identifier: MIT
+#
+# The reusable workflow a consumer calls. Their repository holds a stub that
+# names the schedule and nothing else; the checkout, the measurement, the
+# render and the commit all happen here, so a fix lands once and reaches
+# every case pinned to @v1.
+#
+# Called, never copied: nothing with behavior in it is pasted into the
+# consumer's tree.
+
+name: '🏆 Trophies'
+
+on:
+  workflow_call:
+    inputs:
+      mode:
+        description: 'profile or repository. Empty reads .github/trophies.yml.'
+        type: string
+        default: ''
+      subject:
+        description: 'A login (profile) or owner/name (repository). Empty means this repository, or its owner.'
+        type: string
+        default: ''
+      style:
+        description: 'trophy, crest, medallion, crystal or plaque. Empty reads the config.'
+        type: string
+        default: ''
+      commit:
+        description: 'push (default) commits to the current branch; pr opens or updates one pull request.'
+        type: string
+        default: 'push'
+      commit-branch:
+        description: 'The fixed branch the pull request rides on when commit is pr.'
+        type: string
+        default: 'chore/trophies'
+    secrets:
+      TROPHIES_TOKEN:
+        description: 'Optional read-only personal token: counts private contributions in profile mode.'
+        required: false
+    outputs:
+      changed:
+        description: "'true' when the run committed something."
+        value: ${{ jobs.trophies.outputs.changed }}
+      summary:
+        description: 'One line about the case.'
+        value: ${{ jobs.trophies.outputs.summary }}
+
+permissions: {}
+
+jobs:
+  trophies:
+    name: '🏆 Measure and render'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # the SVGs, the README block and the ledger
+      pull-requests: write # only used when commit is pr
+    outputs:
+      changed: ${{ steps.kit.outputs.changed }}
+      summary: ${{ steps.kit.outputs.summary }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # The bot commits as itself and the ledger's weekly snapshot must
+          # land, so the checkout keeps credentials for the push below.
+          persist-credentials: true # zizmor: ignore[artipacked] - the push step below needs them, and nothing else runs after it.
+
+      - id: kit
+        uses: tannergolden/trophies@v1
+        with:
+          mode: run
+          case-mode: ${{ inputs.mode }}
+          subject: ${{ inputs.subject }}
+          style: ${{ inputs.style }}
+          token: ${{ secrets.TROPHIES_TOKEN || github.token }}
+
+      # Commits come from the bot, never from the person: a commit authored
+      # by the subject would count toward their own Commits and Streak
+      # trophies every day. The message is the one the kit wrote for this
+      # run: a Conventional Commit per tannergolden/standards, with a scope,
+      # a body that says why, and the measured values that make it unique.
+      - name: Commit and push
+        if: ${{ steps.kit.outputs.changed == 'true' && inputs.commit != 'pr' }}
+        shell: bash
+        env:
+          MESSAGE_FILE: ${{ steps.kit.outputs.commit-file }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -F "$MESSAGE_FILE"
+          git push
+
+      - name: Open or update the pull request
+        if: ${{ steps.kit.outputs.changed == 'true' && inputs.commit == 'pr' }}
+        uses: tannergolden/standards/actions/open-pr@v1
+        with:
+          token: ${{ github.token }}
+          branch: ${{ inputs.commit-branch }}
+          commit-title: ${{ steps.kit.outputs.commit-title }}
+          commit-body: ${{ steps.kit.outputs.commit-body }}

@@ -1,0 +1,26 @@
+# Put this at .github/workflows/trophies.yml in your PROFILE repository
+# (the one named after your account, whose README is your profile).
+#
+# That is the whole interface. Nothing is copied into your repository and
+# there is no generator to keep current: the measuring, rendering and
+# committing all happen in tannergolden/trophies, so a fix there reaches
+# you the moment v1 moves.
+name: Trophies
+
+on:
+  schedule:
+    - cron: '17 0 * * *'
+      timezone: 'America/Chicago' # optional: local midnight instead of UTC
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  trophies:
+    permissions:
+      contents: write # the SVGs, the README block and the ledger
+      pull-requests: write # only used with commit: pr
+    uses: tannergolden/trophies/.github/workflows/trophies.yml@v1
+    with:
+      mode: profile
+    secrets: inherit # optional TROPHIES_TOKEN, to count private contributions

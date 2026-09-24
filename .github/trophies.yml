@@ -1,0 +1,18 @@
+# The case THIS repository renders for itself, in repository mode.
+# Edit this file, then let 🏆 Case run, or `make preview` for a look.
+#
+# Every key is optional; these are the defaults, written out.
+mode: repository # profile | repository
+style: trophy # trophy | crest | medallion | crystal | plaque
+case: both # night | day | both
+theme: fragment # fragment (#gh-*-mode-only links) | picture
+banner: true # the level card and the next-up card
+streak: current # profile mode: current | longest (longest never changes daily)
+core: [] # a subset of the mode's trophies, in order; empty means all eight
+enamel: {} # trophy key -> an emblems color token, e.g. {stars: amber}
+achievements: all # all | none | a list of slugs
+card: [rank, weekly, new] # the Top % chip, the weekly change, the NEW ribbon
+ledger: true # .github/trophies.lock.json: dates, history, the scanner cache
+readme: manage # manage the block between the markers | none
+private: false # profile mode: count private contributions (needs TROPHIES_TOKEN)
+scan_pages: 30 # commit-scanner budget per run, 100 commits a page
