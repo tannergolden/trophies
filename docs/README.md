@@ -37,6 +37,15 @@ why they ship as seed content rather than as law.
 
 ---
 
+## 🏆 This Project's Documents
+
+| Document                            | What it is                                                                             |
+| :---------------------------------- | :------------------------------------------------------------------------------------- |
+| [`Trophy-Kit.md`](Trophy-Kit.md)    | The specification: the case, the tiers, the two modes, the ledger, and the contract    |
+| [`Catalogue.md`](Catalogue.md)      | Every trophy and achievement in both modes, generated from the data by `make catalogue` |
+
+---
+
 ## 🌱 Using A Template
 
 Copy it out of `docs/templates/` to the matching path **without** `templates/`,
