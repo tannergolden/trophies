@@ -142,3 +142,6 @@ coverage/
 _site/
 .jekyll-cache/
 .jekyll-metadata
+
+# Trophy Kit: rendered previews (make preview)
+preview/
