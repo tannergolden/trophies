@@ -8,7 +8,7 @@ five thresholds (Bronze to Diamond); past Diamond it earns a star each time
 the Diamond number doubles, up to five. An achievement has one goal, or
 several for a tiered one, and a rarity per tier that decides its metal.
 
-Enamel colors are emblems palette tokens (tannergolden/emblems), so a profile
+Enamel colors are badges palette tokens (tannergolden/badges), so a profile
 that uses both tools looks like one product.
 
 This file is data. `make catalogue` regenerates docs/Catalogue.md from it.
@@ -68,7 +68,7 @@ TIERS = [
     }
 ]
 
-# emblems color tokens, used as enamel.
+# badges color tokens, used as enamel.
 PAL = {
     "emerald": "#2BB675",
     "violet": "#8B6CFF",
@@ -123,7 +123,7 @@ PAL = {
     "gold": "#C0A062"
 }
 
-# 24x24 line glyphs: the emblems icon registry plus a few of our own.
+# 24x24 line glyphs: the badges icon registry plus a few of our own.
 ICONS = {
     "commit": "<circle cx=\"12\" cy=\"12\" r=\"3.2\"/><path d=\"M3 12h5.8M15.2 12H21\"/>",
     "pull": "<circle cx=\"6\" cy=\"5.5\" r=\"2.4\"/><circle cx=\"6\" cy=\"18.5\" r=\"2.4\"/><circle cx=\"18\" cy=\"18.5\" r=\"2.4\"/><path d=\"M6 7.9v8.2M18 16.1V9a3 3 0 0 0-3-3h-4M13.5 3.5L11 6l2.5 2.5\"/>",
@@ -380,7 +380,7 @@ ACH = [
     A(name="Label Maker", g=4, icon="tag", tok="magenta", rarity=3, how="Define 25 labels on one repository", src="repository.labels.totalCount", goal=25, word="labels"),
     A(name="Round Number", g=5, icon="target", tok="purple", rarity=4, how="Have a trophy total land exactly on 1,000", src="any core count == 1000", secret=True),
     A(name="Trophy Maker", g=6, icon="trophy", tok="gold", rarity=5, how="Own tannergolden/trophies, the repository that draws these", src="viewer.login == repository(owner: \"tannergolden\", name: \"trophies\").owner.login", only="tannergolden/trophies"),
-    A(name="Badge Maker", g=6, icon="tag", tok="gold", rarity=5, how="Own tannergolden/emblems, the badge generator this grew from", src="viewer.login == repository(owner: \"tannergolden\", name: \"emblems\").owner.login", only="tannergolden/emblems"),
+    A(name="Badge Maker", g=6, icon="tag", tok="gold", rarity=5, how="Own tannergolden/badges, the badge generator this grew from", src="viewer.login == repository(owner: \"tannergolden\", name: \"badges\").owner.login", only="tannergolden/badges"),
     A(name="Standard Bearer", g=6, icon="scale", tok="gold", rarity=5, how="Own tannergolden/standards, the rules every repository on the account follows and the workflows that enforce them", src="viewer.login == repository(owner: \"tannergolden\", name: \"standards\").owner.login", only="tannergolden/standards"),
     A(name="Pathfinder", g=6, icon="compass", tok="gold", rarity=5, how="Own tannergolden/path, the golden path every new repository starts from", src="viewer.login == repository(owner: \"tannergolden\", name: \"path\").owner.login", only="tannergolden/path"),
 ]

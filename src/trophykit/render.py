@@ -43,7 +43,7 @@ def _cores(cfg: dict) -> list:
         tok = cfg["enamel"].get(c.key)
         if tok:
             if tok not in PAL:
-                raise ValueError(f"enamel: {tok!r} is not an emblems color token")
+                raise ValueError(f"enamel: {tok!r} is not a badges color token")
             cores[i] = replace(c, tok=tok)
     return cores
 

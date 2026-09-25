@@ -9,7 +9,7 @@ theme: picture # picture (<picture>, follows the system theme) | fragment (#gh-*
 banner: true # the level card and the next-up card
 streak: current # profile mode: current | longest (longest never changes daily)
 core: [] # a subset of the mode's trophies, in order; empty means all eight
-enamel: {} # trophy key -> an emblems color token, e.g. {stars: amber}
+enamel: {} # trophy key -> a badges color token, e.g. {stars: amber}
 achievements: all # all | none | a list of slugs
 card: [rank, weekly, new] # the Top % chip, the weekly change, the NEW ribbon
 ledger: true # .github/trophies.lock.json: dates, history, the scanner cache

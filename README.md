@@ -59,7 +59,7 @@ It is one stub in your repository and one kit here:
 **Called, never copied.** Your repository holds a stub that names the
 schedule. The measuring, drawing and committing happen here, so a fix lands
 once and reaches every case pinned to `v1`. That is how
-[`tannergolden/emblems`](https://github.com/tannergolden/emblems) draws
+[`tannergolden/badges`](https://github.com/tannergolden/badges) draws
 badges and how [`tannergolden/standards`](https://github.com/tannergolden/standards)
 delivers automation; this is the trophy half of the pair, in the same palette,
 under the same rule.
@@ -280,7 +280,7 @@ a phone.
 trophy's icon and five pips counting the tiers. The others are `crest` (a
 hexagonal shield whose ornaments change with the tier: rivets, a gem, wings, a
 crown), `medallion` (a struck medal on a ribbon, with a progress ring),
-`crystal` (glass that fills with light), and `plaque` (emblems' own flat look,
+`crystal` (glass that fills with light), and `plaque` (badges' own flat look,
 for a row of badges). One key in the config switches all of them.
 
 ---
@@ -359,7 +359,7 @@ in your repository can set:
 | `banner`       | `true`                | The level card and the next-up card.                                                                                                         |
 | `streak`       | `current`             | `current` or `longest`. The current streak changes daily while you are active.                                                               |
 | `core`         | all eight             | Which trophies, in order.                                                                                                                    |
-| `enamel`       | `{}`                  | Recolor a trophy with any [emblems](https://github.com/tannergolden/emblems) color token.                                                    |
+| `enamel`       | `{}`                  | Recolor a trophy with any [badges](https://github.com/tannergolden/badges) color token.                                                    |
 | `achievements` | `all`                 | `all`, `none`, or a list of slugs.                                                                                                           |
 | `card`         | `[rank, weekly, new]` | The Top % chip, the weekly change, the NEW ribbon.                                                                                           |
 | `ledger`       | `true`                | Keep `.github/trophies.lock.json`.                                                                                                           |
@@ -456,7 +456,7 @@ trophies/
 ├── .github/workflows/trophies.yml    the reusable workflow your stub calls
 ├── .github/workflows/case.yml        this repository's own case, at its own commit
 ├── .github/workflows/cut-release.yml cuts a version and moves v1, via the standards
-├── .github/workflows/badges.yml      redraws the README's badges through emblems
+├── .github/workflows/badges.yml      redraws the README's badges through badges
 ├── .github/workflows/calibrate.yml   measures the repository population, quarterly
 ├── .github/trophies.yml              this repository's own config
 ├── .github/trophies.lock.json        this repository's ledger
@@ -475,7 +475,7 @@ trophies/
 │   │   └── render.py                 plan, write, check, and the commit message
 │   └── fonts/                        glyph outlines and their OFL licences
 ├── assets/trophies/                  this repository's committed case
-├── assets/badges/                    the README's badges, drawn by emblems
+├── assets/badges/                    the README's badges, drawn by badges
 ├── data/calibration/                 the measured repository sample the kit reads
 ├── examples/                         stubs and a starter config to copy
 ├── tests/                            the unit tests, and the GraphQL document check
@@ -499,14 +499,14 @@ make catalogue           # regenerate docs/Catalogue.md from the data
 make check               # CI gate: self-test, every GraphQL document well formed, catalogue current, this case and the sample check clean
 make calibrate           # measure the repository population through the API (GITHUB_TOKEN), then regenerate what reads it
 make test                # the gate plus the unit tests
-make badges              # redraw the README's badges from .github/badges.yml (emblems kit at .emblems/)
+make badges              # redraw the README's badges from .github/badges.yml (badges kit at .badges/)
 ```
 
-The badges in the header are drawn by [`tannergolden/emblems`](https://github.com/tannergolden/emblems)
+The badges in the header are drawn by [`tannergolden/badges`](https://github.com/tannergolden/badges)
 from `.github/badges.yml`, the same way the trophies are drawn here: committed
 SVGs, no request at view time. Pushing a change to that file re-renders them
-through the **🏷️ Badges** workflow; locally, check the emblems kit out at
-`.emblems/` (or point `EMBLEMS_KIT` at it) and run `make badges`.
+through the **🏷️ Badges** workflow; locally, check the badges kit out at
+`.badges/` (or point `BADGES_KIT` at it) and run `make badges`.
 
 The GraphQL check also validates every field and argument against GitHub's
 schema when `GITHUB_GRAPHQL_SCHEMA` points at the `schema.json` from the
@@ -562,7 +562,7 @@ the attribution; the licences travel in `src/fonts/`.
 
 > [!TIP]
 > The full specification is [`docs/Trophy-Kit.md`](docs/Trophy-Kit.md).
-> [`tannergolden/emblems`](https://github.com/tannergolden/emblems) is the
+> [`tannergolden/badges`](https://github.com/tannergolden/badges) is the
 > other half of the pair: it draws the badges in this header the way this
 > draws the trophies, in the same palette, under the same rule. The
 > engineering standards this repository follows are published in

@@ -146,5 +146,5 @@ _site/
 # Trophy Kit: rendered previews (make preview)
 preview/
 
-# The emblems kit, checked out beside this repository for `make badges`.
-.emblems/
+# The badges kit, checked out beside this repository for `make badges`.
+.badges/

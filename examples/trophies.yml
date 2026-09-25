@@ -8,7 +8,7 @@ theme: picture # picture uses one <picture> per card (follows the system theme);
 banner: true # the level card and the next-up card above the trophies
 streak: current # current | longest. Current changes daily while you are active, which means a bot commit on those days
 core: [commits, pulls, reviews, issues, stars, followers, streak, repos] # which trophies, in this order
-enamel: { commits: emerald } # recolor a trophy with any emblems color token
+enamel: { commits: emerald } # recolor a trophy with any badges color token
 achievements: all # all | none | [polyglot, night-owl, ...]
 card: [rank, weekly, new] # the Top % chip, the weekly change, the NEW ribbon and burst
 ledger: true # keep .github/trophies.lock.json: first-reached dates, daily history, the scanner cache

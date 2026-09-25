@@ -16,4 +16,4 @@ The fonts themselves are not redistributed.
   SIL Open Font License 1.1: src/fonts/OFL-Barlow-Condensed.txt
 
 The 24x24 line icons in src/trophykit/catalogue.py come from the icon
-registry of tannergolden/emblems (MIT), with a few additions drawn here.
+registry of tannergolden/badges (MIT), with a few additions drawn here.

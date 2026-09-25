@@ -204,7 +204,7 @@ Where each tier sits, as the share of located accounts at or above it:
 | Achievement | Earned by | Rarity | Who earns it | Source |
 | :-- | :-- | :-- | :-- | :-- |
 | <a name="profile-trophy-maker"></a>**Trophy Maker** <sub>owner of `tannergolden/trophies` only</sub> | Own tannergolden/trophies, the repository that draws these | Legendary | 0.001% <sub>measured</sub> | `viewer.login == repository(owner: "tannergolden", name: "trophies").owner.login` |
-| <a name="profile-badge-maker"></a>**Badge Maker** <sub>owner of `tannergolden/emblems` only</sub> | Own tannergolden/emblems, the badge generator this grew from | Legendary | 0.001% <sub>measured</sub> | `viewer.login == repository(owner: "tannergolden", name: "emblems").owner.login` |
+| <a name="profile-badge-maker"></a>**Badge Maker** <sub>owner of `tannergolden/badges` only</sub> | Own tannergolden/badges, the badge generator this grew from | Legendary | 0.001% <sub>measured</sub> | `viewer.login == repository(owner: "tannergolden", name: "badges").owner.login` |
 | <a name="profile-standard-bearer"></a>**Standard Bearer** <sub>owner of `tannergolden/standards` only</sub> | Own tannergolden/standards, the rules every repository on the account follows and the workflows that enforce them | Legendary | 0.001% <sub>measured</sub> | `viewer.login == repository(owner: "tannergolden", name: "standards").owner.login` |
 | <a name="profile-pathfinder"></a>**Pathfinder** <sub>owner of `tannergolden/path` only</sub> | Own tannergolden/path, the golden path every new repository starts from | Legendary | 0.001% <sub>measured</sub> | `viewer.login == repository(owner: "tannergolden", name: "path").owner.login` |
 

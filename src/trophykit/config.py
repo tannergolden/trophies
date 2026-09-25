@@ -22,7 +22,7 @@ DEFAULTS = {
     "banner": True,
     "streak": "current",     # current | longest (profile mode)
     "core": [],              # a subset of the mode's core keys, in order; empty means all
-    "enamel": {},            # core key -> emblems color token
+    "enamel": {},            # core key -> badges color token
     "achievements": "all",   # all | none | a list of slugs
     "card": ["rank", "weekly", "new"],
     "ledger": True,

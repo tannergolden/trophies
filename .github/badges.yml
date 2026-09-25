@@ -1,7 +1,7 @@
-# The badges this README draws for itself, rendered by tannergolden/emblems
+# The badges this README draws for itself, rendered by tannergolden/badges
 # into assets/badges/. Edit this file and push: the 🏷️ Badges workflow
 # re-renders what changed and commits it. Locally, `make badges` with the
-# emblems kit checked out at .emblems/.
+# badges kit checked out at .badges/.
 #
 # Every badge here is STATIC (black label, any message color) and wears
 # `for-the-badge`, which is what the documentation standard specifies for a

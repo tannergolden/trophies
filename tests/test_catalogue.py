@@ -21,7 +21,7 @@ class CatalogueShape(unittest.TestCase):
     def test_owner_only_entries_name_their_repository(self):
         makers = [a for a in c.ACH if a.only]
         self.assertEqual({a.only for a in makers},
-                         {"tannergolden/trophies", "tannergolden/emblems", "tannergolden/standards", "tannergolden/path"})
+                         {"tannergolden/trophies", "tannergolden/badges", "tannergolden/standards", "tannergolden/path"})
 
     def test_slugs_unique_and_url_safe(self):
         for ach in (c.ACH, c.RACH):
