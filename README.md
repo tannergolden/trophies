@@ -551,11 +551,12 @@ the kit at that same tag. A version is cut by dispatching **🏷️ Cut Release*
 with `vX.Y.Z`: the stub calls the standards' release workflow, which refuses a
 commit that is not on the default branch or a version that does not move
 forward, proves the workflow, the action, the kit and the catalogue exist at
-the commit and that `make check` passes, then tags the immutable version,
-force-moves `v1`, publishes the release with generated notes and prunes the
-pages it superseded. Version tags are never deleted, so a full-version pin
-keeps resolving. A release that changes what a card looks like bumps
-`KIT_VERSION`, and every case redraws its cards on its next run.
+the commit and that `make check` passes, then tags the version, force-moves
+`v1`, publishes the release with generated notes and prunes every release it
+superseded, page and tag, so the repository carries two tags: `v1` and the
+version it points at. Pin the major, or a commit SHA for exactness. A release
+that changes what a card looks like bumps `KIT_VERSION`, and every case
+redraws its cards on its next run.
 
 Full specification: [`docs/Trophy-Kit.md`](docs/Trophy-Kit.md).
 
