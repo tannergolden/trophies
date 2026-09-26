@@ -47,7 +47,19 @@ than a single count, so it runs under a budget and catches up over a week.
 FOOT = """
 ---
 
+## 🔗 See also
+
+> [!TIP]
+> [`Trophy-Kit.md`](Trophy-Kit.md) is the specification this catalogue is
+> generated from, and the [README](../README.md) shows a case in use. Every
+> number here is read from `src/trophykit/calibration.py`; edit that and run
+> `make catalogue`, never this file.
+
+---
+
 <div align="center">
+
+**Every threshold named. Every share stated.**
 
 [↑ Back to Top](#top)
 

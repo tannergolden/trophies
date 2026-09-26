@@ -381,7 +381,24 @@ style or a slug is breaking and belongs in a new major line.
 
 ---
 
+## 🔗 See also
+
+> [!TIP]
+> The [README](../README.md) shows a case in use and how to pin the kit, and
+> [`Catalogue.md`](Catalogue.md) lists every trophy and achievement this
+> specification awards, with the data behind each number.
+> [`tannergolden/badges`](https://github.com/tannergolden/badges) and
+> [`tannergolden/banners`](https://github.com/tannergolden/banners) draw the
+> badges and the two ends of the page on the same paper, and
+> [`tannergolden/markdown`](https://github.com/tannergolden/markdown) calls all
+> three kits from one stub. The standards this document follows are published
+> in [`tannergolden/standards`](https://github.com/tannergolden/standards).
+
+---
+
 <div align="center">
+
+**The contract behind every case.**
 
 [↑ Back to Top](#top)
 
