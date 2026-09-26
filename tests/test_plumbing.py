@@ -228,7 +228,7 @@ class CommitMessage(unittest.TestCase):
         self.assertLessEqual(len(subject), 72)
         self.assertEqual(blank, "")
         self.assertTrue(body.strip())
-        self.assertNotIn("—", msg)
+        self.assertNotIn("\u2014", msg)  # the em dash, by code point
         self.assertTrue(all(len(line) <= 72 for line in body.splitlines()))
 
     def test_two_runs_never_read_alike(self):
