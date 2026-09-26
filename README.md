@@ -1,7 +1,7 @@
 <!--
 title: '🏆 TROPHIES'
 description: 'Trophies and achievements a GitHub profile or repository earns for itself: measured on a schedule, drawn as committed SVGs, never fetched.'
-tags: [github-trophies, github-profile-trophies, github-achievements, profile-readme, github-profile, readme-stats, github-actions, reusable-workflow, svg, badges, gamification]
+tags: [github-trophies, profile-readme, svg, github-actions]
 category: docs
 -->
 
@@ -60,9 +60,12 @@ It is one stub in your repository and one kit here:
 schedule. The measuring, drawing and committing happen here, so a fix lands
 once and reaches every case pinned to `v1`. That is how
 [`tannergolden/badges`](https://github.com/tannergolden/badges) draws
-badges and how [`tannergolden/standards`](https://github.com/tannergolden/standards)
-delivers automation; this is the trophy half of the pair, in the same palette,
-under the same rule.
+badges, how [`tannergolden/banners`](https://github.com/tannergolden/banners)
+draws the two ends of a page and its body, and how
+[`tannergolden/standards`](https://github.com/tannergolden/standards)
+delivers automation; this draws the case, in the same palette, under the
+same rule. [`tannergolden/markdown`](https://github.com/tannergolden/markdown)
+calls all three kits from one stub.
 
 Every trophy and achievement is explained in the
 [**catalogue**](docs/Catalogue.md): what it counts, how it is earned, how rare
@@ -334,6 +337,11 @@ its own repository, so private repositories need nothing extra.
 [`examples/stub-repository.yml`](examples/stub-repository.yml) shows it with
 `commit: pr`, which opens one evolving pull request instead of pushing.
 
+One stub per kit, or one for the whole page:
+[`tannergolden/markdown`](https://github.com/tannergolden/markdown) calls this
+kit, the banners and the badges from a single workflow, each at its own hour,
+so a README that wants all three needs one stub rather than three.
+
 ### Or gate on it
 
 A case is committed files, so it can be checked like any other. With
@@ -450,6 +458,11 @@ schedule off after sixty quiet days.
 
 ## 🧭 Layout
 
+The files a consumer resolves at the tag, and where everything else lives:
+
+<details>
+<summary>Every file, and what it is for</summary>
+
 ```bash
 trophies/
 ├── action.yml                        the composite action
@@ -483,6 +496,8 @@ trophies/
     ├── Trophy-Kit.md                 the full specification
     └── Catalogue.md                  every trophy and achievement, generated, with the calibration
 ```
+
+</details>
 
 ---
 
@@ -561,11 +576,16 @@ the attribution; the licences travel in `src/fonts/`.
 ## 🔗 See also
 
 > [!TIP]
-> The full specification is [`docs/Trophy-Kit.md`](docs/Trophy-Kit.md).
-> [`tannergolden/badges`](https://github.com/tannergolden/badges) is the
-> other half of the pair: it draws the badges in this header the way this
-> draws the trophies, in the same palette, under the same rule. The
-> engineering standards this repository follows are published in
+> The full specification is [`docs/Trophy-Kit.md`](docs/Trophy-Kit.md), and
+> [`docs/Catalogue.md`](docs/Catalogue.md) lists every trophy and achievement.
+> [`tannergolden/badges`](https://github.com/tannergolden/badges) draws the
+> badges in this header, and
+> [`tannergolden/banners`](https://github.com/tannergolden/banners) the header,
+> the footer and the body of a README, the way this draws the case: in the
+> same palette, under the same rule.
+> [`tannergolden/markdown`](https://github.com/tannergolden/markdown) calls all
+> three kits from one stub. The engineering standards this repository follows
+> are published in
 > [`tannergolden/standards`](https://github.com/tannergolden/standards), and it
 > was generated from [`tannergolden/path`](https://github.com/tannergolden/path),
 > which is why it earns **Follows the Standards** and **Golden Path** itself.
