@@ -3,13 +3,18 @@
 """Config, ledger, README block and the render plan, end to end without a network."""
 from __future__ import annotations
 
+import contextlib
 import datetime as dt
+import importlib.util
+import io
 import json
+import os
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -134,6 +139,69 @@ class ReachedToday(unittest.TestCase):
         self.assertEqual(ledger.reached_on(led, result, cores, [], today)["tiers"], [("Bronze", "Followers")])
         led["reached"]["followers"]["1.0"] = "2026-09-20"
         self.assertEqual(ledger.reached_on(led, result, cores, [], today)["tiers"], [])
+
+    def test_a_second_run_on_the_same_day_names_only_what_it_reached_itself(self):
+        # The profile's case ran twice on 2026-09-27, and the second commit named again every tier and
+        # achievement the first had reached, since the ledger dates each by the day it was reached.
+        led = ledger.load(Path("/nonexistent/trophies.lock.json"))
+        day = dt.date(2026, 9, 27)
+
+        def run(result: dict) -> dict:
+            before = ledger.reached_before(led)
+            ledger.update(led, result, c.CORE, c.ACH, day)
+            return ledger.reached_on(led, result, c.CORE, c.ACH, day, before)
+
+        first = run(json.loads(json.dumps(sample.PROFILE)))
+        self.assertIn(("Platinum", "Commits"), first["tiers"], "a first run names everything it holds")
+        self.assertTrue(first["achievements"])
+
+        moved = json.loads(json.dumps(sample.PROFILE))
+        moved["values"]["commits"] += 13  # 5,743: still Platinum
+        self.assertEqual(run(moved), {"tiers": [], "achievements": []})
+        self.assertIn(("Platinum", "Commits"), ledger.reached_on(led, moved, c.CORE, c.ACH, day)["tiers"],
+                      "the day alone would name it again")
+
+        crossed = json.loads(json.dumps(moved))
+        crossed["values"]["followers"] = 100  # from Bronze to Silver
+        self.assertEqual(run(crossed), {"tiers": [("Silver", "Followers")], "achievements": []})
+
+
+class RunTwice(unittest.TestCase):
+    """The kit run twice on one day, the ledger read from disk each time, as the action runs it."""
+
+    def setUp(self):
+        spec = importlib.util.spec_from_file_location("trophy_kit", ROOT / "src" / "trophy-kit.py")
+        self.kit = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.kit)
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        self.lock = self.root / ".github" / "trophies.lock.json"
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def run_kit(self, result: dict) -> str:
+        """One run's commit message, or "" when the run changed nothing."""
+        msg = self.root / "commit.txt"
+        msg.unlink(missing_ok=True)
+        with mock.patch.dict(os.environ, {"GITHUB_RUN_ID": "7"}), contextlib.redirect_stdout(io.StringIO()):
+            os.environ.pop("GITHUB_STEP_SUMMARY", None)  # restored when the patch ends
+            self.kit.finish(result, config.load(None), self.root, ledger.load(self.lock), self.lock,
+                            dt.date(2026, 9, 27), write=True, commit_file=str(msg))
+        return msg.read_text(encoding="utf-8") if msg.exists() else ""
+
+    def test_the_second_run_names_nothing_as_newly_reached_or_earned(self):
+        first = self.run_kit(json.loads(json.dumps(sample.PROFILE)))
+        self.assertIn("Newly reached:", first)
+        self.assertIn("Newly earned:", first)
+        self.assertEqual(self.run_kit(json.loads(json.dumps(sample.PROFILE))), "",
+                         "the same measurement again changes nothing and commits nothing")
+        moved = json.loads(json.dumps(sample.PROFILE))
+        moved["values"]["commits"] += 13
+        second = self.run_kit(moved)
+        self.assertRegex(second.splitlines()[0], r"^chore\(trophies\): \U0001F3C6 refresh the case")
+        self.assertNotIn("Newly reached", second)
+        self.assertNotIn("Newly earned", second)
 
 
 class Plan(unittest.TestCase):

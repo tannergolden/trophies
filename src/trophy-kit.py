@@ -98,10 +98,13 @@ def finish(result: dict, cfg: dict, root: Path, led: dict, ledger_path: Path | N
     ach = catalogue.MODES[cfg["mode"]]["ach"]
     reached_today = {"tiers": [], "achievements": []}
     if led is not None:
+        # What the ledger held before this run, so the commit names only what this run reached,
+        # even when an earlier run on the same day already reached something else.
+        before = ledger_mod.reached_before(led)
         folded = ledger_mod.update(led, result, cores, ach, today)
         result.setdefault("delta", folded["delta"])
         result.setdefault("new", folded["new"])
-        reached_today = ledger_mod.reached_on(led, result, cores, ach, today)
+        reached_today = ledger_mod.reached_on(led, result, cores, ach, today, before)
         ledger_mod.remember(led, result)
     planned = render.plan(result, cfg, result.get("owners"))
     print(render.describe(planned, result))

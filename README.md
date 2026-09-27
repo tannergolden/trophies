@@ -445,6 +445,8 @@ committed by the bot, with a subject naming the most notable thing that
 happened (a tier reached, an achievement earned, or which values moved) and a
 body carrying the measured values, the date and the run, per the
 [commit standard](https://github.com/tannergolden/standards/blob/Development/docs/distribution/Conventional-Commits.md).
+A tier or achievement is named once, by the run that reached it: a second run
+on the same day names only what it reached itself.
 
 **No date lives in an image.** A file only changes when its number does, so a
 quiet day makes no commit. The **ledger**, `.github/trophies.lock.json`,

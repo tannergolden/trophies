@@ -45,27 +45,38 @@ def save(path: Path, ledger: dict) -> bool:
     return True
 
 
-def reached_on(ledger: dict, result: dict, cores: list, ach: list, today: dt.date) -> dict:
+def reached_on(ledger: dict, result: dict, cores: list, ach: list, today: dt.date, before: dict | None = None) -> dict:
     """What was first reached on `today` and is still held.
 
     A tier's date stays in the ledger after a threshold moves up and the tier
     is lost, so the date alone would report a Bronze the card no longer
-    shows. Only a tier or achievement the run holds right now is named."""
+    shows. Only a tier or achievement the run holds right now is named.
+
+    `before` is the ledger's `reached` map as the run read it (see
+    `reached_before`). Given, it narrows the answer to what this run reached
+    itself: the ledger dates by the day, so a second run on the same day
+    would otherwise name again everything the first one reached."""
     key = today.isoformat()
     out = {"tiers": [], "achievements": []}
     reached = ledger.get("reached", {})
+    prior = before or {}
     for c in cores:
         m = measure(c, result["values"][c.key])
         for stamp, day in reached.get(c.key, {}).items():
             t, stars = (int(x) for x in stamp.split("."))
-            if day == key and (m["t"] > t or (m["t"] == t and m["stars"] >= stars)):
+            if day == key and stamp not in prior.get(c.key, {}) and (m["t"] > t or (m["t"] == t and m["stars"] >= stars)):
                 out["tiers"].append((TIER_NAMES[t] + (f" star {stars}" if stars else ""), c.title))
     for a in ach:
         st = ach_state(a, result["curs"].get(a.slug))
         for k, day in reached.get("ach:" + a.slug, {}).items():
-            if day == key and st["earned"] and st["k"] >= int(k):
+            if day == key and k not in prior.get("ach:" + a.slug, {}) and st["earned"] and st["k"] >= int(k):
                 out["achievements"].append(a.name + (f" {ROMAN[int(k)]}" if a.goals else ""))
     return out
+
+
+def reached_before(ledger: dict) -> dict:
+    """A copy of the ledger's `reached` map, taken before a run folds itself in with `update`."""
+    return {k: dict(v) for k, v in ledger.get("reached", {}).items()}
 
 
 def update(ledger: dict, result: dict, cores: list, ach: list, today: dt.date) -> dict:
