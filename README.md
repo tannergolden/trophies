@@ -293,6 +293,15 @@ for a row of badges). One key in the config switches all of them.
 Add this as `.github/workflows/trophies.yml` in your **profile repository**,
 the one named after your account. That stub is the whole interface.
 
+> [!TIP]
+> **One stub for every kit you use.** The stub below runs the trophies on
+> their own. To run them with the banners, the badges or both, add the
+> [Markdown stub](https://github.com/tannergolden/markdown#-use-it-in-your-readme)
+> instead: one workflow that runs each kit at its own hour, so a repository
+> never needs a stub per kit. It fits any mix of the kits, not only all
+> three: give it a cron for each kit you use and leave the rest out. Use one
+> stub or the other for a kit, never both, or the kit runs twice.
+
 ```yaml
 name: Trophies
 on:
@@ -336,11 +345,6 @@ its own hundred achievements. `GITHUB_TOKEN` already reads everything about
 its own repository, so private repositories need nothing extra.
 [`examples/stub-repository.yml`](examples/stub-repository.yml) shows it with
 `commit: pr`, which opens one evolving pull request instead of pushing.
-
-One stub per kit, or one for the whole page:
-[`tannergolden/markdown`](https://github.com/tannergolden/markdown) calls this
-kit, the banners and the badges from a single workflow, each at its own hour,
-so a README that wants all three needs one stub rather than three.
 
 ### Or gate on it
 
