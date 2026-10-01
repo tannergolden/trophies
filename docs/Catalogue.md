@@ -233,13 +233,13 @@ Where each tier sits, as the share of starred public repositories at or above it
 
 | Trophy | Bronze | Silver | Gold | Platinum | Diamond | Basis |
 | :-- | --: | --: | --: | --: | --: | :-- |
-| **Stars** | top 8.9% | top 1.5% | top 0.38% | top 0.1% | top 0.017% | measured: every starred public repository counted by the search API, 2026-09-24 |
-| **Forks** | top 7.1% | top 1.8% | top 0.47% | top 0.087% | top 0.017% | measured: every starred public repository counted by the search API, 2026-09-24 |
-| **Contributors** | top 43% | top 9.8% | top 0.98% | top 0.42% | top 0.032% | measured: 200 repositories in 5 star bands, weighted by band, 2026-09-24 |
-| **Commits** | top 8% | top 0.83% | top 0.2% | top 0.073% | top 0.01% | measured: 200 repositories in 5 star bands, weighted by band, 2026-09-24 |
-| **Releases** | top 10% | top 4.2% | top 0.9% | top 0.53% | top 0.19% | measured: 200 repositories in 5 star bands, weighted by band, 2026-09-24 |
-| **Merged PRs** | top 6.7% | top 0.67% | top 0.21% | top 0.068% | top 0.015% | measured: 200 repositories in 5 star bands, weighted by band, 2026-09-24 |
-| **Issues Resolved** | top 9.6% | top 0.94% | top 0.22% | top 0.041% | top 0.0055% | measured: 200 repositories in 5 star bands, weighted by band, 2026-09-24 |
+| **Stars** | top 8.9% | top 1.5% | top 0.38% | top 0.1% | top 0.017% | measured: every starred public repository counted by the search API, 2026-10-01 |
+| **Forks** | top 7.1% | top 1.8% | top 0.47% | top 0.087% | top 0.017% | measured: every starred public repository counted by the search API, 2026-10-01 |
+| **Contributors** | top 68% | top 25% | top 5.6% | top 0.24% | top 0.018% | measured: 200 repositories in 5 star bands, weighted by band, 2026-10-01 |
+| **Commits** | top 31% | top 7.8% | top 0.44% | top 0.31% | top 0.0059% | measured: 200 repositories in 5 star bands, weighted by band, 2026-10-01 |
+| **Releases** | top 21% | top 10% | top 2.7% | top 0.26% | top 0.011% | measured: 200 repositories in 5 star bands, weighted by band, 2026-10-01 |
+| **Merged PRs** | top 11% | top 7.7% | top 0.2% | top 0.091% | top 0.0009% | measured: 200 repositories in 5 star bands, weighted by band, 2026-10-01 |
+| **Issues Resolved** | top 6.8% | top 5.4% | top 0.33% | top 0.23% | top 0.0009% | measured: 200 repositories in 5 star bands, weighted by band, 2026-10-01 |
 | **Active Days** | top 15% | top 5% | top 1% | top 0.2% | top 0.04% | estimated: 1.66 pushes a quarter per developer on average |
 
 ### The 100 achievements
@@ -397,9 +397,9 @@ reference population, and each share says how it was got.
   that puts a trophy case on one. The median has 36 followers and 18 public
   contributions a year; 26% made none.
 - **Repository mode: public, non-fork repositories with at least one star,**
-  measured through GitHub's API on 2026-09-24 by `src/calibrate.py` (the
+  measured through GitHub's API on 2026-10-01 by `src/calibrate.py` (the
   **📐 Calibrate** workflow, quarterly). Stars and forks are counted exactly:
-  the search API answers how many of the 32,180,494 such repositories sit at or
+  the search API answers how many of the 32,300,469 such repositories sit at or
   above each threshold. The other cores come from 200 repositories sampled
   across five star bands (40 in each of 1–9, 10–99, 100–999, 1,000–9,999, 10,000+ stars), each measured the way a case measures
   it (contributors, commits, releases, merged pull requests, resolved
